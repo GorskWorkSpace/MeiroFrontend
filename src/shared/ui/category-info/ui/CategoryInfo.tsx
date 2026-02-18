@@ -1,13 +1,13 @@
 import styles from "./CategoryInfo.module.css";
 
 interface CategoryInfoProps {
-  label: "Юмор" | "Спектакль" | "Концерт" | "Литература";
+  children: React.ReactNode
 }
 
-export const CategoryInfo = ({ label }: CategoryInfoProps) => {
+export const CategoryInfo = ({ children }: CategoryInfoProps) => {
   return (
     <div className={styles.categoryContainer}>
-      <p className={styles.font}>{label}</p>
+      <p className={styles.font}>{children}</p>
     </div>
   );
 };

@@ -1,9 +1,9 @@
 import styles from "./Title.module.css";
 
 interface TitleProps {
-  title: "Мероприятия для вас";
+  children: React.ReactNode;
 }
 
-export const Title = ({ title }: TitleProps) => {
-  return <p className={styles.font}>{title}</p>;
+export const Title = ({ children }: TitleProps) => {
+  return <p className={styles.font}>{children}</p>;
 };
