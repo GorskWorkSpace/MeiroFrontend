@@ -1,9 +1,9 @@
 import styles from "./EventTitle.module.css";
 
 interface EventTitleProps {
-  text: string;
+  children: React.ReactNode;
 }
 
-export const EventTitle = ({ text }: EventTitleProps) => {
-  return <p className={styles.font}>{text}</p>;
+export const EventTitle = ({ children }: EventTitleProps) => {
+  return <p className={styles.font}>{children}</p>;
 };
