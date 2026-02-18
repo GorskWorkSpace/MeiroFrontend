@@ -1,0 +1,16 @@
+.categoryContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  width: fit-content;
+  height: fit-content;
+  background-color: #fff;
+  border-radius: 500px;
+}
+
+.font {
+  font-family: "Geologica", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+}

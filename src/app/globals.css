@@ -41,6 +41,7 @@ h6,
 p {
   font-size: inherit;
   font-weight: inherit;
+  font-family: "Bounded";
 }
 
 ul,
@@ -104,4 +105,9 @@ legend {
 
 input[type="file"] {
   max-width: 100%;
+}
+
+:root {
+  --main-background-color: #fff;
+  --accent-color: #554ffd;
 }
