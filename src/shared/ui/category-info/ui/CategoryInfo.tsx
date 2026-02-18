@@ -1,4 +1,4 @@
-import styles from "../CategoryInfo.module.css";
+import styles from "./CategoryInfo.module.css";
 
 interface CategoryInfoProps {
   label: "Юмор" | "Спектакль" | "Концерт" | "Литература";
@@ -7,7 +7,7 @@ interface CategoryInfoProps {
 export const CategoryInfo = ({ label }: CategoryInfoProps) => {
   return (
     <div className={styles.categoryContainer}>
-      <span className={styles.font}>{label}</span>
+      <p className={styles.font}>{label}</p>
     </div>
   );
 };
