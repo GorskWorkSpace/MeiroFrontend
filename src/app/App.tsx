@@ -1,10 +1,12 @@
+import { MainPage } from "../pages/main-page/ui/MainPage";
+
 
 function App() {
-
-
   return (
-    <div></div>
-  )
+    <div>
+      <MainPage />
+    </div>
+  );
 }
 
-export default App
+export default App;
