@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion,type PanInfo, useAnimation } from 'framer-motion';
+import { motion, type PanInfo, useAnimation } from 'framer-motion';
 import styles from './Carousel.module.css';
 
 interface CarouselProps {
@@ -13,11 +13,18 @@ interface CarouselProps {
   onSlideChange?: (index: number) => void;
 }
 
+interface ExtendedItem {
+  item: React.ReactNode;
+  originalIndex: number;
+  copy: number;
+  key: string;
+}
+
 export const Carousel: React.FC<CarouselProps> = ({
   items,
   autoPlay = true,
   autoPlayInterval = 5000,
-  infinite = false,
+  infinite = true,
   itemWidth = 320,
   gap = 8,
   className = '',
@@ -28,12 +35,49 @@ export const Carousel: React.FC<CarouselProps> = ({
   const controls = useAnimation();
   const autoPlayRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   
+  const isInteractingRef = useRef(false);
+  const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  
   const totalItems = items.length;
+  const itemWidthWithGap = itemWidth + gap;
   
-  const extendedItems = infinite ? [...items, ...items, ...items] : items;
-  
-  const startIndex = infinite ? totalItems : 0;
-  const [currentIndex, setCurrentIndex] = useState(startIndex);
+  const [copiesCount, setCopiesCount] = useState(3); 
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const extendedItems = React.useMemo<ExtendedItem[]>(() => {
+    if (!infinite) {
+      return items.map((item, i) => ({
+        item,
+        originalIndex: i,
+        copy: 0,
+        key: `item-0-${i}`
+      }));
+    }
+    
+    const result: ExtendedItem[] = [];
+    for (let copy = 0; copy < copiesCount; copy++) {
+      for (let i = 0; i < totalItems; i++) {
+        result.push({
+          item: items[i],
+          originalIndex: i,
+          copy,
+          key: `item-${copy}-${i}`
+        });
+      }
+    }
+    return result;
+  }, [items, totalItems, infinite, copiesCount]);
+
+  const startIndex = React.useMemo(() => {
+    if (!infinite) return 0;
+    return Math.floor(extendedItems.length / 2) - Math.floor(totalItems / 2);
+  }, [extendedItems.length, totalItems, infinite]);
+
+  useEffect(() => {
+    if (infinite) {
+      setCurrentIndex(startIndex);
+    }
+  }, [startIndex, infinite]);
 
   useEffect(() => {
     const updateWidth = () => {
@@ -48,43 +92,64 @@ export const Carousel: React.FC<CarouselProps> = ({
   }, []);
 
   const getSnapPosition = useCallback((index: number) => {
+    if (!containerWidth) return 0;
     const containerCenter = containerWidth / 2;
-    const itemCenter = index * (itemWidth + gap) + itemWidth / 2;
+    const itemCenter = index * itemWidthWithGap + itemWidth / 2;
     return containerCenter - itemCenter;
-  }, [containerWidth, itemWidth, gap]);
+  }, [containerWidth, itemWidthWithGap]);
+
+  const ensureNoEmptySpace = useCallback((index: number) => {
+    if (!infinite) return index;
+    
+    const margin = totalItems * 2;
+
+    if (index < margin) {
+      setCopiesCount(prev => prev + 2); 
+      const newIndex = index + totalItems * 2;
+      setCurrentIndex(newIndex);
+      controls.set({ x: getSnapPosition(newIndex) });
+      return newIndex;
+    }
+    
+    if (index > extendedItems.length - margin) {
+      setCopiesCount(prev => prev + 2);
+      return index;
+    }
+    
+    return index;
+  }, [infinite, totalItems, extendedItems.length, controls, getSnapPosition]);
 
   const snapToIndex = useCallback(async (index: number, animated = true) => {
+    const safeIndex = ensureNoEmptySpace(index);
+    
     await controls.start({
-      x: getSnapPosition(index),
+      x: getSnapPosition(safeIndex),
       transition: animated ? { type: 'spring', stiffness: 300, damping: 30 } : { duration: 0 }
     });
     
-    setCurrentIndex(index);
-    onSlideChange?.(index % totalItems);
+    setCurrentIndex(safeIndex);
+    onSlideChange?.(safeIndex % totalItems);
+  }, [controls, getSnapPosition, totalItems, ensureNoEmptySpace, onSlideChange]);
+
+  const handleDragStart = useCallback(() => {
+    isInteractingRef.current = true;
     
-    if (infinite) {
-      if (index <= totalItems - 1) {
-
-        const newIndex = index + totalItems;
-        setCurrentIndex(newIndex);
-        await controls.set({ x: getSnapPosition(newIndex) });
-      } else if (index >= totalItems * 2) {
-
-        const newIndex = index - totalItems;
-        setCurrentIndex(newIndex);
-        await controls.set({ x: getSnapPosition(newIndex) });
-      }
+    if (interactionTimeoutRef.current) {
+      clearTimeout(interactionTimeoutRef.current);
     }
-  }, [controls, getSnapPosition, totalItems, infinite, onSlideChange]);
+    
+    if (autoPlayRef.current) {
+      clearInterval(autoPlayRef.current);
+      autoPlayRef.current = undefined;
+    }
+  }, []);
 
-  const handleDragEnd = useCallback(async (_: any, info: PanInfo) => {
+  const handleDragEnd = useCallback(async (event: any, info: PanInfo) => {
     const offset = info.offset.x;
     const velocity = info.velocity.x;
-    const itemWidthWithGap = itemWidth + gap;
-
+    
     const offsetInItems = offset / itemWidthWithGap;
     const absOffset = Math.abs(offsetInItems);
-    
     const direction = offset > 0 || velocity > 500 ? -1 : 1;
     
     let newIndex = currentIndex;
@@ -94,19 +159,23 @@ export const Carousel: React.FC<CarouselProps> = ({
     }
     
     await snapToIndex(newIndex);
-  }, [currentIndex, itemWidth, gap, snapToIndex]);
-
-  const handleDragStart = useCallback(() => {
-    if (autoPlayRef.current) {
-      clearInterval(autoPlayRef.current);
+    
+    if (interactionTimeoutRef.current) {
+      clearTimeout(interactionTimeoutRef.current);
     }
-  }, []);
+    
+    interactionTimeoutRef.current = setTimeout(() => {
+      isInteractingRef.current = false;
+    }, 2000);
+  }, [currentIndex, itemWidthWithGap, snapToIndex]);
 
   useEffect(() => {
     if (!autoPlay) return;
     
     const nextSlide = () => {
-      snapToIndex(currentIndex + 1);
+      if (!isInteractingRef.current) {
+        snapToIndex(currentIndex + 1);
+      }
     };
 
     autoPlayRef.current = setInterval(nextSlide, autoPlayInterval);
@@ -119,28 +188,57 @@ export const Carousel: React.FC<CarouselProps> = ({
   }, [autoPlay, autoPlayInterval, currentIndex, snapToIndex]);
 
   useEffect(() => {
-    if (containerWidth) {
+    return () => {
+      if (interactionTimeoutRef.current) {
+        clearTimeout(interactionTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (containerWidth && infinite) {
       snapToIndex(startIndex, false);
     }
-  }, [containerWidth, startIndex, snapToIndex]);
+  }, [containerWidth, startIndex, snapToIndex, infinite]);
+
+  useEffect(() => {
+    if (containerWidth && !infinite) {
+      snapToIndex(0, false);
+    }
+  }, [containerWidth, snapToIndex, infinite]);
+
+  const displayItems = !infinite 
+    ? items.map((item, i) => ({ item, key: `item-${i}` }))
+    : extendedItems;
 
   return (
     <div ref={containerRef} className={`${styles.carouselContainer} ${className}`}>
       <motion.div
         className={styles.carouselTrack}
         drag="x"
-        dragConstraints={{ left: -Infinity, right: Infinity }}
+        dragConstraints={!infinite ? { 
+          left: -((totalItems - 1) * itemWidthWithGap),
+          right: 0 
+        } : undefined}
         dragElastic={0.1}
         dragMomentum={false}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         animate={controls}
-        style={{ gap }}
+        style={{ 
+          gap,
+          touchAction: 'pan-y',
+          cursor: isInteractingRef.current ? 'grabbing' : 'grab'
+        }}
         whileTap={{ cursor: 'grabbing' }}
       >
-        {extendedItems.map((item, i) => (
-          <div key={i} className={styles.carouselItem} style={{ width: itemWidth }}>
-            {item}
+        {displayItems.map((itemData: any) => (
+          <div
+            key={itemData.key}
+            className={styles.carouselItem}
+            style={{ width: itemWidth }}
+          >
+            {itemData.item}
           </div>
         ))}
       </motion.div>
