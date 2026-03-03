@@ -3,6 +3,7 @@
   font-family: "Geologica";
   font-size: 16px;
   font-weight: 400;
+  color: var(--text-main);
 }
 
 .city:hover {

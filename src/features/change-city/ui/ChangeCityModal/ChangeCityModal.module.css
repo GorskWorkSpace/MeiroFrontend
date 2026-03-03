@@ -1,5 +1,6 @@
-.innerWrapper{
+.innerWrapper {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  background: var(--main-background);
 }

@@ -1,5 +1,5 @@
 import { baseApi } from "../../../shared/api/baseApi";
-import { cityMocks } from "../model/mock";
+import { cityMocks } from "../model/mocks";
 import type { AllCitiesResponse, UserCityResponse } from "../model/types";
 
 
