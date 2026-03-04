@@ -1,6 +1,7 @@
 import { type InputHTMLAttributes } from "react";
 import styles from "./Input.module.css";
-import { CloseIcon, SearchIcon } from "../../../assets/icons";
+import { CloseIcon, SearchIcon } from "../../../assets";
+
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder: string;

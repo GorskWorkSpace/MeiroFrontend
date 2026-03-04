@@ -22,7 +22,7 @@
   flex-shrink: 0;
   width: 16px;
   height: 16px;
-  color: #94a2b8;
+  color: var(--icon-color);
 }
 
 .input {
@@ -33,9 +33,10 @@
   -webkit-tap-highlight-color: transparent;
   background: transparent;
   width: 100%;
+  color: var(--text-main);
 }
 
 input::placeholder {
-  color: #94a2b8;
+  color: var(--icon-color);
   opacity: 1;
 }

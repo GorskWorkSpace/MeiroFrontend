@@ -108,10 +108,23 @@ input[type="file"] {
 }
 
 :root {
-  --main-background-color: #fff;
+  --main-background: #fff;
+  --primary-background: #dee4ed;
+  --secondary-background: #f1f3f7;
   --accent-color: #554ffd;
   --text-main: #000000;
   --text-secondary: #51617b;
+  --icon-color: #94a2b8;
+  --letter: #94a2b8;
 }
 
-
+html.dark {
+  --main-background: #14181f !important;
+  --primary-background: #29313d !important;
+  --secondary-background: #29313d !important;
+  --accent-color: #8984fa !important;
+  --text-main: #fff;
+  --text-secondary: #bec9da;
+  --icon-color: #bec9da;
+  --letter: #dee4ed;
+}

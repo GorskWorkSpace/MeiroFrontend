@@ -1,0 +1,22 @@
+.carouselContainer {
+  width: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+  padding: 4px 0;
+}
+
+.carouselContainer:active {
+  cursor: grabbing;
+}
+
+.carouselTrack {
+  display: flex;
+  cursor: inherit;
+  will-change: transform;
+}
+
+.carouselItem {
+  flex-shrink: 0;
+  user-select: none;
+}

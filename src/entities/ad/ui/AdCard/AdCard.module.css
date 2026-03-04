@@ -1,0 +1,26 @@
+.blockWrapper {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 180px;
+  width: 320px;
+  border-radius: 20px;
+  position: relative;
+}
+
+.category {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.adTitle {
+  position: absolute;
+  left: 20px;
+  bottom: 16px;
+  font-family: "Bounded";
+  font-size: 16px;
+  color: #fff;
+  text-align: left;
+  max-width: 100px;
+}

@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Modal.module.css";
-import { CloseIcon } from "../../../assets/icons";
+
 import { Title } from "../../title";
+import { CloseIcon } from "../../../assets";
 
 interface ModalProps {
   isOpen: boolean;
@@ -19,7 +20,6 @@ export const Modal: React.FC<ModalProps> = ({
   title,
   component,
 }) => {
-  // Блокируем скролл body при открытой модалке
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";

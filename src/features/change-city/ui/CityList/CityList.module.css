@@ -10,7 +10,7 @@
   font-family: "Bounded";
   font-size: 16px;
   font-weight: 600;
-  color: #94a2b8;
+  color: var(--letter);
   align-self: flex-start;
 }
 
@@ -24,6 +24,7 @@
   font-family: "Geologica";
   font-size: 16px;
   font-weight: 400;
+  color: var(--text-main);
 }
 
 .empty {
@@ -31,6 +32,7 @@
   margin-right: auto;
   font-family: "Geologica";
   font-size: 14px;
+  color: var(--text-main);
 }
 
 .city:active {
