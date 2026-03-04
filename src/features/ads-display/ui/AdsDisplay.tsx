@@ -1,3 +1,4 @@
+// features/adsDisplay/ui/AdsDisplay.tsx
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks';
 import { 
@@ -8,10 +9,10 @@ import {
   AdCard,
   type Ad 
 } from '../../../entities/ad';
-import { AdsCarousel } from '../../../widgets/adsCarousel';
+import { Carousel } from '../../../shared/ui/carousel/Carousel';
 import styles from './AdsDisplay.module.css';
 
-interface AdsDisplayProps {
+export interface AdsDisplayProps {
   autoPlay?: boolean;
   infinite?: boolean;
   limit?: number;
@@ -69,10 +70,13 @@ export const AdsDisplay: React.FC<AdsDisplayProps> = ({
 
   return (
     <div className={`${styles.adsDisplay} ${className}`}>
-      <AdsCarousel
+      <Carousel
         items={adCards}
         autoPlay={autoPlay}
+        autoPlayInterval={5000}
         infinite={infinite}
+        itemWidth={320}
+        gap={8}
       />
     </div>
   );

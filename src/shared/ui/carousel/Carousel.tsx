@@ -144,7 +144,7 @@ export const Carousel: React.FC<CarouselProps> = ({
     }
   }, []);
 
-  const handleDragEnd = useCallback(async (event: any, info: PanInfo) => {
+  const handleDragEnd = useCallback(async (_: any, info: PanInfo) => {
     const offset = info.offset.x;
     const velocity = info.velocity.x;
     
