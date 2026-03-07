@@ -1,0 +1,30 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9999px;
+  border: 2px solid var(--like-icon-border);
+  background-color: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  cursor: pointer;
+}
+
+.wrapper:focus {
+  outline: none;
+}
+
+.wrapper:focus-visible {
+  outline: none;
+}
+
+.wrapper:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
