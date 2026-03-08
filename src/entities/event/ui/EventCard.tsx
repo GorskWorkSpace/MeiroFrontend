@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { FavouriteButton } from "../../../features/favourite";
 import { CalendarIcon } from "../../../shared/assets";
 import { Caption } from "../../../shared/ui/caption";
 import { CategoryInfo } from "../../../shared/ui/category-info";
@@ -10,9 +9,14 @@ import styles from "./EventCard.module.css";
 interface EventCardProps {
   event: Event;
   category: string;
+  favouriteButton?: React.ReactNode;
 }
 
-export const EventCard = ({ event, category }: EventCardProps) => {
+export const EventCard = ({
+  event,
+  category,
+  favouriteButton,
+}: EventCardProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -42,12 +46,7 @@ export const EventCard = ({ event, category }: EventCardProps) => {
             <div className={styles.category}>
               <CategoryInfo>{category}</CategoryInfo>
             </div>
-            <div className={styles.favourite}>
-              <FavouriteButton
-                eventId={event.id}
-                isFavourite={event.isFavourite}
-              />
-            </div>
+            <div className={styles.favourite}>{favouriteButton}</div>
           </div>
           <div className={styles.descriptionContainer}>
             <Caption className={styles.date} size={12} weight={400}>

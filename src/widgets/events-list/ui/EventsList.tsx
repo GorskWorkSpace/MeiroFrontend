@@ -6,6 +6,7 @@ import {
   selectAllEvents,
   selectEventsLoading,
 } from "../../../entities/event";
+import { FavouriteButton } from "../../../features/favourite";
 import styles from "./EventsList.module.css";
 import { Title } from "../../../shared/ui/title";
 
@@ -22,16 +23,24 @@ export const EventsList = () => {
 
   return (
     <div className={styles.flex}>
-
-        <Title size={18} weight={500}>
-          Мероприятия для вас
-        </Title>
-        <div className={styles.grid}>
-          {events.map((event) => (
-            <EventCard key={event.id} event={event} category={event.category} />
-          ))}
-        </div>
-
+      <Title size={18} weight={500}>
+        Мероприятия для вас
+      </Title>
+      <div className={styles.grid}>
+        {events.map((event) => (
+          <EventCard
+            key={event.id}
+            event={event}
+            category={event.category}
+            favouriteButton={
+              <FavouriteButton
+                eventId={event.id}
+                isFavourite={event.isFavourite}
+              />
+            }
+          />
+        ))}
+      </div>
     </div>
   );
 };
