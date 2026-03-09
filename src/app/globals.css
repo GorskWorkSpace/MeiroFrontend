@@ -116,6 +116,7 @@ input[type="file"] {
   --text-secondary: #51617b;
   --icon-color: #94a2b8;
   --letter: #94a2b8;
+  --like-icon-border: #ced6e3;
 }
 
 html.dark {
@@ -127,4 +128,5 @@ html.dark {
   --text-secondary: #bec9da;
   --icon-color: #bec9da;
   --letter: #dee4ed;
+  --like-icon-border: #51617b;
 }

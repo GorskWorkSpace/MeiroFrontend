@@ -4,7 +4,7 @@ export { adSlice, default } from "./model/adSlice";
 export { fetchAllAdsThunk, fetchAdByIdThunk } from "./model/adThunks";
 export type { Ad, AdState } from "./model/types";
 
-export { adMocks } from "./model/mocks";
+export { adMocks } from "./model/adMocks";
 
 export const selectAllAds = (state: { ad: AdState }) => state.ad.ads;
 export const selectCurrentAd = (state: { ad: AdState }) => state.ad.currentAd;

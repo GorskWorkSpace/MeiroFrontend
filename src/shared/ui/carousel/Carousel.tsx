@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, type PanInfo, useAnimation } from 'framer-motion';
-import styles from './Carousel.module.css';
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { motion, type PanInfo, useAnimation } from "framer-motion";
+import styles from "./Carousel.module.css";
 
 interface CarouselProps {
   items: React.ReactNode[];
@@ -27,21 +27,22 @@ export const Carousel: React.FC<CarouselProps> = ({
   infinite = true,
   itemWidth = 320,
   gap = 8,
-  className = '',
+  className = "",
   onSlideChange,
 }) => {
   const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
   const autoPlayRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  
+
   const isInteractingRef = useRef(false);
-  const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  
+  const interactionTimeoutRef =
+    useRef<ReturnType<typeof setTimeout>>(undefined);
+
   const totalItems = items.length;
   const itemWidthWithGap = itemWidth + gap;
-  
-  const [copiesCount, setCopiesCount] = useState(3); 
+
+  const [copiesCount, setCopiesCount] = useState(3);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const extendedItems = React.useMemo<ExtendedItem[]>(() => {
@@ -50,10 +51,10 @@ export const Carousel: React.FC<CarouselProps> = ({
         item,
         originalIndex: i,
         copy: 0,
-        key: `item-0-${i}`
+        key: `item-0-${i}`,
       }));
     }
-    
+
     const result: ExtendedItem[] = [];
     for (let copy = 0; copy < copiesCount; copy++) {
       for (let i = 0; i < totalItems; i++) {
@@ -61,7 +62,7 @@ export const Carousel: React.FC<CarouselProps> = ({
           item: items[i],
           originalIndex: i,
           copy,
-          key: `item-${copy}-${i}`
+          key: `item-${copy}-${i}`,
         });
       }
     }
@@ -87,91 +88,105 @@ export const Carousel: React.FC<CarouselProps> = ({
     };
 
     updateWidth();
-    window.addEventListener('resize', updateWidth);
-    return () => window.removeEventListener('resize', updateWidth);
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
-  const getSnapPosition = useCallback((index: number) => {
-    if (!containerWidth) return 0;
-    const containerCenter = containerWidth / 2;
-    const itemCenter = index * itemWidthWithGap + itemWidth / 2;
-    return containerCenter - itemCenter;
-  }, [containerWidth, itemWidthWithGap]);
+  const getSnapPosition = useCallback(
+    (index: number) => {
+      if (!containerWidth) return 0;
+      const containerCenter = containerWidth / 2;
+      const itemCenter = index * itemWidthWithGap + itemWidth / 2;
+      return containerCenter - itemCenter;
+    },
+    [containerWidth, itemWidthWithGap],
+  );
 
-  const ensureNoEmptySpace = useCallback((index: number) => {
-    if (!infinite) return index;
-    
-    const margin = totalItems * 2;
+  const ensureNoEmptySpace = useCallback(
+    (index: number) => {
+      if (!infinite) return index;
 
-    if (index < margin) {
-      setCopiesCount(prev => prev + 2); 
-      const newIndex = index + totalItems * 2;
-      setCurrentIndex(newIndex);
-      controls.set({ x: getSnapPosition(newIndex) });
-      return newIndex;
-    }
-    
-    if (index > extendedItems.length - margin) {
-      setCopiesCount(prev => prev + 2);
+      const margin = totalItems * 2;
+
+      if (index < margin) {
+        setCopiesCount((prev) => prev + 2);
+        const newIndex = index + totalItems * 2;
+        setCurrentIndex(newIndex);
+        controls.set({ x: getSnapPosition(newIndex) });
+        return newIndex;
+      }
+
+      if (index > extendedItems.length - margin) {
+        setCopiesCount((prev) => prev + 2);
+        return index;
+      }
+
       return index;
-    }
-    
-    return index;
-  }, [infinite, totalItems, extendedItems.length, controls, getSnapPosition]);
+    },
+    [infinite, totalItems, extendedItems.length, controls, getSnapPosition],
+  );
 
-  const snapToIndex = useCallback(async (index: number, animated = true) => {
-    const safeIndex = ensureNoEmptySpace(index);
-    
-    await controls.start({
-      x: getSnapPosition(safeIndex),
-      transition: animated ? { type: 'spring', stiffness: 300, damping: 30 } : { duration: 0 }
-    });
-    
-    setCurrentIndex(safeIndex);
-    onSlideChange?.(safeIndex % totalItems);
-  }, [controls, getSnapPosition, totalItems, ensureNoEmptySpace, onSlideChange]);
+  const snapToIndex = useCallback(
+    async (index: number, animated = true) => {
+      const safeIndex = ensureNoEmptySpace(index);
+
+      await controls.start({
+        x: getSnapPosition(safeIndex),
+        transition: animated
+          ? { type: "spring", stiffness: 300, damping: 30 }
+          : { duration: 0 },
+      });
+
+      setCurrentIndex(safeIndex);
+      onSlideChange?.(safeIndex % totalItems);
+    },
+    [controls, getSnapPosition, totalItems, ensureNoEmptySpace, onSlideChange],
+  );
 
   const handleDragStart = useCallback(() => {
     isInteractingRef.current = true;
-    
+
     if (interactionTimeoutRef.current) {
       clearTimeout(interactionTimeoutRef.current);
     }
-    
+
     if (autoPlayRef.current) {
       clearInterval(autoPlayRef.current);
       autoPlayRef.current = undefined;
     }
   }, []);
 
-  const handleDragEnd = useCallback(async (_: any, info: PanInfo) => {
-    const offset = info.offset.x;
-    const velocity = info.velocity.x;
-    
-    const offsetInItems = offset / itemWidthWithGap;
-    const absOffset = Math.abs(offsetInItems);
-    const direction = offset > 0 || velocity > 500 ? -1 : 1;
-    
-    let newIndex = currentIndex;
-    
-    if (absOffset > 0.5 || Math.abs(velocity) > 500) {
-      newIndex = currentIndex + direction;
-    }
-    
-    await snapToIndex(newIndex);
-    
-    if (interactionTimeoutRef.current) {
-      clearTimeout(interactionTimeoutRef.current);
-    }
-    
-    interactionTimeoutRef.current = setTimeout(() => {
-      isInteractingRef.current = false;
-    }, 2000);
-  }, [currentIndex, itemWidthWithGap, snapToIndex]);
+  const handleDragEnd = useCallback(
+    async (_: any, info: PanInfo) => {
+      const offset = info.offset.x;
+      const velocity = info.velocity.x;
+
+      const offsetInItems = offset / itemWidthWithGap;
+      const absOffset = Math.abs(offsetInItems);
+      const direction = offset > 0 || velocity > 500 ? -1 : 1;
+
+      let newIndex = currentIndex;
+
+      if (absOffset > 0.5 || Math.abs(velocity) > 500) {
+        newIndex = currentIndex + direction;
+      }
+
+      await snapToIndex(newIndex);
+
+      if (interactionTimeoutRef.current) {
+        clearTimeout(interactionTimeoutRef.current);
+      }
+
+      interactionTimeoutRef.current = setTimeout(() => {
+        isInteractingRef.current = false;
+      }, 2000);
+    },
+    [currentIndex, itemWidthWithGap, snapToIndex],
+  );
 
   useEffect(() => {
     if (!autoPlay) return;
-    
+
     const nextSlide = () => {
       if (!isInteractingRef.current) {
         snapToIndex(currentIndex + 1);
@@ -179,7 +194,7 @@ export const Carousel: React.FC<CarouselProps> = ({
     };
 
     autoPlayRef.current = setInterval(nextSlide, autoPlayInterval);
-    
+
     return () => {
       if (autoPlayRef.current) {
         clearInterval(autoPlayRef.current);
@@ -207,30 +222,37 @@ export const Carousel: React.FC<CarouselProps> = ({
     }
   }, [containerWidth, snapToIndex, infinite]);
 
-  const displayItems = !infinite 
+  const displayItems = !infinite
     ? items.map((item, i) => ({ item, key: `item-${i}` }))
     : extendedItems;
 
   return (
-    <div ref={containerRef} className={`${styles.carouselContainer} ${className}`}>
+    <div
+      ref={containerRef}
+      className={`${styles.carouselContainer} ${className}`}
+    >
       <motion.div
         className={styles.carouselTrack}
         drag="x"
-        dragConstraints={!infinite ? { 
-          left: -((totalItems - 1) * itemWidthWithGap),
-          right: 0 
-        } : undefined}
+        dragConstraints={
+          !infinite
+            ? {
+                left: -((totalItems - 1) * itemWidthWithGap),
+                right: 0,
+              }
+            : undefined
+        }
         dragElastic={0.1}
         dragMomentum={false}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         animate={controls}
-        style={{ 
+        style={{
           gap,
-          touchAction: 'pan-y',
-          cursor: isInteractingRef.current ? 'grabbing' : 'grab'
+          touchAction: "pan-y",
+          cursor: isInteractingRef.current ? "grabbing" : "grab",
         }}
-        whileTap={{ cursor: 'grabbing' }}
+        whileTap={{ cursor: "grabbing" }}
       >
         {displayItems.map((itemData: any) => (
           <div

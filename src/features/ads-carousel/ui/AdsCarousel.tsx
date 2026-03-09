@@ -1,18 +1,17 @@
-// features/adsDisplay/ui/AdsDisplay.tsx
-import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../app/store/hooks';
-import { 
-  fetchAllAdsThunk, 
-  selectAllAds, 
+import React, { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../../app/store/hooks";
+import {
+  fetchAllAdsThunk,
+  selectAllAds,
   selectAdsLoading,
   selectAdsError,
   AdCard,
-  type Ad 
-} from '../../../entities/ad';
-import { Carousel } from '../../../shared/ui/carousel/Carousel';
-import styles from './AdsDisplay.module.css';
+  type Ad,
+} from "../../../entities/ad";
+import { Carousel } from "../../../shared/ui/carousel/Carousel";
+import styles from "./AdsCarousel.module.css";
 
-export interface AdsDisplayProps {
+export interface AdsCarouselProps {
   autoPlay?: boolean;
   infinite?: boolean;
   limit?: number;
@@ -20,12 +19,12 @@ export interface AdsDisplayProps {
   className?: string;
 }
 
-export const AdsDisplay: React.FC<AdsDisplayProps> = ({
+export const AdsCarousel: React.FC<AdsCarouselProps> = ({
   autoPlay = true,
   infinite = true,
   limit = 10,
   onAdClick,
-  className = '',
+  className = "",
 }) => {
   const dispatch = useAppDispatch();
   const ads = useAppSelector(selectAllAds);
@@ -61,11 +60,7 @@ export const AdsDisplay: React.FC<AdsDisplayProps> = ({
   const displayedAds = limit ? ads.slice(0, limit) : ads;
 
   const adCards = displayedAds.map((ad) => (
-    <AdCard 
-      key={ad.id} 
-      ad={ad} 
-      onClick={onAdClick}
-    />
+    <AdCard key={ad.id} ad={ad} onClick={onAdClick} />
   ));
 
   return (

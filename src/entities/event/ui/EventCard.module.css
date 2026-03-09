@@ -1,0 +1,41 @@
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 160px;
+}
+
+.descriptionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cardWrapper {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+  width: 160px;
+  height: 250px;
+  border-radius: 12px;
+}
+
+.date {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.category {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+}
+
+.favourite {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}
