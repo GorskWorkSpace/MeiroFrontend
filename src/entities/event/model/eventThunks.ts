@@ -25,10 +25,37 @@ export const fetchAllEventsThunk = createAsyncThunk(
   async (filters: EventFilters = {}, { rejectWithValue }) => {
     try {
       const response = await fetchAllEvents(filters);
-      return response.events;
+      return {
+        events: response.events,
+        page: filters.page || 0,
+      };
     } catch (error) {
       return rejectWithValue(
         error instanceof Error ? error.message : "Failed to fetch events",
+      );
+    }
+  },
+);
+
+export const fetchNextPageThunk = createAsyncThunk(
+  "event/fetchNextPage",
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const state = getState() as { event: { filters: EventFilters } };
+      const nextPage = (state.event.filters.page || 0) + 1;
+
+      const response = await fetchAllEvents({
+        ...state.event.filters,
+        page: nextPage,
+      });
+
+      return {
+        events: response.events,
+        page: nextPage,
+      };
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : "Failed to fetch next page",
       );
     }
   },

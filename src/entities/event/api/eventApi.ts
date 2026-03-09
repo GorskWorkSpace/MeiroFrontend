@@ -27,7 +27,11 @@ export const fetchAllEvents = async (
   filters: EventFilters,
 ): Promise<EventsResponse> => {
   if (USE_MOCKS) {
-    await delay(800);
+    await delay(2500);
+
+    const page = filters.page || 0;
+    const offset = 12;
+
     let filteredEvents = [...eventMocks];
 
     if (filters.search) {
@@ -46,8 +50,6 @@ export const fetchAllEvents = async (
       );
     }
 
-    const page = filters.page || 0;
-    const offset = filters.offset || 10;
     const start = page * offset;
     const end = start + offset;
 
@@ -57,10 +59,12 @@ export const fetchAllEvents = async (
   }
 
   const params = new URLSearchParams();
-  if (filters.page !== undefined)
+
+  if (filters.page !== undefined) {
     params.append("page", filters.page.toString());
-  if (filters.offset !== undefined)
-    params.append("offset", filters.offset.toString());
+  }
+  params.append("offset", "12");
+
   if (filters.category) params.append("category", filters.category);
   if (filters.search) params.append("search", filters.search);
   if (filters.priceFrom !== undefined)

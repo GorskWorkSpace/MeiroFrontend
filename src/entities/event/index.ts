@@ -21,16 +21,25 @@ export {
   eventSlice,
   clearError,
   setFilters,
+  resetFilters,
+  resetEvents,
   selectAllEvents,
   selectFavouriteEvents,
   selectSoonEvents,
+  selectSoonEventsCount,
   selectEventsLoading,
+  selectEventsLoadingMore,
+  selectEventsError,
+  selectEventFilters,
+  selectFavouriteCount,
+  selectHasMoreEvents,
   default as eventReducer,
 } from "./model/eventSlice";
 
 export {
   fetchSoonEventsThunk,
   fetchAllEventsThunk,
+  fetchNextPageThunk,
   toggleFavouriteThunk,
 } from "./model/eventThunks";
 

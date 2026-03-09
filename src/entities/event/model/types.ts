@@ -49,6 +49,8 @@ export interface EventState {
   soonEvents: SoonEvent[];
   soonEventsCount: number;
   loading: boolean;
+  loadingMore: boolean;
   error: string | null;
+  hasMore: boolean;
   filters: EventFilters;
 }

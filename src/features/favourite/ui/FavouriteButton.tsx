@@ -17,7 +17,7 @@ export const FavouriteButton = ({
   const dispatch = useAppDispatch();
   const isPending = useAppSelector(selectIsFavouritePending(eventId));
   const isClickedRef = useRef(false);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined); // <-- исправлено
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     return () => {
