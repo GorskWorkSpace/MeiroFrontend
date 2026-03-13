@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-import { CityBadge } from "../../../entities/city";
-import styles from "./Header.module.css";
-import { ChangeCityModal } from "../../../features/change-city";
 import { useAppSelector } from "../../../app/store/hooks";
+import { CityBadge } from "../../../entities/city";
+import { ChangeCityModal } from "../../../features/change-city";
+import styles from "./Header.module.css";
 
 export const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,7 +14,9 @@ export const Header = () => {
       <div className={styles.headerContainer}>
         <p className={styles.logo}>MEIRO</p>
         <CityBadge onClick={() => setIsModalOpen(true)}>
-          {selectedCity?.cityName || localStorage.getItem("selectedCity") || "Выберите город"}
+          {selectedCity?.cityName ||
+            localStorage.getItem("selectedCity") ||
+            "Выберите город"}
         </CityBadge>
       </div>
       <ChangeCityModal

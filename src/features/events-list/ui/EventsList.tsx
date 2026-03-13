@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store/hooks";
 import {
   EventCard,
@@ -10,9 +10,10 @@ import {
   selectHasMoreEvents,
 } from "../../../entities/event";
 import { FavouriteButton } from "../../../features/favourite";
-import styles from "./EventsList.module.css";
-import { Title } from "../../../shared/ui/title";
 import { Caption } from "../../../shared/ui/caption";
+import { Title } from "../../../shared/ui/title";
+import { useInfiniteScroll } from "../lib/useInfiniteScroll";
+import styles from "./EventsList.module.css";
 
 export const EventsList = () => {
   const dispatch = useAppDispatch();
@@ -21,30 +22,12 @@ export const EventsList = () => {
   const isLoadingMore = useAppSelector(selectEventsLoadingMore);
   const hasMore = useAppSelector(selectHasMoreEvents);
 
-  const observerRef = useRef<IntersectionObserver>(undefined);
-
-  const preLastElementRef = useCallback(
-    (node: HTMLDivElement) => {
-      if (isLoading || isLoadingMore) return;
-      if (observerRef.current) observerRef.current.disconnect();
-
-      observerRef.current = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting && hasMore) {
-            console.log("соо при каждом запросе пачки ивентов");
-            dispatch(fetchNextPageThunk());
-          }
-        },
-        {
-          threshold: 0.1,
-          rootMargin: "100px",
-        },
-      );
-
-      if (node) observerRef.current.observe(node);
-    },
-    [isLoading, isLoadingMore, hasMore, dispatch],
-  );
+  const { preLastElementRef } = useInfiniteScroll({
+    hasMore,
+    isLoading,
+    isLoadingMore,
+    onLoadMore: () => dispatch(fetchNextPageThunk()),
+  });
 
   useEffect(() => {
     console.log("Загрузка страницы");

@@ -3,7 +3,6 @@
   overflow: hidden;
   touch-action: pan-y;
   cursor: grab;
-  padding: 4px 0;
 }
 
 .carouselContainer:active {

@@ -1,10 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
-  fetchSoonEvents,
   fetchAllEvents,
+  fetchSoonEvents,
   toggleFavourite,
 } from "../api/eventApi";
-import type { FavouriteRequest, EventFilters } from "./types";
+import type { EventFilters, FavouriteRequest } from "./types";
 
 export const fetchSoonEventsThunk = createAsyncThunk(
   "event/fetchSoon",

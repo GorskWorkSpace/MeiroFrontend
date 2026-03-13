@@ -1,9 +1,11 @@
-export { UserIcon } from "./icons/UserIcon";
 export { CalendarIcon } from "./icons//CalendarIcon";
-export { ImageIcon } from "./icons/ImageIcon";
-export { HeartIcon as HeartIcon } from "./icons/HeartIcon";
-export { GridIcon } from "./icons/GridIcon";
-export { SettingsIcon } from "./icons/SettingsIcon";
-export { ListIcon } from "./icons/ListIcon";
+export { ArrowDownRightIcon } from "./icons/ArrowDownRight";
 export { CloseIcon } from "./icons/CloseIcon";
+export { GridIcon } from "./icons/GridIcon";
+export { HeartIcon as HeartIcon } from "./icons/HeartIcon";
+export { ImageIcon } from "./icons/ImageIcon";
+export { ListIcon } from "./icons/ListIcon";
+export { PinIcon } from "./icons/PinIcon";
 export { SearchIcon } from "./icons/SearchIcon";
+export { SettingsIcon } from "./icons/SettingsIcon";
+export { UserIcon } from "./icons/UserIcon";
