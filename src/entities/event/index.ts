@@ -1,46 +1,46 @@
 export type {
   Event,
-  SoonEvent,
-  EventState,
   EventFilters,
+  EventsResponse,
+  EventState,
   FavouriteRequest,
   FavouriteResponse,
+  SoonEvent,
   SoonEventsResponse,
-  EventsResponse,
 } from "./model/types";
 
 export {
-  fetchSoonEvents,
   fetchAllEvents,
+  fetchSoonEvents,
   toggleFavourite,
 } from "./api/eventApi";
 
 export { eventMocks, soonEventMocks } from "./model/eventMocks";
 
 export {
-  eventSlice,
   clearError,
-  setFilters,
-  resetFilters,
+  default as eventReducer,
+  eventSlice,
   resetEvents,
+  resetFilters,
   selectAllEvents,
-  selectFavouriteEvents,
-  selectSoonEvents,
-  selectSoonEventsCount,
+  selectEventFilters,
+  selectEventsError,
   selectEventsLoading,
   selectEventsLoadingMore,
-  selectEventsError,
-  selectEventFilters,
   selectFavouriteCount,
+  selectFavouriteEvents,
   selectHasMoreEvents,
-  default as eventReducer,
+  selectSoonEvents,
+  selectSoonEventsCount,
+  setFilters,
 } from "./model/eventSlice";
 
 export {
-  fetchSoonEventsThunk,
   fetchAllEventsThunk,
   fetchNextPageThunk,
+  fetchSoonEventsThunk,
   toggleFavouriteThunk,
 } from "./model/eventThunks";
 
-export { EventCard } from "./ui/EventCard";
+export { EventCard } from "./ui/event-card/EventCard";

@@ -39,3 +39,13 @@
   bottom: 8px;
   right: 8px;
 }
+
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 160px;
+  height: 250px;
+  border-radius: 12px;
+  background-color: var(--secondary-background);
+}

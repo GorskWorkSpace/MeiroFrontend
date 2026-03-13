@@ -1,0 +1,82 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto 32px auto;
+  box-sizing: border-box;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.loading {
+  max-width: 360px;
+  margin: 0 auto;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+}
+
+.empty {
+  max-width: 360px;
+  margin: 0 auto;
+  text-align: center;
+  color: #666;
+  background: #f5f5f5;
+  border-radius: 12px;
+}
+
+.empty p {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.empty p:first-child {
+  font-weight: 500;
+  color: #333;
+}
+
+.emptyCard {
+  background-color: var(--secondary-background);
+  border-radius: 24px;
+  position: relative;
+  width: 320px;
+  height: 112px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-sizing: border-box;
+}
+
+.emptyTitle {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+}
+
+.emptyIcon {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  color: var(--text-main);
+}
+
+.emptyCard:hover {
+  transform: scale(1.02);
+}
+
+@media (max-width: 360px) {
+  .emptyCard {
+    background-color: var(--secondary-background);
+    border-radius: 24px;
+    width: 320px;
+    height: 112px;
+  }
+}

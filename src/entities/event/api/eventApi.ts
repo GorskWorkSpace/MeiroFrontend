@@ -1,12 +1,12 @@
 import { baseApi } from "../../../shared/api/baseApi";
+import { eventMocks, soonEventMocks } from "../model/eventMocks";
 import type {
-  SoonEventsResponse,
+  EventFilters,
   EventsResponse,
   FavouriteRequest,
   FavouriteResponse,
-  EventFilters,
+  SoonEventsResponse,
 } from "../model/types";
-import { eventMocks, soonEventMocks } from "../model/eventMocks";
 
 const USE_MOCKS = true;
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -14,11 +14,31 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 export const fetchSoonEvents = async (): Promise<SoonEventsResponse> => {
   if (USE_MOCKS) {
     await delay(600);
+
+    const favouriteEventIds = eventMocks
+      .filter((event) => event.isFavourite)
+      .map((event) => event.id);
+
+    const favouriteSoonEvents = soonEventMocks.filter((event) =>
+      favouriteEventIds.includes(event.id),
+    );
+
+    let resultEvents = [...favouriteSoonEvents];
+
+    if (resultEvents.length < 5) {
+      const otherEvents = soonEventMocks
+        .filter((event) => !favouriteEventIds.includes(event.id))
+        .slice(0, 5 - resultEvents.length);
+
+      resultEvents = [...resultEvents, ...otherEvents];
+    }
+
     return {
-      count: soonEventMocks.length,
-      events: soonEventMocks,
+      count: resultEvents.length,
+      events: resultEvents.slice(0, 5),
     };
   }
+
   const { data } = await baseApi.get<SoonEventsResponse>("/event/soon/all");
   return data;
 };
@@ -42,7 +62,6 @@ export const fetchAllEvents = async (
           event.category.toLowerCase().includes(searchLower),
       );
     }
-
     if (filters.category) {
       const categories = filters.category.split(",").map((c) => c.trim());
       filteredEvents = filteredEvents.filter((event) =>
@@ -82,23 +101,28 @@ export const toggleFavourite = async (
 ): Promise<FavouriteResponse> => {
   if (USE_MOCKS) {
     await delay(300);
+
     const eventIndex = eventMocks.findIndex((e) => e.id === request.id);
     if (eventIndex !== -1) {
       const newStatus = !eventMocks[eventIndex].isFavourite;
+
       eventMocks[eventIndex] = {
         ...eventMocks[eventIndex],
         isFavourite: newStatus,
       };
+
       return {
         id: request.id,
         isFavourite: newStatus,
       };
     }
+
     return {
       id: request.id,
       isFavourite: false,
     };
   }
+
   const { data } = await baseApi.post<FavouriteResponse>(
     "/event/favourite",
     request,
