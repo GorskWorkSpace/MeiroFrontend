@@ -1,14 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { 
-  fetchAllCitiesThunk, 
-  fetchUserCityThunk, 
-  changeCityThunk 
+import {
+  changeCityThunk,
+  fetchAllCitiesThunk,
+  fetchUserCityThunk,
 } from "./cityThunks";
 import type { CityState } from "./types";
 
+const getInitialCity = () => {
+  const savedCityId = localStorage.getItem("selectedCityId");
+  const savedCityName = localStorage.getItem("selectedCity");
+
+  if (savedCityId && savedCityName) {
+    return { id: savedCityId, cityName: savedCityName };
+  }
+
+  return null;
+};
+
 const initialState: CityState = {
   cities: [],
-  selectedCity: null,
+  selectedCity: getInitialCity(),
   loading: false,
   error: null,
 };
@@ -30,32 +41,31 @@ export const citySlice = createSlice({
       .addCase(fetchAllCitiesThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-        state.cities = []; 
+        state.cities = [];
       })
       .addCase(fetchUserCityThunk.fulfilled, (state, action) => {
-        if (Array.isArray(state.cities)) {
-          const foundCity = state.cities.find(c => c?.cityName === action.payload?.cityName);
-          
+        if (!state.selectedCity) {
           state.selectedCity = {
-            id: foundCity?.id || action.payload?.id || "", 
-            cityName: action.payload?.cityName || ""
+            id: action.payload.id || "",
+            cityName: action.payload.cityName || "",
           };
-          
-          if (foundCity?.id) {
-            localStorage.setItem("selectedCityId", foundCity.id);
-            localStorage.setItem("selectedCity", action.payload?.cityName || "");
+
+          if (action.payload.id && action.payload.cityName) {
+            localStorage.setItem("selectedCityId", action.payload.id);
+            localStorage.setItem("selectedCity", action.payload.cityName);
           }
         }
         state.loading = false;
       })
       .addCase(changeCityThunk.fulfilled, (state, action) => {
-        if (Array.isArray(state.cities)) {
-          const foundCity = state.cities.find(c => c?.cityName === action.payload?.cityName);
-          
-          state.selectedCity = {
-            id: foundCity?.id || action.payload?.id || "", 
-            cityName: action.payload?.cityName || ""
-          };
+        state.selectedCity = {
+          id: action.payload.id || "",
+          cityName: action.payload.cityName || "",
+        };
+
+        if (action.payload.id && action.payload.cityName) {
+          localStorage.setItem("selectedCityId", action.payload.id);
+          localStorage.setItem("selectedCity", action.payload.cityName);
         }
         state.loading = false;
       });

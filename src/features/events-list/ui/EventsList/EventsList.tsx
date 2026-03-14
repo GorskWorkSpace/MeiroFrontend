@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../app/store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../app/store/hooks";
 import {
   EventCard,
   fetchAllEventsThunk,
@@ -8,11 +8,13 @@ import {
   selectEventsLoading,
   selectEventsLoadingMore,
   selectHasMoreEvents,
-} from "../../../entities/event";
-import { FavouriteButton } from "../../../features/favourite";
-import { Caption } from "../../../shared/ui/caption";
-import { Title } from "../../../shared/ui/title";
-import { useInfiniteScroll } from "../lib/useInfiniteScroll";
+  EventCardSkeleton,
+} from "../../../../entities/event";
+import { Caption } from "../../../../shared/ui/caption";
+import { Title } from "../../../../shared/ui/title";
+import { FavouriteButton } from "../../../favourite";
+import { useInfiniteScroll } from "../../lib/useInfiniteScroll";
+import { EventsListSkeleton } from "../EventsListSkeleton/EventsListSkeleton";
 import styles from "./EventsList.module.css";
 
 export const EventsList = () => {
@@ -34,7 +36,10 @@ export const EventsList = () => {
     dispatch(fetchAllEventsThunk({}));
   }, [dispatch]);
 
-  if (isLoading && events.length === 0) return <div>Загрузка...</div>;
+  // Показываем скелетон пока идет загрузка ИЛИ нет событий
+  if (isLoading || events.length === 0) {
+    return <EventsListSkeleton />;
+  }
 
   return (
     <div className={styles.flex}>
@@ -60,10 +65,19 @@ export const EventsList = () => {
             </div>
           );
         })}
+        
+        {/* Показываем скелетоны при загрузке следующей страницы */}
+        {isLoadingMore && (
+          <>
+            {[...Array(2)].map((_, index) => (
+              <EventCardSkeleton key={`loading-more-${index}`} />
+            ))}
+          </>
+        )}
       </div>
-      {isLoadingMore && <Caption>Загрузка...</Caption>}
+      
       {!hasMore && events.length > 0 && (
-        <Caption>Больше нет мероприятий</Caption>
+        <Caption className={styles.endMessage}>Больше нет мероприятий</Caption>
       )}
     </div>
   );

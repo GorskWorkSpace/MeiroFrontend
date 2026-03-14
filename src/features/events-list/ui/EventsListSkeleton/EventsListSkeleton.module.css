@@ -1,0 +1,20 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 165px);
+  justify-content: space-between;
+  row-gap: 20px;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.title {
+  width: 328px;
+  height: 22px;
+  background-color: var(--skeleton);
+  border-radius: 24px;
+}

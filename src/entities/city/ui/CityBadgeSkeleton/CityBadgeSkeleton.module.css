@@ -1,0 +1,15 @@
+.skeletonCity {
+  width: 96px;
+  height: 16px;
+  background-color: var(--skeleton);
+  border-radius: 500%;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

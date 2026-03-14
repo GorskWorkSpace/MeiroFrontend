@@ -1,7 +1,7 @@
 import type { Ad, AdState } from "./model/types";
 
 export { adSlice, default } from "./model/adSlice";
-export { fetchAllAdsThunk, fetchAdByIdThunk } from "./model/adThunks";
+export { fetchAdByIdThunk, fetchAllAdsThunk } from "./model/adThunks";
 export type { Ad, AdState } from "./model/types";
 
 export { adMocks } from "./model/adMocks";
@@ -15,3 +15,4 @@ export const isExternalAd = (ad: Ad): boolean => !!ad.url;
 export const isInternalAd = (ad: Ad): boolean => !ad.url;
 
 export { AdCard } from "./ui/AdCard";
+export { AdCardSkeleton } from "./ui/AdCardSkeleton";

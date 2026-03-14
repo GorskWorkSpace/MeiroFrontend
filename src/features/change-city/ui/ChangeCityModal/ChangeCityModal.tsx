@@ -1,11 +1,14 @@
-import { useState, useMemo, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/store/hooks";
-import { CityList } from "../CityList/CityList";
-import { Modal } from "../../../../shared/ui/modal";
+import {
+  changeCityThunk,
+  fetchAllCitiesThunk,
+} from "../../../../entities/city";
 import { Input } from "../../../../shared/ui/input";
+import { Modal } from "../../../../shared/ui/modal";
+import { CityList } from "../CityList/CityList";
+import { CityListSkeleton } from "../CityListSkeleton/CityListSkeleton"; // Импортируем скелетон
 import styles from "./ChangeCityModal.module.css";
-import { changeCityThunk, fetchAllCitiesThunk } from "../../../../entities/city";
-
 
 interface ChangeCityModalProps {
   isOpen: boolean;
@@ -24,15 +27,14 @@ export const ChangeCityModal = ({ isOpen, onClose }: ChangeCityModalProps) => {
   }, [isOpen, dispatch]);
 
   const filteredCities = useMemo(() => {
-
     if (!cities || !Array.isArray(cities)) {
       return [];
     }
-    
+
     if (!searchTerm.trim()) return cities;
 
     return cities.filter((city) =>
-      city?.cityName?.toLowerCase().includes(searchTerm.toLowerCase())
+      city?.cityName?.toLowerCase().includes(searchTerm.toLowerCase()),
     );
   }, [searchTerm, cities]);
 
@@ -67,13 +69,10 @@ export const ChangeCityModal = ({ isOpen, onClose }: ChangeCityModalProps) => {
       }
     >
       <div className={styles.innerWrapper}>
-        {loading && (!cities || cities.length === 0) ? (
-          <div className={styles.loading}>Загрузка городов...</div>
+        {loading ? (
+          <CityListSkeleton />
         ) : (
-          <CityList
-            onCitySelect={handleCitySelect}
-            cities={filteredCities}
-          />
+          <CityList onCitySelect={handleCitySelect} cities={filteredCities} />
         )}
       </div>
     </Modal>

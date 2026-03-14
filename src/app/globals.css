@@ -137,9 +137,11 @@ textarea,
   --icon-color: #94a2b8;
   --letter: #94a2b8;
   --like-icon-border: #ced6e3;
+  --skeleton: #f1f3f7;
 }
 
 html.dark {
+  --skeleton: #3d495c;
   --main-background: #14181f !important;
   --primary-background: #29313d !important;
   --secondary-background: #29313d !important;
@@ -149,4 +151,7 @@ html.dark {
   --icon-color: #bec9da;
   --letter: #dee4ed;
   --like-icon-border: #51617b;
+}
+body {
+  background-color: var(--main-background);
 }

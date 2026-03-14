@@ -1,0 +1,1 @@
+export { SoonEventCard } from "./SoonEventCard";
