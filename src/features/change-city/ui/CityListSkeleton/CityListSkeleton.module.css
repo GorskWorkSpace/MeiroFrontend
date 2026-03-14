@@ -1,0 +1,48 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.listContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.letter {
+  font-family: "Bounded";
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--letter);
+  align-self: flex-start;
+  opacity: 0.5;
+  width: 20px;
+}
+
+.citiesList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.skeletonCity {
+  width: 288px;
+  height: 20px;
+  background-color: var(--skeleton);
+  animation: loading 1.5s infinite;
+  border-radius: 12px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

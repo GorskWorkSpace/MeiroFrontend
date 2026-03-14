@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store/hooks";
 
+import { SoonEventCardSkeleton } from "../../../entities/event";
 import {
   selectEventsLoading,
   selectSoonEvents,
   selectSoonEventsCount,
 } from "../../../entities/event/model/eventSlice";
 import { fetchSoonEventsThunk } from "../../../entities/event/model/eventThunks";
-import { SoonEventCard } from "../../../entities/event/ui/soon-event-card/SoonEventCard";
+import { SoonEventCard } from "../../../entities/event/ui/SoonEventCard/SoonEventCard";
 import { ArrowDownRightIcon } from "../../../shared/assets";
 import { Caption } from "../../../shared/ui/caption";
 import { Carousel } from "../../../shared/ui/carousel/Carousel";
@@ -40,7 +41,7 @@ export const SoonEventsList: React.FC = () => {
   }, [dispatch]);
 
   if (loading) {
-    return <div className={styles.loading}>Загрузка ближайших событий...</div>;
+    return <SoonEventCardSkeleton />;
   }
 
   const firstFiveEvents = events.slice(0, 5);

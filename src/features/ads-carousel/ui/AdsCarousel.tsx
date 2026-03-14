@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store/hooks";
 import {
-  fetchAllAdsThunk,
-  selectAllAds,
-  selectAdsLoading,
-  selectAdsError,
   AdCard,
+  AdCardSkeleton,
+  fetchAllAdsThunk,
+  selectAdsError,
+  selectAdsLoading,
+  selectAllAds,
   type Ad,
 } from "../../../entities/ad";
 import { Carousel } from "../../../shared/ui/carousel/Carousel";
@@ -17,6 +18,7 @@ export interface AdsCarouselProps {
   limit?: number;
   onAdClick?: (ad: Ad) => void;
   className?: string;
+  skeletonCount?: number;
 }
 
 export const AdsCarousel: React.FC<AdsCarouselProps> = ({
@@ -25,6 +27,7 @@ export const AdsCarousel: React.FC<AdsCarouselProps> = ({
   limit = 10,
   onAdClick,
   className = "",
+  skeletonCount = 3,
 }) => {
   const dispatch = useAppDispatch();
   const ads = useAppSelector(selectAllAds);
@@ -36,13 +39,19 @@ export const AdsCarousel: React.FC<AdsCarouselProps> = ({
   }, [dispatch]);
 
   if (loading) {
+    const skeletonItems = Array(skeletonCount)
+      .fill(null)
+      .map((_, index) => <AdCardSkeleton key={`skeleton-${index}`} />);
+
     return (
       <div className={`${styles.adsDisplay} ${className}`}>
-        <div className={styles.skeleton}>
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className={styles.skeletonCard} />
-          ))}
-        </div>
+        <Carousel
+          items={skeletonItems}
+          autoPlay={false}
+          infinite={false}
+          itemWidth={320}
+          gap={8}
+        />
       </div>
     );
   }
@@ -51,14 +60,17 @@ export const AdsCarousel: React.FC<AdsCarouselProps> = ({
     return (
       <div className={`${styles.adsDisplay} ${styles.error} ${className}`}>
         <p>Не удалось загрузить рекламу</p>
+        <button
+          onClick={() => dispatch(fetchAllAdsThunk())}
+          className={styles.retryButton}
+        >
+          Попробовать снова
+        </button>
       </div>
     );
   }
 
-  if (!ads.length) return null;
-
   const displayedAds = limit ? ads.slice(0, limit) : ads;
-
   const adCards = displayedAds.map((ad) => (
     <AdCard key={ad.id} ad={ad} onClick={onAdClick} />
   ));

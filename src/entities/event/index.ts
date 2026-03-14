@@ -43,4 +43,7 @@ export {
   toggleFavouriteThunk,
 } from "./model/eventThunks";
 
-export { EventCard } from "./ui/event-card/EventCard";
+export { EventCard } from "./ui/EventCard";
+export { EventCardSkeleton } from "./ui/EventCardSkeleton";
+export { SoonEventCard } from "./ui/SoonEventCard";
+export { SoonEventCardSkeleton } from "./ui/SoonEventCardSkeleton";

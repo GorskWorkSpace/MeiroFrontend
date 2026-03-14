@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  width: 160px;
+  height: 250px;
+  border-radius: 12px;
+  background-color: var(--skeleton);
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.descriptionItem {
+  width: 160px;
+  height: 16px;
+  background-color: var(--skeleton);
+  border-radius: 24px;
+}

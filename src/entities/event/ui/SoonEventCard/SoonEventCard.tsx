@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CalendarIcon, ImageIcon, PinIcon } from "../../../../shared/assets";
 import { Caption } from "../../../../shared/ui/caption";
 import { Title } from "../../../../shared/ui/title";
@@ -9,7 +9,7 @@ interface SoonEventCardProps {
   event: SoonEvent;
 }
 
-export const SoonEventCard: React.FC<SoonEventCardProps> = ({ event }) => {
+export const SoonEventCard = ({ event }: SoonEventCardProps) => {
   const [imageError, setImageError] = useState(false);
 
   const hasImage = event.img && !imageError;
