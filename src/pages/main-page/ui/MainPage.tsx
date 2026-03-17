@@ -3,6 +3,7 @@ import { EventsList } from "../../../features/events-list";
 import { SoonEventsList } from "../../../features/soon-events-list/";
 
 import { Header } from "../../../widgets/header";
+import { MainFooter } from "../../../widgets/main-footer";
 import styles from "./MainPage.module.css";
 
 export const MainPage = () => {
@@ -17,6 +18,7 @@ export const MainPage = () => {
       />
       <SoonEventsList />
       <EventsList />
+      <MainFooter />
     </div>
   );
 };

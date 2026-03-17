@@ -134,7 +134,7 @@ textarea,
   --accent-color: #554ffd;
   --text-main: #000000;
   --text-secondary: #51617b;
-  --icon-color: #94a2b8;
+  --icon-color: #94a2b8 !important;
   --letter: #94a2b8;
   --like-icon-border: #ced6e3;
   --skeleton: #f1f3f7;
@@ -148,7 +148,7 @@ html.dark {
   --accent-color: #8984fa !important;
   --text-main: #fff;
   --text-secondary: #bec9da;
-  --icon-color: #bec9da;
+  --icon-color: #bec9da !important;
   --letter: #dee4ed;
   --like-icon-border: #51617b;
 }
