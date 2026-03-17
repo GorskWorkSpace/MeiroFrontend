@@ -4,10 +4,6 @@ import { Footer } from "../../../shared/ui/footer";
 import { Input } from "../../../shared/ui/input";
 
 export const MainFooter = () => {
-const onInputChange = () => {
-    
-}
-
   return (
     <Footer>
       <Input placeholder="Поиск событий..." />
