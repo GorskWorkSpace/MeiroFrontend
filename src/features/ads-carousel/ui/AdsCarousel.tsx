@@ -9,7 +9,9 @@ import {
   selectAllAds,
   type Ad,
 } from "../../../entities/ad";
-import { Carousel } from "../../../shared/ui/carousel/Carousel";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import "swiper/swiper-bundle.css";
 import styles from "./AdsCarousel.module.css";
 
 export interface AdsCarouselProps {
@@ -22,8 +24,6 @@ export interface AdsCarouselProps {
 }
 
 export const AdsCarousel: React.FC<AdsCarouselProps> = ({
-  autoPlay = true,
-  infinite = true,
   limit = 10,
   onAdClick,
   className = "",
@@ -45,13 +45,9 @@ export const AdsCarousel: React.FC<AdsCarouselProps> = ({
 
     return (
       <div className={`${styles.adsDisplay} ${className}`}>
-        <Carousel
-          items={skeletonItems}
-          autoPlay={false}
-          infinite={false}
-          itemWidth={320}
-          gap={8}
-        />
+        <Swiper spaceBetween={8}>
+          <SwiperSlide>{skeletonItems}</SwiperSlide>
+        </Swiper>
       </div>
     );
   }
@@ -71,20 +67,23 @@ export const AdsCarousel: React.FC<AdsCarouselProps> = ({
   }
 
   const displayedAds = limit ? ads.slice(0, limit) : ads;
-  const adCards = displayedAds.map((ad) => (
-    <AdCard key={ad.id} ad={ad} onClick={onAdClick} />
-  ));
 
   return (
     <div className={`${styles.adsDisplay} ${className}`}>
-      <Carousel
-        items={adCards}
-        autoPlay={autoPlay}
-        autoPlayInterval={5000}
-        infinite={infinite}
-        itemWidth={320}
-        gap={8}
-      />
+      <Swiper
+        modules={[Autoplay]}
+        loop={true}
+        autoplay={{ delay: 5000 }}
+        grabCursor={true}
+        spaceBetween={8}
+        speed={1000}
+      >
+        {displayedAds.map((ad) => (
+          <SwiperSlide key={ad.id} className={styles.slide}>
+            <AdCard ad={ad} onClick={onAdClick} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 };
