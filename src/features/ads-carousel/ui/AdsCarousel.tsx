@@ -9,9 +9,7 @@ import {
   selectAllAds,
   type Ad,
 } from "../../../entities/ad";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
-import "swiper/swiper-bundle.css";
+import { Carousel } from "../../../shared/ui/carousel/Carousel";
 import styles from "./AdsCarousel.module.css";
 
 export interface AdsCarouselProps {
@@ -39,15 +37,14 @@ export const AdsCarousel: React.FC<AdsCarouselProps> = ({
   }, [dispatch]);
 
   if (loading) {
-    const skeletonItems = Array(skeletonCount)
-      .fill(null)
-      .map((_, index) => <AdCardSkeleton key={`skeleton-${index}`} />);
-
     return (
       <div className={`${styles.adsDisplay} ${className}`}>
-        <Swiper spaceBetween={8}>
-          <SwiperSlide>{skeletonItems}</SwiperSlide>
-        </Swiper>
+        <Carousel
+          items={Array(skeletonCount).fill(null)}
+          renderItem={() => <AdCardSkeleton />}
+          spaceBetween={8}
+          slidesPerView="auto"
+        />
       </div>
     );
   }
@@ -68,22 +65,25 @@ export const AdsCarousel: React.FC<AdsCarouselProps> = ({
 
   const displayedAds = limit ? ads.slice(0, limit) : ads;
 
+  if (!displayedAds.length) {
+    return (
+      <div className={`${styles.adsDisplay} ${styles.empty} ${className}`}>
+        <p>Нет доступных объявлений</p>
+      </div>
+    );
+  }
+
   return (
     <div className={`${styles.adsDisplay} ${className}`}>
-      <Swiper
-        modules={[Autoplay]}
+      <Carousel
+        items={ads}
+        renderItem={(ad) => <AdCard ad={ad} onClick={onAdClick} />}
+        spaceBetween={16}
+        slidesPerView={1}
         loop={true}
+        className={styles.slide}
         autoplay={{ delay: 5000 }}
-        grabCursor={true}
-        spaceBetween={8}
-        speed={1000}
-      >
-        {displayedAds.map((ad) => (
-          <SwiperSlide key={ad.id} className={styles.slide}>
-            <AdCard ad={ad} onClick={onAdClick} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      />
     </div>
   );
 };
