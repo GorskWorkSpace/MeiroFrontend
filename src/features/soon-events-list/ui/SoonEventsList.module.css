@@ -22,6 +22,30 @@
   font-size: 14px;
 }
 
+.soonEvents {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.soonEvents::-webkit-scrollbar {
+  display: none;
+}
+
+.soonEventsElem {
+  flex-shrink: 0;
+  width: 320px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
 .empty {
   max-width: 360px;
   margin: 0 auto;

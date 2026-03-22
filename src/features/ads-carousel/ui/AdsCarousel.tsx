@@ -22,8 +22,6 @@ export interface AdsCarouselProps {
 }
 
 export const AdsCarousel: React.FC<AdsCarouselProps> = ({
-  autoPlay = true,
-  infinite = true,
   limit = 10,
   onAdClick,
   className = "",
@@ -39,18 +37,13 @@ export const AdsCarousel: React.FC<AdsCarouselProps> = ({
   }, [dispatch]);
 
   if (loading) {
-    const skeletonItems = Array(skeletonCount)
-      .fill(null)
-      .map((_, index) => <AdCardSkeleton key={`skeleton-${index}`} />);
-
     return (
       <div className={`${styles.adsDisplay} ${className}`}>
         <Carousel
-          items={skeletonItems}
-          autoPlay={false}
-          infinite={false}
-          itemWidth={320}
-          gap={8}
+          items={Array(skeletonCount).fill(null)}
+          renderItem={() => <AdCardSkeleton />}
+          spaceBetween={8}
+          slidesPerView="auto"
         />
       </div>
     );
@@ -71,19 +64,25 @@ export const AdsCarousel: React.FC<AdsCarouselProps> = ({
   }
 
   const displayedAds = limit ? ads.slice(0, limit) : ads;
-  const adCards = displayedAds.map((ad) => (
-    <AdCard key={ad.id} ad={ad} onClick={onAdClick} />
-  ));
+
+  if (!displayedAds.length) {
+    return (
+      <div className={`${styles.adsDisplay} ${styles.empty} ${className}`}>
+        <p>Нет доступных объявлений</p>
+      </div>
+    );
+  }
 
   return (
     <div className={`${styles.adsDisplay} ${className}`}>
       <Carousel
-        items={adCards}
-        autoPlay={autoPlay}
-        autoPlayInterval={5000}
-        infinite={infinite}
-        itemWidth={320}
-        gap={8}
+        items={displayedAds}
+        renderItem={(ad) => <AdCard ad={ad} onClick={onAdClick} />}
+        spaceBetween={8}
+        slidesPerView="auto"
+        loop={true}
+        autoplay={{ delay: 5000 }}
+        slideClassName={styles.slide}
       />
     </div>
   );

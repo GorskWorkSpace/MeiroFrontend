@@ -10,7 +10,6 @@ import { fetchSoonEventsThunk } from "../../../entities/event/model/eventThunks"
 import { SoonEventCard } from "../../../entities/event/ui/SoonEventCard/SoonEventCard";
 import { ArrowDownRightIcon } from "../../../shared/assets";
 import { Caption } from "../../../shared/ui/caption";
-import { Carousel } from "../../../shared/ui/carousel/Carousel";
 import { Title } from "../../../shared/ui/title";
 import styles from "./SoonEventsList.module.css";
 import { shallowEqual } from "react-redux";
@@ -37,6 +36,7 @@ export const SoonEventsList: React.FC = () => {
   const loading = useAppSelector(selectEventsLoading);
   
   const isFirstLoad = useRef(true);
+  const firstItemRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isFirstLoad.current) {
@@ -79,6 +79,13 @@ export const SoonEventsList: React.FC = () => {
     );
   }
 
+  const soonItems = [
+    ...firstFiveEvents.map((event) => (
+      <SoonEventCard key={event.id} event={event} />
+    )),
+    <EmptyCard key="empty-card" />,
+  ];
+
   return (
     <section className={styles.section}>
       <div className={styles.title}>
@@ -90,12 +97,17 @@ export const SoonEventsList: React.FC = () => {
         </Caption>
       </div>
 
-      <Carousel
-        items={carouselItems}
-        infinite={false}
-        autoPlay={false}
-        onSlideChange={handleSlideChange}
-      />
+      <div className={styles.soonEvents}>
+        {soonItems.map((item, idx) => (
+          <div
+            key={idx}
+            ref={idx === 0 ? firstItemRef : null}
+            className={styles.soonEventsElem}
+          >
+            {item}
+          </div>
+        ))}
+      </div>
     </section>
   );
 };

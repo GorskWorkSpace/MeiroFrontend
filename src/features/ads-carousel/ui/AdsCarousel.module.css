@@ -4,6 +4,10 @@
   margin-bottom: 32px;
 }
 
+.slide {
+  width: 320px;
+}
+
 .error {
   padding: 30px 20px;
   text-align: center;
