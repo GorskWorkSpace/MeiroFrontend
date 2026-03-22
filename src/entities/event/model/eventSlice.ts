@@ -1,11 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import {
   fetchAllEventsThunk,
-  fetchSoonEventsThunk,
   fetchNextPageThunk,
+  fetchSoonEventsThunk,
   toggleFavouriteThunk,
 } from "./eventThunks";
-import type { EventState, Event, SoonEvent, EventFilters } from "./types";
+import type { Event, EventFilters, EventState, SoonEvent } from "./types";
 
 const initialState: EventState = {
   allEvents: [],
@@ -79,7 +79,7 @@ export const eventSlice = createSlice({
           state.allEvents = action.payload.events;
           state.filters.page = action.payload.page;
           state.hasMore = action.payload.events.length === 12;
-          state.favouriteEvents = action.payload.events.filter(
+          state.favouriteEvents = state.allEvents.filter(
             (event) => event.isFavourite,
           );
         },

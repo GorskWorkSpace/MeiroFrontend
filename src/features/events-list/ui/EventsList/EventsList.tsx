@@ -1,14 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/store/hooks";
 import {
   EventCard,
+  EventCardSkeleton,
   fetchAllEventsThunk,
   fetchNextPageThunk,
   selectAllEvents,
   selectEventsLoading,
   selectEventsLoadingMore,
   selectHasMoreEvents,
-  EventCardSkeleton,
 } from "../../../../entities/event";
 import { Caption } from "../../../../shared/ui/caption";
 import { Title } from "../../../../shared/ui/title";
@@ -24,6 +24,8 @@ export const EventsList = () => {
   const isLoadingMore = useAppSelector(selectEventsLoadingMore);
   const hasMore = useAppSelector(selectHasMoreEvents);
 
+  const isFirstLoad = useRef(true);
+
   const { preLastElementRef } = useInfiniteScroll({
     hasMore,
     isLoading,
@@ -32,13 +34,28 @@ export const EventsList = () => {
   });
 
   useEffect(() => {
-    console.log("Загрузка страницы");
-    dispatch(fetchAllEventsThunk({}));
+    dispatch(fetchAllEventsThunk({ page: 0 }));
   }, [dispatch]);
 
-  // Показываем скелетон пока идет загрузка ИЛИ нет событий
-  if (isLoading || events.length === 0) {
+  if (isLoading || (isFirstLoad.current && events.length === 0)) {
     return <EventsListSkeleton />;
+  }
+
+  if (isFirstLoad.current && !isLoading) {
+    isFirstLoad.current = false;
+  }
+
+  if (!isLoading && events.length === 0) {
+    return (
+      <div className={styles.flex}>
+        <Title size={18} weight={500}>
+          Мероприятия для вас
+        </Title>
+        <div className={styles.emptyState}>
+          <p>Ничего не найдено</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -65,8 +82,7 @@ export const EventsList = () => {
             </div>
           );
         })}
-        
-        {/* Показываем скелетоны при загрузке следующей страницы */}
+
         {isLoadingMore && (
           <>
             {[...Array(2)].map((_, index) => (
@@ -75,7 +91,7 @@ export const EventsList = () => {
           </>
         )}
       </div>
-      
+
       {!hasMore && events.length > 0 && (
         <Caption className={styles.endMessage}>Больше нет мероприятий</Caption>
       )}

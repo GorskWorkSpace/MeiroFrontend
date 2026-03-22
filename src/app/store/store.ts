@@ -4,6 +4,8 @@ import { themeSlice } from "../../entities/theme";
 import adReducer from "../../entities/ad";
 import eventReducer from "../../entities/event/model/eventSlice";
 import { favouriteReducer } from "../../features/favourite";
+import filtersReducer from "../../features/filter/model/filtersSlice"; 
+
 export const store = configureStore({
   reducer: {
     theme: themeSlice.reducer,
@@ -11,6 +13,7 @@ export const store = configureStore({
     ad: adReducer,
     event: eventReducer,
     favourite: favouriteReducer,
+    filters: filtersReducer,
   },
 });
 

@@ -1,9 +1,10 @@
+// shared/ui/modal/ui/Modal.tsx
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Modal.module.css";
 
-import { Title } from "../../title";
 import { CloseIcon } from "../../../assets";
+import { Title } from "../../title";
 
 interface ModalProps {
   isOpen: boolean;
@@ -56,7 +57,9 @@ export const Modal: React.FC<ModalProps> = ({
           >
             <div className={styles.wrapper}>
               <div className={styles.header}>
-                <Title>{title}</Title>
+                <Title size={18} weight={500}>
+                  {title}
+                </Title>
                 <button
                   className={styles.closeButton}
                   onClick={onClose}
@@ -68,6 +71,7 @@ export const Modal: React.FC<ModalProps> = ({
               {component}
             </div>
 
+            {/* Убедимся, что children рендерятся */}
             <div className={styles.content}>{children}</div>
           </motion.div>
         </>

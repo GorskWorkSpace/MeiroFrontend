@@ -11,10 +11,6 @@
 
 .content {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  isolation: isolate;
-  gap: 8px;
   pointer-events: auto;
   margin-bottom: calc(12px + env(safe-area-inset-bottom));
 }
