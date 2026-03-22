@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { CalendarIcon, ImageIcon, PinIcon } from "../../../../shared/assets";
 import { Caption } from "../../../../shared/ui/caption";
 import { Title } from "../../../../shared/ui/title";
@@ -9,10 +9,16 @@ interface SoonEventCardProps {
   event: SoonEvent;
 }
 
-export const SoonEventCard = ({ event }: SoonEventCardProps) => {
+export const SoonEventCard = memo(({ event }: SoonEventCardProps) => {
   const [imageError, setImageError] = useState(false);
 
-  const hasImage = event.img && !imageError;
+  const hasImage = useMemo(() => {
+    return event.img && !imageError;
+  }, [event.img, imageError]);
+
+  const handleImageError = useMemo(() => {
+    return () => setImageError(true);
+  }, []);
 
   return (
     <div className={styles.cardContainer}>
@@ -23,7 +29,7 @@ export const SoonEventCard = ({ event }: SoonEventCardProps) => {
             alt={event.title}
             className={styles.image}
             loading="lazy"
-            onError={() => setImageError(true)}
+            onError={handleImageError}
           />
         ) : (
           <div className={styles.empty}>
@@ -49,4 +55,6 @@ export const SoonEventCard = ({ event }: SoonEventCardProps) => {
       </div>
     </div>
   );
-};
+});
+
+SoonEventCard.displayName = "SoonEventCard";

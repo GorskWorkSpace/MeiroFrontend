@@ -14,8 +14,8 @@ export const ChooseFiltersModal = ({
 }: ChooseFiltersModalProps) => {
   return (
     <Modal title="Фильтры" isOpen={isOpen} onClose={onClose}>
-      <FiltersList />
-      <FilterFooter />
+      <FiltersList isOpen={isOpen} />
+      <FilterFooter onClose={onClose} />
     </Modal>
   );
 };

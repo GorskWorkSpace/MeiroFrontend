@@ -1,15 +1,16 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Accordion } from "../../../../shared/ui/accordion/ui/Accordion";
 import { DatePicker, Input } from "../../../../shared/ui/input";
 import { Tab } from "../../../../shared/ui/tab";
 import { useFilters } from "../../lib/useFilters";
 import {
-  setCategoriesSearchQuery,
+  selectFiltersOpen,
   setTempCategories,
   setTempCountPlace,
   setTempDate,
   setTempPrice,
+  toggleFilterOpen,
   toggleTempCategory,
   toggleTempCountPlace,
 } from "../../model/filtersSlice";
@@ -28,24 +29,50 @@ const MOCK_CATEGORIES = [
 
 const COUNT_PLACE_OPTIONS = ["Много мест", "Мало мест"];
 
-export const FiltersList: React.FC = () => {
+interface FiltersListProps {
+  isOpen?: boolean;
+}
+
+export const FiltersList: React.FC<FiltersListProps> = ({ isOpen }) => {
   const dispatch = useDispatch();
-  const {
-    dateFilter,
-    categoriesFilter,
-    priceFilter,
-    countPlaceFilter,
-    searchValue,
-    handleSearchChange,
-  } = useFilters();
+  const { dateFilter, categoriesFilter, priceFilter, countPlaceFilter } =
+    useFilters();
+
+  const filtersOpen = useSelector(selectFiltersOpen);
+
+  useEffect(() => {
+    if (isOpen) {
+      if (categoriesFilter.selected.length > 0) {
+        dispatch(setTempCategories(categoriesFilter.selected));
+      }
+      if (countPlaceFilter.selected.length > 0) {
+        dispatch(setTempCountPlace(countPlaceFilter.selected));
+      }
+      if (dateFilter.selected) {
+        dispatch(setTempDate(dateFilter.selected));
+      }
+      if (priceFilter.from !== null || priceFilter.to !== null) {
+        dispatch(
+          setTempPrice({
+            from: priceFilter.from,
+            to: priceFilter.to,
+          }),
+        );
+      }
+    }
+  }, [
+    isOpen,
+    dispatch,
+    categoriesFilter.selected,
+    countPlaceFilter.selected,
+    dateFilter.selected,
+    priceFilter.from,
+    priceFilter.to,
+  ]);
 
   const filteredCategories = MOCK_CATEGORIES.filter((category) =>
     category.toLowerCase().includes(categoriesFilter.searchQuery.toLowerCase()),
   );
-
-  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleSearchChange(e.target.value);
-  };
 
   const handleAllCategoriesClick = () => {
     if (categoriesFilter.tempSelected.length === MOCK_CATEGORIES.length) {
@@ -77,10 +104,6 @@ export const FiltersList: React.FC = () => {
     dispatch(toggleTempCountPlace(option));
   };
 
-  const handleCategorySearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setCategoriesSearchQuery(e.target.value));
-  };
-
   const handlePriceChange = (
     type: "from" | "to",
     e: React.ChangeEvent<HTMLInputElement>,
@@ -101,7 +124,12 @@ export const FiltersList: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <Accordion title="Дата" type="usual">
+      <Accordion
+        title="Дата"
+        type="usual"
+        isOpen={filtersOpen.date}
+        onToggle={() => dispatch(toggleFilterOpen("date"))}
+      >
         <DatePicker
           placeholder="00.00.2026"
           selectedDate={
@@ -111,7 +139,12 @@ export const FiltersList: React.FC = () => {
         />
       </Accordion>
 
-      <Accordion title="Категории" type="grid">
+      <Accordion
+        title="Категории"
+        type="grid"
+        isOpen={filtersOpen.categories}
+        onToggle={() => dispatch(toggleFilterOpen("categories"))}
+      >
         <Tab
           onClick={handleAllCategoriesClick}
           isActive={isAllCategoriesSelected}
@@ -130,7 +163,12 @@ export const FiltersList: React.FC = () => {
         ))}
       </Accordion>
 
-      <Accordion title="Цена" type="row">
+      <Accordion
+        title="Цена"
+        type="row"
+        isOpen={filtersOpen.price}
+        onToggle={() => dispatch(toggleFilterOpen("price"))}
+      >
         <Input
           placeholder="От"
           type="number"
@@ -145,7 +183,12 @@ export const FiltersList: React.FC = () => {
         />
       </Accordion>
 
-      <Accordion title="Количество мест" type="grid">
+      <Accordion
+        title="Количество мест"
+        type="grid"
+        isOpen={filtersOpen.countPlace}
+        onToggle={() => dispatch(toggleFilterOpen("countPlace"))}
+      >
         <Tab
           onClick={handleAllCountPlaceClick}
           isActive={isAllCountPlaceSelected}

@@ -1,7 +1,9 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch } from "../../../app/store/store";
+import { setFiltersWithLoading } from "../../../entities/event/model/eventSlice";
 import { fetchAllEventsThunk } from "../../../entities/event/model/eventThunks";
+import { useDebounce } from "../../../shared/lib/hooks/useDebounce";
 import {
   applyAllFilters,
   resetAllFilters,
@@ -20,6 +22,8 @@ export const useFilters = () => {
   const countPlaceFilter = useSelector(selectCountPlaceFilter);
 
   const [searchValue, setSearchValue] = useState("");
+  const debouncedSearch = useDebounce(searchValue, 500);
+  const isFirstSearch = useRef(true);
 
   const convertFiltersToApi = useCallback(
     (selectedCategories: string[], selectedCountPlace: string[]) => {
@@ -52,12 +56,36 @@ export const useFilters = () => {
     [priceFilter.from, priceFilter.to],
   );
 
+  useEffect(() => {
+    if (isFirstSearch.current) {
+      isFirstSearch.current = false;
+      return;
+    }
+
+    const apiFilters = convertFiltersToApi(
+      categoriesFilter.selected,
+      countPlaceFilter.selected,
+    );
+
+    const filtersForApi = {
+      ...apiFilters,
+      search: debouncedSearch || undefined,
+      page: 0,
+    };
+
+    dispatch(fetchAllEventsThunk(filtersForApi));
+    dispatch(setFiltersWithLoading(filtersForApi));
+  }, [
+    debouncedSearch,
+    dispatch,
+    convertFiltersToApi,
+    categoriesFilter.selected,
+    countPlaceFilter.selected,
+  ]);
+
   const applyFilters = useCallback(() => {
     const tempCategories = categoriesFilter.tempSelected;
     const tempCountPlace = countPlaceFilter.tempSelected;
-    const tempDate = dateFilter.tempSelected;
-    const tempPriceFrom = priceFilter.tempFrom;
-    const tempPriceTo = priceFilter.tempTo;
 
     dispatch(applyAllFilters());
 
@@ -70,21 +98,20 @@ export const useFilters = () => {
     };
 
     dispatch(fetchAllEventsThunk(filtersForApi));
+    dispatch(setFiltersWithLoading(filtersForApi));
   }, [
     dispatch,
     convertFiltersToApi,
     searchValue,
     categoriesFilter.tempSelected,
     countPlaceFilter.tempSelected,
-    dateFilter.tempSelected,
-    priceFilter.tempFrom,
-    priceFilter.tempTo,
   ]);
 
   const resetFilters = useCallback(() => {
     dispatch(resetAllFilters());
     setSearchValue("");
     dispatch(fetchAllEventsThunk({ page: 0 }));
+    dispatch(setFiltersWithLoading({ page: 0 }));
   }, [dispatch]);
 
   const handleSearchChange = useCallback((value: string) => {

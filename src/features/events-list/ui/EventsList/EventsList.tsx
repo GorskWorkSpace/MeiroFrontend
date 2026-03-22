@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/store/hooks";
 import {
   EventCard,
@@ -25,6 +25,8 @@ export const EventsList = () => {
   const hasMore = useAppSelector(selectHasMoreEvents);
 
   const isFirstLoad = useRef(true);
+  const [showEmpty, setShowEmpty] = useState(false);
+  const emptyTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const { preLastElementRef } = useInfiniteScroll({
     hasMore,
@@ -34,18 +36,36 @@ export const EventsList = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchAllEventsThunk({ page: 0 }));
+    if (isFirstLoad.current) {
+      isFirstLoad.current = false;
+      dispatch(fetchAllEventsThunk({ page: 0 }));
+    }
   }, [dispatch]);
 
-  if (isLoading || (isFirstLoad.current && events.length === 0)) {
+  useEffect(() => {
+    if (!isLoading && events.length === 0) {
+      emptyTimeoutRef.current = setTimeout(() => {
+        setShowEmpty(true);
+      }, 150);
+    } else {
+      setShowEmpty(false);
+      if (emptyTimeoutRef.current) {
+        clearTimeout(emptyTimeoutRef.current);
+      }
+    }
+
+    return () => {
+      if (emptyTimeoutRef.current) {
+        clearTimeout(emptyTimeoutRef.current);
+      }
+    };
+  }, [isLoading, events.length]);
+
+  if (isLoading) {
     return <EventsListSkeleton />;
   }
 
-  if (isFirstLoad.current && !isLoading) {
-    isFirstLoad.current = false;
-  }
-
-  if (!isLoading && events.length === 0) {
+  if (!isLoading && events.length === 0 && showEmpty) {
     return (
       <div className={styles.flex}>
         <Title size={18} weight={500}>
@@ -56,6 +76,10 @@ export const EventsList = () => {
         </div>
       </div>
     );
+  }
+
+  if (events.length === 0) {
+    return <EventsListSkeleton />;
   }
 
   return (

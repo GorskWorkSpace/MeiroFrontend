@@ -7,12 +7,28 @@ interface AccordionProps {
   title: string;
   children: React.ReactNode;
   type: "usual" | "grid" | "row";
+  isOpen?: boolean;
+  onToggle?: () => void;
 }
 
-export const Accordion = ({ title, children, type }: AccordionProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const Accordion = ({
+  title,
+  children,
+  type,
+  isOpen: externalIsOpen,
+  onToggle,
+}: AccordionProps) => {
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
 
-  const toggleAccordion = () => setIsOpen(!isOpen);
+  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+
+  const toggleAccordion = () => {
+    if (onToggle) {
+      onToggle();
+    } else {
+      setInternalIsOpen(!internalIsOpen);
+    }
+  };
 
   return (
     <div className={styles.container}>

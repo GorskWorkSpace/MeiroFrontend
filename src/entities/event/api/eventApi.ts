@@ -47,12 +47,16 @@ export const fetchAllEvents = async (
   filters: EventFilters,
 ): Promise<EventsResponse> => {
   if (USE_MOCKS) {
-    await delay(2500);
-
-    const page = filters.page || 0;
-    const offset = 12;
+    await delay(800);
 
     let filteredEvents = [...eventMocks];
+
+    if (filters.category) {
+      const categories = filters.category.split(",").map((c) => c.trim());
+      filteredEvents = filteredEvents.filter((event) =>
+        categories.includes(event.category),
+      );
+    }
 
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
@@ -62,13 +66,17 @@ export const fetchAllEvents = async (
           event.category.toLowerCase().includes(searchLower),
       );
     }
-    if (filters.category) {
-      const categories = filters.category.split(",").map((c) => c.trim());
-      filteredEvents = filteredEvents.filter((event) =>
-        categories.includes(event.category),
-      );
+
+    if (filters.priceFrom !== undefined) {
+    }
+    if (filters.priceTo !== undefined) {
     }
 
+    if (filters.countPlace) {
+    }
+
+    const page = filters.page || 0;
+    const offset = filters.offset || 12;
     const start = page * offset;
     const end = start + offset;
 
@@ -78,13 +86,10 @@ export const fetchAllEvents = async (
   }
 
   const params = new URLSearchParams();
+  params.append("page", (filters.page || 0).toString());
+  params.append("offset", (filters.offset || 12).toString());
 
-  if (filters.page !== undefined) {
-    params.append("page", filters.page.toString());
-  }
-  params.append("offset", "12");
-
-  if (filters.category) params.append("category", filters.category);
+  if (filters.category) params.append("categories", filters.category);
   if (filters.search) params.append("search", filters.search);
   if (filters.priceFrom !== undefined)
     params.append("priceFrom", filters.priceFrom.toString());

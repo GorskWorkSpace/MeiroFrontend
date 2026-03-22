@@ -70,6 +70,9 @@ export const filtersSlice = createSlice({
   reducers: {
     setTempDate: (state, action: PayloadAction<string | null>) => {
       state.date.tempSelected = action.payload;
+      if (action.payload) {
+        state.isOpen.date = true;
+      }
     },
     applyDateFilter: (state) => {
       state.date.selected = state.date.tempSelected;
@@ -78,22 +81,30 @@ export const filtersSlice = createSlice({
     resetDateFilter: (state) => {
       state.date.selected = null;
       state.date.tempSelected = null;
+      state.isOpen.date = false;
     },
 
     setTempCategories: (state, action: PayloadAction<string[]>) => {
       state.categories.tempSelected = action.payload;
+      if (action.payload.length > 0) {
+        state.isOpen.categories = true;
+      }
     },
     toggleTempCategory: (state, action: PayloadAction<string>) => {
       const category = action.payload;
       const index = state.categories.tempSelected.indexOf(category);
       if (index === -1) {
         state.categories.tempSelected.push(category);
+        state.isOpen.categories = true;
       } else {
         state.categories.tempSelected.splice(index, 1);
       }
     },
     setCategoriesSearchQuery: (state, action: PayloadAction<string>) => {
       state.categories.searchQuery = action.payload;
+      if (action.payload) {
+        state.isOpen.categories = true;
+      }
     },
     applyCategoriesFilter: (state) => {
       state.categories.selected = [...state.categories.tempSelected];
@@ -103,6 +114,7 @@ export const filtersSlice = createSlice({
       state.categories.selected = [];
       state.categories.tempSelected = [];
       state.categories.searchQuery = "";
+      state.isOpen.categories = false;
     },
 
     setTempPrice: (
@@ -111,6 +123,9 @@ export const filtersSlice = createSlice({
     ) => {
       state.price.tempFrom = action.payload.from;
       state.price.tempTo = action.payload.to;
+      if (action.payload.from !== null || action.payload.to !== null) {
+        state.isOpen.price = true;
+      }
     },
     applyPriceFilter: (state) => {
       state.price.from = state.price.tempFrom;
@@ -122,16 +137,21 @@ export const filtersSlice = createSlice({
       state.price.to = null;
       state.price.tempFrom = null;
       state.price.tempTo = null;
+      state.isOpen.price = false;
     },
 
     setTempCountPlace: (state, action: PayloadAction<string[]>) => {
       state.countPlace.tempSelected = action.payload;
+      if (action.payload.length > 0) {
+        state.isOpen.countPlace = true;
+      }
     },
     toggleTempCountPlace: (state, action: PayloadAction<string>) => {
       const option = action.payload;
       const index = state.countPlace.tempSelected.indexOf(option);
       if (index === -1) {
         state.countPlace.tempSelected.push(option);
+        state.isOpen.countPlace = true;
       } else {
         state.countPlace.tempSelected.splice(index, 1);
       }
@@ -143,6 +163,7 @@ export const filtersSlice = createSlice({
     resetCountPlaceFilter: (state) => {
       state.countPlace.selected = [];
       state.countPlace.tempSelected = [];
+      state.isOpen.countPlace = false;
     },
 
     toggleFilterOpen: (

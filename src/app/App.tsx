@@ -6,8 +6,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/event/detail" />
-        <Route path="/event/my-events" />
+        <Route path="/event/detail" element={<div>Детали события</div>} />
+        <Route path="/event/my-events" element={<div>Мои события</div>} />
       </Routes>
     </BrowserRouter>
   );
