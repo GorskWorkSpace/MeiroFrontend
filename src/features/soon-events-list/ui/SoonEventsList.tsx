@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store/hooks";
 
 import { SoonEventCardSkeleton } from "../../../entities/event";
@@ -11,7 +11,6 @@ import { fetchSoonEventsThunk } from "../../../entities/event/model/eventThunks"
 import { SoonEventCard } from "../../../entities/event/ui/SoonEventCard/SoonEventCard";
 import { ArrowDownRightIcon } from "../../../shared/assets";
 import { Caption } from "../../../shared/ui/caption";
-import { Carousel } from "../../../shared/ui/carousel/Carousel";
 import { Title } from "../../../shared/ui/title";
 import styles from "./SoonEventsList.module.css";
 
@@ -35,6 +34,7 @@ export const SoonEventsList: React.FC = () => {
   const events = useAppSelector(selectSoonEvents);
   const count = useAppSelector(selectSoonEventsCount);
   const loading = useAppSelector(selectEventsLoading);
+  const firstItemRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     dispatch(fetchSoonEventsThunk());
@@ -54,7 +54,7 @@ export const SoonEventsList: React.FC = () => {
     );
   }
 
-  const carouselItems = [
+  const soonItems = [
     ...firstFiveEvents.map((event) => (
       <SoonEventCard key={event.id} event={event} />
     )),
@@ -72,14 +72,17 @@ export const SoonEventsList: React.FC = () => {
         </Caption>
       </div>
 
-      <Carousel
-        items={carouselItems}
-        infinite={false}
-        autoPlay={false}
-        onSlideChange={(index) => {
-          console.log("Текущий слайд:", index);
-        }}
-      />
+      <div className={styles.soonEvents}>
+        {soonItems.map((item, idx) => (
+          <div
+            key={idx}
+            ref={idx === 0 ? firstItemRef : null}
+            className={styles.soonEventsElem}
+          >
+            {item}
+          </div>
+        ))}
+      </div>
     </section>
   );
 };
