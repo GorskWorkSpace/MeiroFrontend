@@ -25,7 +25,7 @@
 .soonEvents {
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: 5px;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
