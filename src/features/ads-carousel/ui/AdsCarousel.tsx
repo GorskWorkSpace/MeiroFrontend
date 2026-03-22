@@ -76,13 +76,13 @@ export const AdsCarousel: React.FC<AdsCarouselProps> = ({
   return (
     <div className={`${styles.adsDisplay} ${className}`}>
       <Carousel
-        items={ads}
+        items={displayedAds}
         renderItem={(ad) => <AdCard ad={ad} onClick={onAdClick} />}
-        spaceBetween={16}
-        slidesPerView={1}
+        spaceBetween={8}
+        slidesPerView="auto"
         loop={true}
-        className={styles.slide}
         autoplay={{ delay: 5000 }}
+        slideClassName={styles.slide}
       />
     </div>
   );
