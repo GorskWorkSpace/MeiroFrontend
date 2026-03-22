@@ -1,5 +1,4 @@
 import { Modal } from "../../../../shared/ui/modal";
-
 import { FilterFooter } from "../FilterFooter/FilterFooter";
 import { FiltersList } from "./FiltersList";
 

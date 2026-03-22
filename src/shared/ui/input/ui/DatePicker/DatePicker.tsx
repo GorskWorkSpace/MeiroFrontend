@@ -7,11 +7,11 @@ interface DatePickerProps {
   onDateChange: (date: Date | null) => void;
 }
 
-export const DatePicker = ({
+export const DatePicker: React.FC<DatePickerProps> = ({
   placeholder = "Выберите дату",
   selectedDate,
   onDateChange,
-}: DatePickerProps) => {
+}) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [inputValue, setInputValue] = useState("");
 

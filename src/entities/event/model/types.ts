@@ -41,6 +41,7 @@ export interface EventFilters {
   priceFrom?: number;
   priceTo?: number;
   countPlace?: "many" | "little";
+  date?: string;
 }
 
 export interface EventState {
@@ -53,4 +54,17 @@ export interface EventState {
   error: string | null;
   hasMore: boolean;
   filters: EventFilters;
+  tempFilters: {
+    category?: string;
+    priceFrom?: number;
+    priceTo?: number;
+    countPlace?: "many" | "little";
+    date?: string;
+  };
+  isOpen: {
+    date: boolean;
+    categories: boolean;
+    price: boolean;
+    countPlace: boolean;
+  };
 }

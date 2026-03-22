@@ -1,19 +1,22 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Accordion } from "../../../../shared/ui/accordion/ui/Accordion";
-import { DatePicker, Input } from "../../../../shared/ui/input";
-import { Tab } from "../../../../shared/ui/tab";
-import { useFilters } from "../../lib/useFilters";
 import {
+  selectEventFilters,
   selectFiltersOpen,
-  setTempCategories,
+  selectTempFilters,
+} from "../../../../entities/event";
+import {
+  setTempCategory,
   setTempCountPlace,
   setTempDate,
-  setTempPrice,
+  setTempPriceFrom,
+  setTempPriceTo,
   toggleFilterOpen,
-  toggleTempCategory,
-  toggleTempCountPlace,
-} from "../../model/filtersSlice";
+} from "../../../../entities/event/model/eventSlice";
+import { Accordion } from "../../../../shared/ui/accordion/ui/Accordion";
+import { Input } from "../../../../shared/ui/input";
+import { DatePicker } from "../../../../shared/ui/input/ui/DatePicker/DatePicker";
+import { Tab } from "../../../../shared/ui/tab";
 import styles from "./FiltersList.module.css";
 
 const MOCK_CATEGORIES = [
@@ -27,7 +30,11 @@ const MOCK_CATEGORIES = [
   "Другое",
 ];
 
-const COUNT_PLACE_OPTIONS = ["Много мест", "Мало мест"];
+const COUNT_PLACE_OPTIONS: Array<{ value: "many" | "little"; label: string }> =
+  [
+    { value: "many", label: "Много мест" },
+    { value: "little", label: "Мало мест" },
+  ];
 
 interface FiltersListProps {
   isOpen?: boolean;
@@ -35,91 +42,96 @@ interface FiltersListProps {
 
 export const FiltersList: React.FC<FiltersListProps> = ({ isOpen }) => {
   const dispatch = useDispatch();
-  const { dateFilter, categoriesFilter, priceFilter, countPlaceFilter } =
-    useFilters();
-
+  const tempFilters = useSelector(selectTempFilters);
+  const filters = useSelector(selectEventFilters);
   const filtersOpen = useSelector(selectFiltersOpen);
 
   useEffect(() => {
     if (isOpen) {
-      if (categoriesFilter.selected.length > 0) {
-        dispatch(setTempCategories(categoriesFilter.selected));
+      dispatch(setTempDate(filters.date));
+      dispatch(setTempCategory(filters.category));
+      dispatch(setTempPriceFrom(filters.priceFrom));
+      dispatch(setTempPriceTo(filters.priceTo));
+      dispatch(setTempCountPlace(filters.countPlace));
+
+      if (filters.date) {
+        dispatch(toggleFilterOpen("date"));
       }
-      if (countPlaceFilter.selected.length > 0) {
-        dispatch(setTempCountPlace(countPlaceFilter.selected));
+      if (filters.category) {
+        dispatch(toggleFilterOpen("categories"));
       }
-      if (dateFilter.selected) {
-        dispatch(setTempDate(dateFilter.selected));
+      if (filters.priceFrom !== undefined || filters.priceTo !== undefined) {
+        dispatch(toggleFilterOpen("price"));
       }
-      if (priceFilter.from !== null || priceFilter.to !== null) {
-        dispatch(
-          setTempPrice({
-            from: priceFilter.from,
-            to: priceFilter.to,
-          }),
-        );
+      if (filters.countPlace) {
+        dispatch(toggleFilterOpen("countPlace"));
       }
     }
-  }, [
-    isOpen,
-    dispatch,
-    categoriesFilter.selected,
-    countPlaceFilter.selected,
-    dateFilter.selected,
-    priceFilter.from,
-    priceFilter.to,
-  ]);
+  }, [isOpen, dispatch, filters]);
 
-  const filteredCategories = MOCK_CATEGORIES.filter((category) =>
-    category.toLowerCase().includes(categoriesFilter.searchQuery.toLowerCase()),
-  );
+  const handleDateChange = (date: Date | null) => {
+    dispatch(setTempDate(date?.toISOString() || undefined));
+  };
 
   const handleAllCategoriesClick = () => {
-    if (categoriesFilter.tempSelected.length === MOCK_CATEGORIES.length) {
-      dispatch(setTempCategories([]));
+    if (tempFilters.category === MOCK_CATEGORIES.join(",")) {
+      dispatch(setTempCategory(undefined));
     } else {
-      dispatch(setTempCategories(MOCK_CATEGORIES));
+      dispatch(setTempCategory(MOCK_CATEGORIES.join(",")));
     }
   };
 
   const isAllCategoriesSelected =
-    categoriesFilter.tempSelected.length === MOCK_CATEGORIES.length;
-
-  const handleAllCountPlaceClick = () => {
-    if (countPlaceFilter.tempSelected.length === COUNT_PLACE_OPTIONS.length) {
-      dispatch(setTempCountPlace([]));
-    } else {
-      dispatch(setTempCountPlace(COUNT_PLACE_OPTIONS));
-    }
-  };
-
-  const isAllCountPlaceSelected =
-    countPlaceFilter.tempSelected.length === COUNT_PLACE_OPTIONS.length;
+    tempFilters.category === MOCK_CATEGORIES.join(",");
 
   const handleCategoryToggle = (category: string) => {
-    dispatch(toggleTempCategory(category));
-  };
+    const currentCategories = tempFilters.category
+      ? tempFilters.category.split(",")
+      : [];
+    let newCategories: string[];
 
-  const handleCountPlaceToggle = (option: string) => {
-    dispatch(toggleTempCountPlace(option));
-  };
+    if (currentCategories.includes(category)) {
+      newCategories = currentCategories.filter((c) => c !== category);
+    } else {
+      newCategories = [...currentCategories, category];
+    }
 
-  const handlePriceChange = (
-    type: "from" | "to",
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const value = e.target.value;
-    const numValue = value === "" ? null : Number(value);
     dispatch(
-      setTempPrice({
-        from: type === "from" ? numValue : priceFilter.tempFrom,
-        to: type === "to" ? numValue : priceFilter.tempTo,
-      }),
+      setTempCategory(
+        newCategories.length > 0 ? newCategories.join(",") : undefined,
+      ),
     );
   };
 
-  const handleDateChange = (date: Date | null) => {
-    dispatch(setTempDate(date?.toISOString() || null));
+  const isCategorySelected = (category: string) => {
+    const categories = tempFilters.category
+      ? tempFilters.category.split(",")
+      : [];
+    return categories.includes(category);
+  };
+
+  const handleAllCountPlaceClick = () => {
+    dispatch(setTempCountPlace(undefined));
+  };
+
+  const isAllCountPlaceSelected = tempFilters.countPlace === undefined;
+
+  const handleCountPlaceToggle = (value: "many" | "little") => {
+    if (tempFilters.countPlace === value) {
+      dispatch(setTempCountPlace(undefined));
+    } else {
+      dispatch(setTempCountPlace(value));
+    }
+  };
+
+  const handlePriceFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    dispatch(setTempPriceFrom(value === "" ? undefined : Number(value)));
+  };
+
+  const handlePriceToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    dispatch(setTempPriceTo(value === "" ? undefined : Number(value)));
   };
 
   return (
@@ -132,9 +144,7 @@ export const FiltersList: React.FC<FiltersListProps> = ({ isOpen }) => {
       >
         <DatePicker
           placeholder="00.00.2026"
-          selectedDate={
-            dateFilter.tempSelected ? new Date(dateFilter.tempSelected) : null
-          }
+          selectedDate={tempFilters.date ? new Date(tempFilters.date) : null}
           onDateChange={handleDateChange}
         />
       </Accordion>
@@ -152,11 +162,11 @@ export const FiltersList: React.FC<FiltersListProps> = ({ isOpen }) => {
           Все
         </Tab>
 
-        {filteredCategories.map((category) => (
+        {MOCK_CATEGORIES.map((category) => (
           <Tab
             key={category}
             onClick={() => handleCategoryToggle(category)}
-            isActive={categoriesFilter.tempSelected.includes(category)}
+            isActive={isCategorySelected(category)}
           >
             {category}
           </Tab>
@@ -172,14 +182,14 @@ export const FiltersList: React.FC<FiltersListProps> = ({ isOpen }) => {
         <Input
           placeholder="От"
           type="number"
-          value={priceFilter.tempFrom?.toString() || ""}
-          onChange={(e) => handlePriceChange("from", e)}
+          value={tempFilters.priceFrom?.toString() || ""}
+          onChange={handlePriceFromChange}
         />
         <Input
           placeholder="До"
           type="number"
-          value={priceFilter.tempTo?.toString() || ""}
-          onChange={(e) => handlePriceChange("to", e)}
+          value={tempFilters.priceTo?.toString() || ""}
+          onChange={handlePriceToChange}
         />
       </Accordion>
 
@@ -198,11 +208,11 @@ export const FiltersList: React.FC<FiltersListProps> = ({ isOpen }) => {
 
         {COUNT_PLACE_OPTIONS.map((option) => (
           <Tab
-            key={option}
-            onClick={() => handleCountPlaceToggle(option)}
-            isActive={countPlaceFilter.tempSelected.includes(option)}
+            key={option.value}
+            onClick={() => handleCountPlaceToggle(option.value)}
+            isActive={tempFilters.countPlace === option.value}
           >
-            {option}
+            {option.label}
           </Tab>
         ))}
       </Accordion>

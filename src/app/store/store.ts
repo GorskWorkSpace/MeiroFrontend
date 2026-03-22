@@ -1,10 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import cityReducer from "../../entities/city/model/citySlice";
-import { themeSlice } from "../../entities/theme";
 import adReducer from "../../entities/ad";
+import cityReducer from "../../entities/city/model/citySlice";
 import eventReducer from "../../entities/event/model/eventSlice";
+import { themeSlice } from "../../entities/theme";
 import { favouriteReducer } from "../../features/favourite";
-import filtersReducer from "../../features/filter/model/filtersSlice"; 
 
 export const store = configureStore({
   reducer: {
@@ -13,7 +12,6 @@ export const store = configureStore({
     ad: adReducer,
     event: eventReducer,
     favourite: favouriteReducer,
-    filters: filtersReducer,
   },
 });
 

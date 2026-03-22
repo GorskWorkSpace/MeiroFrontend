@@ -24,6 +24,20 @@ const initialState: EventState = {
     priceFrom: undefined,
     priceTo: undefined,
     countPlace: undefined,
+    date: undefined,
+  },
+  tempFilters: {
+    category: undefined,
+    priceFrom: undefined,
+    priceTo: undefined,
+    countPlace: undefined,
+    date: undefined,
+  },
+  isOpen: {
+    date: false,
+    categories: false,
+    price: false,
+    countPlace: false,
   },
 };
 
@@ -42,18 +56,79 @@ export const eventSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+
     setFilters: (state, action: PayloadAction<Partial<EventFilters>>) => {
       state.filters = { ...state.filters, ...action.payload, page: 0 };
       state.allEvents = [];
       state.hasMore = true;
     },
-    setFiltersWithLoading: (state, action: PayloadAction<Partial<EventFilters>>) => {
-      state.filters = { ...state.filters, ...action.payload, page: 0 };
+
+    setSearch: (state, action: PayloadAction<string | undefined>) => {
+      state.filters.search = action.payload;
+      state.filters.page = 0;
       state.allEvents = [];
       state.hasMore = true;
       state.loading = true;
     },
-    resetFilters: (state) => {
+
+    setTempDate: (state, action: PayloadAction<string | undefined>) => {
+      state.tempFilters.date = action.payload;
+      if (action.payload) {
+        state.isOpen.date = true;
+      }
+    },
+    setTempCategory: (state, action: PayloadAction<string | undefined>) => {
+      state.tempFilters.category = action.payload;
+      if (action.payload) {
+        state.isOpen.categories = true;
+      }
+    },
+    setTempPriceFrom: (state, action: PayloadAction<number | undefined>) => {
+      state.tempFilters.priceFrom = action.payload;
+      if (action.payload !== undefined) {
+        state.isOpen.price = true;
+      }
+    },
+    setTempPriceTo: (state, action: PayloadAction<number | undefined>) => {
+      state.tempFilters.priceTo = action.payload;
+      if (action.payload !== undefined) {
+        state.isOpen.price = true;
+      }
+    },
+    setTempCountPlace: (state, action: PayloadAction<"many" | "little" | undefined>) => {
+      state.tempFilters.countPlace = action.payload;
+      if (action.payload) {
+        state.isOpen.countPlace = true;
+      }
+    },
+    
+    resetTempFilters: (state) => {
+      state.tempFilters = {
+        category: undefined,
+        priceFrom: undefined,
+        priceTo: undefined,
+        countPlace: undefined,
+        date: undefined,
+      };
+    },
+    
+    applyTempFilters: (state) => {
+      const { category, priceFrom, priceTo, countPlace, date } = state.tempFilters;
+      state.filters = {
+        ...state.filters,
+        page: 0,
+        category,
+        priceFrom,
+        priceTo,
+        countPlace,
+        date,
+      };
+      state.allEvents = [];
+      state.hasMore = true;
+      state.loading = true;
+    },
+    
+    resetAllFilters: (state) => {
       state.filters = {
         page: 0,
         offset: 12,
@@ -62,10 +137,40 @@ export const eventSlice = createSlice({
         priceFrom: undefined,
         priceTo: undefined,
         countPlace: undefined,
+        date: undefined,
+      };
+      state.tempFilters = {
+        category: undefined,
+        priceFrom: undefined,
+        priceTo: undefined,
+        countPlace: undefined,
+        date: undefined,
       };
       state.allEvents = [];
       state.hasMore = true;
+      state.loading = true;
+      
+      state.isOpen = {
+        date: false,
+        categories: false,
+        price: false,
+        countPlace: false,
+      };
     },
+    
+    toggleFilterOpen: (state, action: PayloadAction<keyof typeof initialState.isOpen>) => {
+      state.isOpen[action.payload] = !state.isOpen[action.payload];
+    },
+    closeAllFilters: (state) => {
+      state.isOpen = {
+        date: false,
+        categories: false,
+        price: false,
+        countPlace: false,
+      };
+    },
+    
+    // Сброс событий
     resetEvents: (state) => {
       state.allEvents = [];
       state.filters.page = 0;
@@ -188,8 +293,22 @@ export const eventSlice = createSlice({
   },
 });
 
-export const { clearError, setFilters, setFiltersWithLoading, resetFilters, resetEvents } =
-  eventSlice.actions;
+export const {
+  clearError,
+  setFilters,
+  setSearch,
+  setTempDate,
+  setTempCategory,
+  setTempPriceFrom,
+  setTempPriceTo,
+  setTempCountPlace,
+  resetTempFilters,
+  applyTempFilters,
+  resetAllFilters,
+  toggleFilterOpen,
+  closeAllFilters,
+  resetEvents,
+} = eventSlice.actions;
 
 const selectEventSlice = (state: { event: EventState }) => state.event;
 
@@ -231,6 +350,16 @@ export const selectEventsError = createSelector(
 export const selectEventFilters = createSelector(
   [selectEventSlice],
   (event) => event.filters
+);
+
+export const selectTempFilters = createSelector(
+  [selectEventSlice],
+  (event) => event.tempFilters
+);
+
+export const selectFiltersOpen = createSelector(
+  [selectEventSlice],
+  (event) => event.isOpen
 );
 
 export const selectFavouriteCount = createSelector(
