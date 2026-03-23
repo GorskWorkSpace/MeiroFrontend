@@ -32,12 +32,11 @@ export const Accordion = ({
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>
+      <div className={styles.title} onClick={toggleAccordion}>
         <Title size={14} weight={500}>
           {title}
         </Title>
         <ArrowTopIcon
-          onClick={toggleAccordion}
           style={{ transform: isOpen ? "rotate(0deg)" : "rotate(180deg)" }}
         />
       </div>
