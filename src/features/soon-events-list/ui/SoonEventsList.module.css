@@ -2,8 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  width: 328px;
-  max-width: 360px;
+
   margin: 0 auto 32px auto;
   box-sizing: border-box;
 }
@@ -28,11 +27,13 @@
   gap: 5px;
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  padding: 16px;
+  margin-left: -16px;
+  margin-right: -16px;
 }
 
 .soonEvents::-webkit-scrollbar {
