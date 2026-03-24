@@ -1,11 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import {
   fetchAllEventsThunk,
-  fetchSoonEventsThunk,
   fetchNextPageThunk,
+  fetchSoonEventsThunk,
   toggleFavouriteThunk,
 } from "./eventThunks";
-import type { EventState, Event, SoonEvent, EventFilters } from "./types";
+import type { Event, EventFilters, EventState, SoonEvent } from "./types";
 
 const initialState: EventState = {
   allEvents: [],
@@ -24,6 +24,7 @@ const initialState: EventState = {
     priceFrom: undefined,
     priceTo: undefined,
     countPlace: undefined,
+    // date: undefined — убираем дату
   },
 };
 
@@ -42,11 +43,17 @@ export const eventSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+
     setFilters: (state, action: PayloadAction<Partial<EventFilters>>) => {
-      state.filters = { ...state.filters, ...action.payload, page: 0 };
+      state.filters = {
+        ...state.filters,
+        ...action.payload,
+        page: 0,
+      };
       state.allEvents = [];
       state.hasMore = true;
     },
+
     resetFilters: (state) => {
       state.filters = {
         page: 0,
@@ -60,6 +67,7 @@ export const eventSlice = createSlice({
       state.allEvents = [];
       state.hasMore = true;
     },
+
     resetEvents: (state) => {
       state.allEvents = [];
       state.filters.page = 0;
@@ -79,7 +87,7 @@ export const eventSlice = createSlice({
           state.allEvents = action.payload.events;
           state.filters.page = action.payload.page;
           state.hasMore = action.payload.events.length === 12;
-          state.favouriteEvents = action.payload.events.filter(
+          state.favouriteEvents = state.allEvents.filter(
             (event) => event.isFavourite,
           );
         },
@@ -183,6 +191,7 @@ export const eventSlice = createSlice({
 export const { clearError, setFilters, resetFilters, resetEvents } =
   eventSlice.actions;
 
+// Селекторы
 export const selectAllEvents = (state: { event: EventState }) =>
   state.event.allEvents;
 export const selectFavouriteEvents = (state: { event: EventState }) =>

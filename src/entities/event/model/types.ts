@@ -34,13 +34,14 @@ export interface FavouriteResponse {
 }
 
 export interface EventFilters {
-  page?: number;
-  offset?: number;
-  category?: string;
+  page: number;
+  offset: number;
+  category?: string; // теперь строка (один таб), а не массив
   search?: string;
   priceFrom?: number;
   priceTo?: number;
   countPlace?: "many" | "little";
+  // date?: string; - УБИРАЕМ
 }
 
 export interface EventState {
@@ -53,4 +54,5 @@ export interface EventState {
   error: string | null;
   hasMore: boolean;
   filters: EventFilters;
+  // filtersOpen: FiltersOpen; - УБИРАЕМ
 }
