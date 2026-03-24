@@ -1,18 +1,53 @@
-import { MenuIcon } from "../../../shared/assets";
+import { HeartIcon, MenuIcon, SettingsIcon } from "../../../shared/assets";
+import { useState } from "react";
 import styles from "./Menu.module.css";
+import { Avatar } from "../../../shared/assets/icons/Avatar";
+import { Link } from "react-router-dom";
+import { Modal } from "../../../shared/ui/modal";
 
-interface MenuProps {
-  onClick?: () => void;
-}
-
-export const Menu = ({ onClick }: MenuProps) => {
-  const handleClick = () => {
-    onClick?.();
+export const Menu = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => {
+    setIsOpen(false);
   };
 
   return (
-    <div className={styles.iconWrapper} onClick={handleClick}>
-      <MenuIcon />
-    </div>
+    <>
+      <button className={styles.iconWrapper} onClick={() => setIsOpen(true)}>
+        <MenuIcon />
+      </button>
+      <Modal isOpen={isOpen} onClose={onClose} title="Mеню">
+        <div className={styles.content}>
+          <Avatar />
+
+          <nav className={styles.list}>
+            <Link to="#" className={styles.link}>
+              <HeartIcon
+                isFavourite={false}
+                size="18"
+                color="var(--text-main)"
+              />
+              <p>Избранное</p>
+            </Link>
+            <Link to="/settings" className={styles.link}>
+              <SettingsIcon color="var(--text-main)" size="18" />
+              <p>Настройки</p>
+            </Link>
+          </nav>
+          <div className={styles.footer}>
+            <a href="#" className={styles.link}>
+              Политика обработки персональных данных
+            </a>
+            <a href="#" className={styles.link}>
+              Пользовательское соглашение
+            </a>
+            <a href="#" className={styles.link}>
+              Поддержка
+            </a>
+            <p className={styles.anyText}> &copy; 2026</p>
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 };
