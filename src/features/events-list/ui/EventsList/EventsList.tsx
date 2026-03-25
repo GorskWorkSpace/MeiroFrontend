@@ -1,14 +1,16 @@
+// Без изменений, так как уже использует selectEventFilters
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/store/hooks";
 import {
   EventCard,
+  EventCardSkeleton,
   fetchAllEventsThunk,
   fetchNextPageThunk,
   selectAllEvents,
+  selectEventFilters,
   selectEventsLoading,
   selectEventsLoadingMore,
   selectHasMoreEvents,
-  EventCardSkeleton,
 } from "../../../../entities/event";
 import { Caption } from "../../../../shared/ui/caption";
 import { Title } from "../../../../shared/ui/title";
@@ -23,6 +25,7 @@ export const EventsList = () => {
   const isLoading = useAppSelector(selectEventsLoading);
   const isLoadingMore = useAppSelector(selectEventsLoadingMore);
   const hasMore = useAppSelector(selectHasMoreEvents);
+  const eventFilters = useAppSelector(selectEventFilters);
 
   const { preLastElementRef } = useInfiniteScroll({
     hasMore,
@@ -31,54 +34,66 @@ export const EventsList = () => {
     onLoadMore: () => dispatch(fetchNextPageThunk()),
   });
 
+  // Отслеживаем изменения фильтров и загружаем события
   useEffect(() => {
-    console.log("Загрузка страницы");
-    dispatch(fetchAllEventsThunk({}));
-  }, [dispatch]);
+    dispatch(fetchAllEventsThunk(eventFilters));
+  }, [
+    eventFilters.category,
+    eventFilters.countPlace,
+    eventFilters.priceFrom,
+    eventFilters.priceTo,
+    eventFilters.search,
+    // eventFilters.date - УБИРАЕМ
+  ]);
 
-  // Показываем скелетон пока идет загрузка ИЛИ нет событий
   if (isLoading || events.length === 0) {
     return <EventsListSkeleton />;
   }
 
   return (
-    <div className={styles.flex}>
-      <Title size={18} weight={500}>
+    <>
+      <Title size={18} weight={500} className={styles.head}>
         Мероприятия для вас
       </Title>
-      <div className={styles.grid}>
-        {events.map((event, index) => {
-          const isPreLast = index === events.length - 2;
+      <div className={styles.flex}>
+        <div className={styles.grid}>
+          {events.map((event, index) => {
+            const isPreLast = index === events.length - 2;
 
-          return (
-            <div key={event.id} ref={isPreLast ? preLastElementRef : undefined}>
-              <EventCard
-                event={event}
-                category={event.category}
-                favouriteButton={
-                  <FavouriteButton
-                    eventId={event.id}
-                    isFavourite={event.isFavourite}
-                  />
-                }
-              />
-            </div>
-          );
-        })}
-        
-        {/* Показываем скелетоны при загрузке следующей страницы */}
-        {isLoadingMore && (
-          <>
-            {[...Array(2)].map((_, index) => (
-              <EventCardSkeleton key={`loading-more-${index}`} />
-            ))}
-          </>
+            return (
+              <div
+                key={event.id}
+                ref={isPreLast ? preLastElementRef : undefined}
+              >
+                <EventCard
+                  event={event}
+                  category={event.category}
+                  favouriteButton={
+                    <FavouriteButton
+                      eventId={event.id}
+                      isFavourite={event.isFavourite}
+                    />
+                  }
+                />
+              </div>
+            );
+          })}
+
+          {isLoadingMore && (
+            <>
+              {[...Array(2)].map((_, index) => (
+                <EventCardSkeleton key={`loading-more-${index}`} />
+              ))}
+            </>
+          )}
+        </div>
+
+        {!hasMore && events.length > 0 && (
+          <Caption className={styles.endMessage}>
+            Больше нет мероприятий
+          </Caption>
         )}
       </div>
-      
-      {!hasMore && events.length > 0 && (
-        <Caption className={styles.endMessage}>Больше нет мероприятий</Caption>
-      )}
-    </div>
+    </>
   );
 };

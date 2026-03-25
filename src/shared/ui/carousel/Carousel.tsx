@@ -46,6 +46,7 @@ export function Carousel<T>({
       grabCursor={true}
       onSlideChange={(swiper) => onSlideChange?.(swiper.activeIndex)}
       className={`${styles.carousel} ${className}`}
+      centeredSlides
     >
       {items.map((item, index) => (
         <SwiperSlide

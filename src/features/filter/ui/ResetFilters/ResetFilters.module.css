@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--like-icon-border);
+  color: var(--icon-color);
+  flex-shrink: 0;
+  background: white;
+  cursor: pointer;
+}
+
+.container svg {
+  width: 20px;
+  height: 20px;
+}

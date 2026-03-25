@@ -1,5 +1,6 @@
 export { CalendarIcon } from "./icons//CalendarIcon";
 export { ArrowDownRightIcon } from "./icons/ArrowDownRight";
+export { ArrowTopIcon } from "./icons/ArrowTopIcon";
 export { CloseIcon } from "./icons/CloseIcon";
 export { FilterIcon } from "./icons/FilterIcon";
 export { GridIcon } from "./icons/GridIcon";
@@ -10,4 +11,5 @@ export { MenuIcon } from "./icons/MenuIcon";
 export { PinIcon } from "./icons/PinIcon";
 export { SearchIcon } from "./icons/SearchIcon";
 export { SettingsIcon } from "./icons/SettingsIcon";
+export { TrashIcon } from "./icons/TrashIcon";
 export { UserIcon } from "./icons/UserIcon";
