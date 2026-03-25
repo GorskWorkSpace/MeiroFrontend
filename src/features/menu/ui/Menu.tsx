@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { HeartIcon, MenuIcon, SettingsIcon } from "../../../shared/assets";
 import { Avatar } from "../../../shared/assets/icons/Avatar";
+import { NavLink } from "react-router-dom";
 import { Modal } from "../../../shared/ui/modal";
 import styles from "./Menu.module.css";
 

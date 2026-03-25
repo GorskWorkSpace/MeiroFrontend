@@ -14,9 +14,7 @@ export const SettingPage = () => {
           <ArrowBack color="#BEC9DA" size="24" />
           <p className={styles.logo}>MEIRO</p>
         </div>
-        <Title size={18} weight={500} className={styles.title}>
-          Настройки
-        </Title>
+        <Title className={styles.title}>Настройки</Title>
         <div className={styles.content}>
           <div className={styles.switchContainer}>
             <p>Темная тема</p>
