@@ -4,9 +4,13 @@ export const baseApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "https://meiro-event.ru/api/v1/",
 });
 
-baseApi.interceptors.request.use((config) => {
+baseApi.interceptors.request.use(async (config) => {
   const token = localStorage.getItem("accessToken");
   if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    const token = await axios.post("https://meiro-event.ru/api/v1/user/login");
+
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
