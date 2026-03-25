@@ -5,11 +5,15 @@ export const baseApi = axios.create({
 });
 
 baseApi.interceptors.request.use(async (config) => {
-  const token = localStorage.getItem("accessToken");
+  let token = localStorage.getItem("accessToken");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   } else {
-    const token = await axios.post("https://meiro-event.ru/api/v1/user/login");
+    const response = await axios.post<{ token: string }>(
+      "https://meiro-event.ru/api/v1/user/login",
+    );
+    token = response.data.token;
+    localStorage.setItem("accessToken", token);
 
     config.headers.Authorization = `Bearer ${token}`;
   }
