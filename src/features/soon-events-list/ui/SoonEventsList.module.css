@@ -42,9 +42,9 @@
 
 .soonEventsElem {
   flex-shrink: 0;
-  width: 320px;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  /* width: 320px; */
+  /* scroll-snap-align: start;
+  scroll-snap-stop: always; */
 }
 
 .empty {
