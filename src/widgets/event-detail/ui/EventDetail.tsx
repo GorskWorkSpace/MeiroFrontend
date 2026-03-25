@@ -70,7 +70,6 @@ export const EventDetail = () => {
       <div className={styles.others}>
         <EventsList listTitle="Другие мероприятия" />
       </div>
-      
     </div>
   );
 };

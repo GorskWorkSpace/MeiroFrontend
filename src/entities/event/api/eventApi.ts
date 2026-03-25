@@ -109,8 +109,8 @@ export const fetchEventById = async (
     return getEventDetailMock(id);
   }
 
-  const { data } = await baseApi.get<{ event: EventDetail }>(`/event/${id}`);
-  return data.event;
+  const { data } = await baseApi.get<EventDetail>(`/event/${id}`);
+  return data;
 };
 
 export const toggleFavourite = async (

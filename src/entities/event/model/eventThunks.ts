@@ -66,7 +66,7 @@ export const fetchNextPageThunk = createAsyncThunk(
 );
 
 export const fetchEventByIdThunk = createAsyncThunk(
-  "event/fetchById",
+  "event/fetchEventByIdThunk",
   async (id: string, { rejectWithValue }) => {
     try {
       const event = await fetchEventById(id);
