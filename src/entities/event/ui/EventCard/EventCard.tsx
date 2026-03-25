@@ -59,7 +59,7 @@ export const EventCard = ({
         <Caption className={styles.date} size={12} weight={400}>
           <CalendarIcon /> {event.date}
         </Caption>
-        <Title size={16} weight={500} className={styles.title}>
+        <Title size={15} weight={400} className={styles.title}>
           {event.title}
         </Title>
       </div>

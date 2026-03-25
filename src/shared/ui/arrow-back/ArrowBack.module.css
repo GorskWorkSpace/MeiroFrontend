@@ -1,0 +1,15 @@
+.backButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 8px;
+  margin: -8px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.backButton:active {
+  background-color: rgba(190, 201, 218, 0.1);
+}

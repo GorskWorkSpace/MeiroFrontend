@@ -1,26 +1,29 @@
 import { Menu } from "../../../features/menu/ui/Menu";
-import { ArrowLeft } from "../../../shared/assets/icons/ArrowLeft";
 import { Switcher } from "../../../shared/ui/switcher";
 import styles from "./SettingPage.module.css";
+import { useTheme } from "../../../features/theme-switcher/lib/useTheme";
+import { ArrowBack } from "../../../shared/ui/arrow-back/arrow-back";
+import { Title } from "../../../shared/ui/title";
 
 export const SettingPage = () => {
+  const { theme, toggleTheme } = useTheme();
   return (
     <>
       <div className={styles.container}>
         <div className={styles.header}>
-          <ArrowLeft color="#BEC9DA" size="24" />
+          <ArrowBack color="#BEC9DA" size="24" />
           <p className={styles.logo}>MEIRO</p>
         </div>
-        <h2 className={styles.title}>Настройки</h2>
+        <Title className={styles.title}>Настройки</Title>
         <div className={styles.content}>
           <div className={styles.switchContainer}>
             <p>Темная тема</p>
-            <Switcher />
+            <Switcher isActive={theme === "dark"} onToggle={toggleTheme} />
           </div>
-          <div className={styles.switchContainer}>
+          {/* <div className={styles.switchContainer}>
             <p>Получать уведомления</p>
             <Switcher />
-          </div>
+          </div> */}
           <p className={styles.textSecondary}>
             Не пропустите важное: напомним о скорых событиях и покажем новые
             мероприятия по вашим интересам

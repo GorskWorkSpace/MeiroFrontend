@@ -1,13 +1,15 @@
-import { useState } from "react";
 import styles from "./Switcher.module.css";
 
-export const Switcher = () => {
-  const [isActive, setIsActive] = useState(false);
+interface SwitcherProps {
+  isActive: boolean;
+  onToggle: () => void;
+}
 
+export const Switcher = ({ isActive, onToggle }: SwitcherProps) => {
   return (
     <button
       className={`${styles.switch} ${isActive ? styles.active : ""}`}
-      onClick={() => setIsActive(!isActive)}
+      onClick={onToggle}
     >
       <div className={styles.slider} />
     </button>
