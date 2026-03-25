@@ -8,13 +8,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
-<<<<<<< HEAD
         <Route path="/event/:eventId" element={<EventDetailPage />} />
-=======
         <Route path="/settings" element={<SettingPage />} />
-        <Route path="/event/detail" />
->>>>>>> d3125dc3d4bec1637935d8c9e562a5a5c21d9731
-        <Route path="/event/my-events" />
+        <Route path="/event/detail" /> <Route path="/event/my-events" />
       </Routes>
     </BrowserRouter>
   );

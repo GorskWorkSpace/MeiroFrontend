@@ -1,6 +1,9 @@
 import { baseApi } from "../../../shared/api/baseApi";
-// Добавлен импорт
-import { eventMocks, getEventDetailMock, soonEventMocks } from "../model/eventMocks";
+import {
+  eventMocks,
+  getEventDetailMock,
+  soonEventMocks,
+} from "../model/eventMocks";
 import type {
   EventDetail,
   EventFilters,
@@ -10,7 +13,7 @@ import type {
   SoonEventsResponse,
 } from "../model/types";
 
-const USE_MOCKS = true;
+const USE_MOCKS = false;
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const fetchSoonEvents = async (): Promise<SoonEventsResponse> => {
@@ -98,7 +101,6 @@ export const fetchAllEvents = async (
   return data;
 };
 
-// Добавлена новая функция
 export const fetchEventById = async (
   id: string,
 ): Promise<EventDetail | null> => {

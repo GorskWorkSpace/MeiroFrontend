@@ -1,9 +1,7 @@
-// features/theme-switcher/ui/ThemeSwitcher.tsx
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ChangeTheme.module.css";
 
 export const ThemeSwitcher = () => {
-  // Читаем сохранённую тему или используем системную
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     const saved = localStorage.getItem("theme");
     if (saved === "light" || saved === "dark") return saved;
@@ -13,7 +11,6 @@ export const ThemeSwitcher = () => {
   });
 
   useEffect(() => {
-    // Применяем тему к корневому элементу
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);

@@ -1,19 +1,25 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import {
   fetchAllEventsThunk,
+  fetchEventByIdThunk,
   fetchNextPageThunk,
   fetchSoonEventsThunk,
   toggleFavouriteThunk,
-  fetchEventByIdThunk, // Добавлен импорт
 } from "./eventThunks";
-import type { Event, EventFilters, EventState, SoonEvent, EventDetail } from "./types";
+import type {
+  Event,
+  EventDetail,
+  EventFilters,
+  EventState,
+  SoonEvent,
+} from "./types";
 
 const initialState: EventState = {
   allEvents: [],
   favouriteEvents: [],
   soonEvents: [],
   soonEventsCount: 0,
-  eventDetail: null, // Добавлено
+  eventDetail: null,
   loading: false,
   loadingMore: false,
   error: null,
@@ -44,7 +50,7 @@ export const eventSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
-    clearEventDetail: (state) => { // Добавлен редюсер
+    clearEventDetail: (state) => {
       state.eventDetail = null;
     },
     setFilters: (state, action: PayloadAction<Partial<EventFilters>>) => {
@@ -140,7 +146,6 @@ export const eventSlice = createSlice({
         state.soonEvents = [];
         state.soonEventsCount = 0;
       })
-      // Добавлен обработчик для fetchEventByIdThunk
       .addCase(fetchEventByIdThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -204,10 +209,14 @@ export const eventSlice = createSlice({
   },
 });
 
-export const { clearError, clearEventDetail, setFilters, resetFilters, resetEvents } =
-  eventSlice.actions;
+export const {
+  clearError,
+  clearEventDetail,
+  setFilters,
+  resetFilters,
+  resetEvents,
+} = eventSlice.actions;
 
-// Селекторы
 export const selectAllEvents = (state: { event: EventState }) =>
   state.event.allEvents;
 export const selectFavouriteEvents = (state: { event: EventState }) =>
@@ -216,8 +225,9 @@ export const selectSoonEvents = (state: { event: EventState }) =>
   state.event.soonEvents;
 export const selectSoonEventsCount = (state: { event: EventState }) =>
   state.event.soonEventsCount;
-export const selectEventDetail = (state: { event: EventState }) => // Добавлен селектор
-  state.event.eventDetail;
+export const selectEventDetail = (
+  state: { event: EventState }, // Добавлен селектор
+) => state.event.eventDetail;
 export const selectEventsLoading = (state: { event: EventState }) =>
   state.event.loading;
 export const selectEventsLoadingMore = (state: { event: EventState }) =>

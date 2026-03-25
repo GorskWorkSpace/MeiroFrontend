@@ -3,8 +3,8 @@ import { useAppSelector } from "../../../../app/store/hooks";
 import { selectEventFilters } from "../../../../entities/event";
 import { FilterIcon } from "../../../../shared/assets";
 
-import styles from "./Filter.module.css";
 import { ChooseFiltersModal } from "../ChooseFiltersModal/ChooseFiltersModal";
+import styles from "./Filter.module.css";
 
 export const Filter = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,7 +15,6 @@ export const Filter = () => {
     filters.priceFrom ||
     filters.priceTo ||
     filters.countPlace
-    // filters.date - УБИРАЕМ
   );
 
   const handleClick = () => {

@@ -1,1 +1,1 @@
-export {EventsListSkeleton} from './EventsListSkeleton'
+export { EventsListSkeleton } from "./EventsListSkeleton";

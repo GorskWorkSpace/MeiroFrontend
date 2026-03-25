@@ -10,6 +10,5 @@ export const CityBadge = ({ children, onClick }: CityBadgeProps) => {
     <div onClick={onClick} className={styles.city}>
       {children}
     </div>
-
   );
 };

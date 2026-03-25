@@ -43,7 +43,6 @@ export interface EventFilters {
   countPlace?: "many" | "little";
 }
 
-// Новый тип для детальной информации
 export interface EventDetail {
   id: string;
   imgs?: string[];
@@ -67,7 +66,7 @@ export interface EventState {
   favouriteEvents: Event[];
   soonEvents: SoonEvent[];
   soonEventsCount: number;
-  eventDetail: EventDetail | null; // Добавлено поле
+  eventDetail: EventDetail | null;
   loading: boolean;
   loadingMore: boolean;
   error: string | null;

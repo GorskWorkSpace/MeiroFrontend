@@ -7,21 +7,20 @@ import {
   fetchEventByIdThunk,
   selectAllEvents,
   selectEventDetail,
-  selectEventsLoading,
 } from "../../../entities/event";
+import { EventsList } from "../../../features/events-list";
 import { FavouriteButton } from "../../../features/favourite";
 import { ArrowLeftIcon } from "../../../shared/assets";
 import { Carousel } from "../../../shared/ui/carousel/Carousel";
 import styles from "./EventDetail.module.css";
 
 export const EventDetail = () => {
-  const { eventId } = useParams<{ eventId: string }>();
+  const { eventId } = useParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const eventDetail = useAppSelector(selectEventDetail);
   const allEvents = useAppSelector(selectAllEvents);
-  const loading = useAppSelector(selectEventsLoading);
 
   const event = allEvents.find((e) => e.id === eventId);
   const isFavourite = event?.isFavourite || false;
@@ -35,10 +34,6 @@ export const EventDetail = () => {
       dispatch(clearEventDetail());
     };
   }, [dispatch, eventId]);
-
-  if (loading) {
-    return <div className={styles.loading}>Загрузка...</div>;
-  }
 
   if (!eventDetail) {
     return <div className={styles.notFound}>Событие не найдено</div>;
@@ -72,7 +67,10 @@ export const EventDetail = () => {
       )}
 
       <EventInfo />
-      <div className={styles.others}></div>
+      <div className={styles.others}>
+        <EventsList listTitle="Другие мероприятия" />
+      </div>
+      
     </div>
   );
 };

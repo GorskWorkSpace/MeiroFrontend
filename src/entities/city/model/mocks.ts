@@ -100,5 +100,5 @@ export const cityMocks: City[] = [
   { id: "97", cityName: "Красногорск" },
   { id: "98", cityName: "Армавир" },
   { id: "99", cityName: "Абакан" },
-  { id: "100", cityName: "Балаково" }
+  { id: "100", cityName: "Балаково" },
 ];

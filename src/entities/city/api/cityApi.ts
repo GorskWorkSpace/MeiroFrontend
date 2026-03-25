@@ -2,7 +2,7 @@ import { baseApi } from "../../../shared/api/baseApi";
 import { cityMocks } from "../model/mocks";
 import type { AllCitiesResponse, UserCityResponse } from "../model/types";
 
-const USE_MOCKS = true;
+const USE_MOCKS = false;
 
 export const fetchAllCities = async () => {
   if (USE_MOCKS) {

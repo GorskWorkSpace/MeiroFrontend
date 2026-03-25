@@ -11,7 +11,16 @@ import styles from "./EventInfo.module.css";
 
 export const EventInfo = () => {
   const eventDetail = useAppSelector(selectEventDetail);
-
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        url: window.location.href,
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert("Ссылка скопирована");
+    }
+  };
   if (!eventDetail) {
     return null;
   }
@@ -26,7 +35,8 @@ export const EventInfo = () => {
               isActive={false}
               children={eventDetail.category}
             />
-            <ShareIcon />
+
+            <ShareIcon onClick={handleShare} />
           </div>
           <Title size={24} weight={500}>
             {eventDetail.title}

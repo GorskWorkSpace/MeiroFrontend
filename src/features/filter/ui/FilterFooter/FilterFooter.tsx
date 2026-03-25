@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux";
-import { Footer } from "../../../../shared/ui/footer";
 import { setFilters } from "../../../../entities/event";
 import { Button } from "../../../../shared/ui/button";
-import styles from "./FilterFooter.module.css";
+import { Footer } from "../../../../shared/ui/footer";
 import { ResetFilters } from "../ResetFilters/ResetFilters";
+import styles from "./FilterFooter.module.css";
 
 interface FilterFooterProps {
   onClose: () => void;
@@ -19,14 +19,15 @@ export const FilterFooter = ({ onClose, localFilters }: FilterFooterProps) => {
   const dispatch = useDispatch();
 
   const handleShow = () => {
-    // Применяем выбранные фильтры через setFilters
-    dispatch(setFilters({
-      category: localFilters.category,
-      priceFrom: localFilters.priceFrom,
-      priceTo: localFilters.priceTo,
-      countPlace: localFilters.countPlace,
-    }));
-    onClose(); // закрываем модалку
+    dispatch(
+      setFilters({
+        category: localFilters.category,
+        priceFrom: localFilters.priceFrom,
+        priceTo: localFilters.priceTo,
+        countPlace: localFilters.countPlace,
+      }),
+    );
+    onClose();
   };
 
   return (

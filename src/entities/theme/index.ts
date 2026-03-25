@@ -1,2 +1,2 @@
-export { themeSlice, setTheme, selectTheme } from './model/slice';
-export type { Theme } from './model/slice';
+export { selectTheme, setTheme, themeSlice } from "./model/slice";
+export type { Theme } from "./model/slice";

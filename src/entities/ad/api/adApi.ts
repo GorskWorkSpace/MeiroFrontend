@@ -2,7 +2,7 @@ import { baseApi } from "../../../shared/api/baseApi";
 import { adMocks } from "../model/adMocks";
 import type { Ad, AdsResponse } from "../model/types";
 
-const USE_MOCKS = true;
+const USE_MOCKS = false;
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 

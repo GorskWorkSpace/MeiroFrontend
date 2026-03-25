@@ -1,9 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   fetchAllEvents,
+  fetchEventById,
   fetchSoonEvents,
   toggleFavourite,
-  fetchEventById, // Добавлен импорт
 } from "../api/eventApi";
 import type { EventFilters, FavouriteRequest } from "./types";
 
@@ -62,7 +62,6 @@ export const fetchNextPageThunk = createAsyncThunk(
   },
 );
 
-// Добавлен новый thunk
 export const fetchEventByIdThunk = createAsyncThunk(
   "event/fetchById",
   async (id: string, { rejectWithValue }) => {

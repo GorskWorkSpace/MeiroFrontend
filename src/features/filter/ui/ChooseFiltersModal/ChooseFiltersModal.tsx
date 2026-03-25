@@ -8,7 +8,6 @@ interface ChooseFiltersModalProps {
   onClose: () => void;
 }
 
-// Тип для локальных фильтров
 interface LocalFilters {
   category?: string;
   priceFrom?: number;
@@ -20,7 +19,6 @@ export const ChooseFiltersModal = ({
   isOpen,
   onClose,
 }: ChooseFiltersModalProps) => {
-  // Локальное состояние фильтров в модалке
   const [localFilters, setLocalFilters] = useState<LocalFilters>({});
 
   return (

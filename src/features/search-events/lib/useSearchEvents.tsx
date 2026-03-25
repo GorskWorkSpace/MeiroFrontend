@@ -1,5 +1,4 @@
-// Хук для поиска: после задержки диспатчит setFilters с search
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch } from "../../../app/store/store";
 import {
@@ -17,16 +16,16 @@ export const useSearchEvents = () => {
   const isFirstSearch = useRef(true);
 
   useEffect(() => {
-    // Пропускаем первый рендер, чтобы не отправлять запрос при монтировании
     if (isFirstSearch.current) {
       isFirstSearch.current = false;
       return;
     }
 
-    // При изменении debouncedSearch отправляем фильтр через setFilters
-    dispatch(setFilters({
-      search: debouncedSearch || undefined,
-    }));
+    dispatch(
+      setFilters({
+        search: debouncedSearch || undefined,
+      }),
+    );
   }, [debouncedSearch, dispatch]);
 
   const handleSearchChange = (value: string) => {

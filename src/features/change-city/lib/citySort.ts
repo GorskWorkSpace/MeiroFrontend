@@ -4,7 +4,9 @@ export interface GroupedCities {
   [key: string]: City[];
 }
 
-export const groupCitiesByFirstLetter = (cities: City[] = []): GroupedCities => {
+export const groupCitiesByFirstLetter = (
+  cities: City[] = [],
+): GroupedCities => {
   if (!cities || !Array.isArray(cities)) {
     return {};
   }
@@ -26,8 +28,10 @@ export const groupCitiesByFirstLetter = (cities: City[] = []): GroupedCities => 
   return grouped;
 };
 
-export const getSortedLetters = (groupedCities: GroupedCities = {}): string[] => {
-  if (!groupedCities || typeof groupedCities !== 'object') {
+export const getSortedLetters = (
+  groupedCities: GroupedCities = {},
+): string[] => {
+  if (!groupedCities || typeof groupedCities !== "object") {
     return [];
   }
   return Object.keys(groupedCities).sort((a, b) => a.localeCompare(b));
@@ -47,7 +51,7 @@ export const processCities = (cities: City[] = []): GroupedCities => {
 
   const grouped = groupCitiesByFirstLetter(cities);
 
-  if (grouped && typeof grouped === 'object') {
+  if (grouped && typeof grouped === "object") {
     Object.keys(grouped).forEach((letter) => {
       if (Array.isArray(grouped[letter])) {
         grouped[letter] = sortCitiesInGroup(grouped[letter]);

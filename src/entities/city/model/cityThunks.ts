@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchAllCities, fetchUserCity, changeUserCity } from "../api/cityApi";
+import { changeUserCity, fetchAllCities, fetchUserCity } from "../api/cityApi";
 
 export const fetchAllCitiesThunk = createAsyncThunk(
   "city/fetchAll",
@@ -9,7 +9,7 @@ export const fetchAllCitiesThunk = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const fetchUserCityThunk = createAsyncThunk(
@@ -20,7 +20,7 @@ export const fetchUserCityThunk = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const changeCityThunk = createAsyncThunk(
@@ -31,5 +31,5 @@ export const changeCityThunk = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error);
     }
-  }
+  },
 );

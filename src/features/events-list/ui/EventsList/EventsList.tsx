@@ -2,15 +2,15 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/store/hooks";
 import {
-    EventCard,
-    EventCardSkeleton,
-    fetchAllEventsThunk,
-    fetchNextPageThunk,
-    selectAllEvents,
-    selectEventFilters,
-    selectEventsLoading,
-    selectEventsLoadingMore,
-    selectHasMoreEvents,
+  EventCard,
+  EventCardSkeleton,
+  fetchAllEventsThunk,
+  fetchNextPageThunk,
+  selectAllEvents,
+  selectEventFilters,
+  selectEventsLoading,
+  selectEventsLoadingMore,
+  selectHasMoreEvents,
 } from "../../../../entities/event";
 import { Caption } from "../../../../shared/ui/caption";
 import { Title } from "../../../../shared/ui/title";
@@ -38,7 +38,6 @@ export const EventsList = ({ listTitle }: EventsListProps) => {
     onLoadMore: () => dispatch(fetchNextPageThunk()),
   });
 
-  // Отслеживаем изменения фильтров и загружаем события
   useEffect(() => {
     dispatch(fetchAllEventsThunk(eventFilters));
   }, [
@@ -47,7 +46,6 @@ export const EventsList = ({ listTitle }: EventsListProps) => {
     eventFilters.priceFrom,
     eventFilters.priceTo,
     eventFilters.search,
-    // eventFilters.date - УБИРАЕМ
   ]);
 
   if (isLoading || events.length === 0) {
