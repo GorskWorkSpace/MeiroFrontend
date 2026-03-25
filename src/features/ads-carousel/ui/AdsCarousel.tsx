@@ -4,7 +4,7 @@ import {
   AdCard,
   AdCardSkeleton,
   fetchAllAdsThunk,
-  selectAdsError,
+  // selectAdsError,
   selectAdsLoading,
   selectAllAds,
 } from "../../../entities/ad";
@@ -27,7 +27,7 @@ export const AdsCarousel: React.FC<AdsCarouselProps> = ({
   const dispatch = useAppDispatch();
   const ads = useAppSelector(selectAllAds);
   const loading = useAppSelector(selectAdsLoading);
-  const error = useAppSelector(selectAdsError);
+  // const error = useAppSelector(selectAdsError);
 
   useEffect(() => {
     dispatch(fetchAllAdsThunk());
@@ -46,29 +46,29 @@ export const AdsCarousel: React.FC<AdsCarouselProps> = ({
     );
   }
 
-  if (error) {
-    return (
-      <div className={`${styles.adsDisplay} ${styles.error} ${className}`}>
-        <p>Не удалось загрузить рекламу</p>
-        <button
-          onClick={() => dispatch(fetchAllAdsThunk())}
-          className={styles.retryButton}
-        >
-          Попробовать снова
-        </button>
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className={`${styles.adsDisplay} ${styles.error} ${className}`}>
+  //       <p>Не удалось загрузить рекламу</p>
+  //       <button
+  //         onClick={() => dispatch(fetchAllAdsThunk())}
+  //         className={styles.retryButton}
+  //       >
+  //         Попробовать снова
+  //       </button>
+  //     </div>
+  //   );
+  // }
 
   const displayedAds = limit ? ads.slice(0, limit) : ads;
 
-  if (!displayedAds.length) {
-    return (
-      <div className={`${styles.adsDisplay} ${styles.empty} ${className}`}>
-        <p>Нет доступных объявлений</p>
-      </div>
-    );
-  }
+  // if (!displayedAds.length) {
+  //   return (
+  //     <div className={`${styles.adsDisplay} ${styles.empty} ${className}`}>
+  //       <p>Нет доступных объявлений</p>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className={`${styles.adsDisplay} ${className}`}>
