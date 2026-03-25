@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import cityReducer from "../../entities/city/model/citySlice";
-import { themeSlice } from "../../entities/theme";
 import adReducer from "../../entities/ad";
+import cityReducer from "../../entities/city/model/citySlice";
 import eventReducer from "../../entities/event/model/eventSlice";
+import { themeSlice } from "../../entities/theme";
 import { favouriteReducer } from "../../features/favourite";
 export const store = configureStore({
   reducer: {

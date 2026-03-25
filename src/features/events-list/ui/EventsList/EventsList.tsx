@@ -19,7 +19,11 @@ import { useInfiniteScroll } from "../../lib/useInfiniteScroll";
 import { EventsListSkeleton } from "../EventsListSkeleton/EventsListSkeleton";
 import styles from "./EventsList.module.css";
 
-export const EventsList = () => {
+interface EventsListProps {
+  listTitle: string;
+}
+
+export const EventsList = ({ listTitle }: EventsListProps) => {
   const dispatch = useAppDispatch();
   const events = useAppSelector(selectAllEvents);
   const isLoading = useAppSelector(selectEventsLoading);
@@ -34,7 +38,6 @@ export const EventsList = () => {
     onLoadMore: () => dispatch(fetchNextPageThunk()),
   });
 
-  // Отслеживаем изменения фильтров и загружаем события
   useEffect(() => {
     dispatch(fetchAllEventsThunk(eventFilters));
   }, [
@@ -43,7 +46,6 @@ export const EventsList = () => {
     eventFilters.priceFrom,
     eventFilters.priceTo,
     eventFilters.search,
-    // eventFilters.date - УБИРАЕМ
   ]);
 
   if (isLoading || events.length === 0) {
@@ -53,7 +55,7 @@ export const EventsList = () => {
   return (
     <>
       <Title size={18} weight={500} className={styles.head}>
-        Мероприятия для вас
+        {listTitle}
       </Title>
       <div className={styles.flex}>
         <div className={styles.grid}>

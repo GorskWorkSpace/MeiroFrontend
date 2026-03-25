@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   fetchAllEvents,
+  fetchEventById,
   fetchSoonEvents,
   toggleFavourite,
 } from "../api/eventApi";
@@ -22,7 +23,10 @@ export const fetchSoonEventsThunk = createAsyncThunk(
 
 export const fetchAllEventsThunk = createAsyncThunk(
   "event/fetchAll",
-  async (filters: EventFilters = {}, { rejectWithValue }) => {
+  async (
+    filters: EventFilters = { page: 0, offset: 12 },
+    { rejectWithValue },
+  ) => {
     try {
       const response = await fetchAllEvents(filters);
       return {
@@ -56,6 +60,23 @@ export const fetchNextPageThunk = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(
         error instanceof Error ? error.message : "Failed to fetch next page",
+      );
+    }
+  },
+);
+
+export const fetchEventByIdThunk = createAsyncThunk(
+  "event/fetchById",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const event = await fetchEventById(id);
+      if (!event) {
+        return rejectWithValue("Event not found");
+      }
+      return event;
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : "Failed to fetch event",
       );
     }
   },

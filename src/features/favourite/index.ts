@@ -1,6 +1,6 @@
 export { FavouriteButton } from "./ui/FavouriteButton";
 
-export { favouriteSlice, clearError } from "./model/favouriteSlice";
+export { clearError, favouriteSlice } from "./model/favouriteSlice";
 
 export { toggleFavouriteThunk } from "./model/favouriteThunks";
 

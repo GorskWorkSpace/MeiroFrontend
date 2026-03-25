@@ -1,11 +1,13 @@
 export { CalendarIcon } from "./icons//CalendarIcon";
 export { ArrowDownRightIcon } from "./icons/ArrowDownRight";
+export { ArrowLeftIcon } from "./icons/ArrowLeftIcon";
 export { ArrowTopIcon } from "./icons/ArrowTopIcon";
 export { CloseIcon } from "./icons/CloseIcon";
 export { FilterIcon } from "./icons/FilterIcon";
 export { GridIcon } from "./icons/GridIcon";
 export { HeartIcon } from "./icons/HeartIcon";
 export { ImageIcon } from "./icons/ImageIcon";
+export { InfoIcon } from "./icons/InfoIcon";
 export { ListIcon } from "./icons/ListIcon";
 export { MenuIcon } from "./icons/MenuIcon";
 export { PinIcon } from "./icons/PinIcon";

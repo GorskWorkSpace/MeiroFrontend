@@ -1,1 +1,1 @@
-export {CityBadge} from './CityBadge'
+export { CityBadge } from "./CityBadge";

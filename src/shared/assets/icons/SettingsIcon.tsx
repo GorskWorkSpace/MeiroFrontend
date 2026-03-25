@@ -1,14 +1,14 @@
-interface IconProps {
+interface SettingsIconProps {
   color?: string;
   size?: string;
   onClick?: () => void;
 }
 
-export const SettingsIcon: React.FC<IconProps> = ({
+export const SettingsIcon = ({
   color = "currentColor",
   size = "12",
   onClick,
-}) => {
+}: SettingsIconProps) => {
   return (
     <svg
       width={size}

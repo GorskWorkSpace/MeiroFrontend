@@ -1,4 +1,4 @@
-import type { Event, SoonEvent } from "./types";
+import type { Event, EventDetail, SoonEvent } from "./types";
 
 export const eventMocks: Event[] = [
   {
@@ -385,3 +385,129 @@ export const soonEventMocks: SoonEvent[] = [
     img: null,
   },
 ];
+
+export const eventDetailMocks: Record<string, EventDetail> = {
+  "1": {
+    id: "1",
+    imgs: [
+      "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf",
+      "https://images.unsplash.com/photo-1507924538820-ede94a04019d",
+      "https://randomuser.me/api/portraits/women/8.jpg",
+      "https://randomuser.me/api/portraits/men/7.jpg",
+    ],
+    category: "Юмор",
+    title: "Вальс Бостон",
+    description:
+      "Захватывающее юмористическое шоу с участием лучших комиков города. Вечер обещает быть незабываемым!",
+    startDate: "15 марта, 19:00",
+    finishRegDate: "14 марта, 23:59",
+    price: 1500,
+    countPlace: 51,
+    countPlaceAll: 100,
+    address: "ул. Пушкина, 10, Клуб 'Комедия'",
+    addressUrl: "https://maps.yandex.ru/?text=ул. Пушкина, 10",
+    organisation: {
+      name: "Комедийный клуб",
+      phone: "+7 (999) 123-45-67",
+    },
+    participantsImg: [
+      "https://randomuser.me/api/portraits/men/1.jpg",
+      "https://randomuser.me/api/portraits/women/2.jpg",
+    ],
+    urlEvent: "https://example.com/event/1",
+  },
+  "2": {
+    id: "2",
+    imgs: ["https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3"],
+    category: "Концерт",
+    title: "Серый пидарас",
+    description:
+      "Концерт популярной рок-группы. Исполнение лучших хитов и новые композиции.",
+    startDate: "20 марта, 20:00",
+    price: 2000,
+    countPlace: 80,
+    countPlaceAll: 200,
+    address: "Клуб 'Rock Bar', ул. Ленина, 25",
+    urlEvent: "https://example.com/event/2",
+  },
+  "3": {
+    id: "3",
+    imgs: ["https://images.unsplash.com/photo-1507676184212-d03ab07a01bf"],
+    category: "Спектакль",
+    title: "Забив",
+    description:
+      "Драматический спектакль по мотивам известной пьесы. Глубокие эмоции и сильная актерская игра.",
+    startDate: "25 марта, 18:30",
+    price: 1200,
+    countPlace: 60,
+    countPlaceAll: 150,
+    address: "Драматический театр, пр. Мира, 15",
+    addressUrl: "https://maps.yandex.ru/?text=пр. Мира, 15",
+  },
+  "4": {
+    id: "4",
+    imgs: ["https://images.unsplash.com/photo-1555939594-58d7cb561ad1"],
+    category: "Еда",
+    title: "Шаурма по кавказски",
+    description:
+      "Гастрономический фестиваль с дегустацией лучшей шаурмы от ведущих шеф-поваров города.",
+    startDate: "28 марта, 14:00",
+    price: 800,
+    countPlace: 30,
+    countPlaceAll: 100,
+    address: "Парк Горького, центральная аллея",
+    organisation: {
+      name: "Gastro Fest",
+      phone: "+7 (999) 111-22-33",
+    },
+    participantsImg: [
+      "https://randomuser.me/api/portraits/men/5.jpg",
+      "https://randomuser.me/api/portraits/women/6.jpg",
+    ],
+  },
+  "5": {
+    id: "5",
+    category: "Юмор",
+    title: "Кутовой",
+    description:
+      "Стендап-комедия с участием известного комика. Острый юмор и только взрослые шутки.",
+    startDate: "1 апреля, 19:30",
+    price: 1800,
+    countPlace: 55,
+    countPlaceAll: 120,
+    address: "StandUp Club, ул. Советская, 8",
+  },
+  "6": {
+    id: "6",
+    imgs: [
+      "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3",
+      "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7",
+      "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf",
+    ],
+    category: "Концерт",
+    title: "Рок-фест",
+    description:
+      "Ежегодный рок-фестиваль с участием лучших групп страны. Драйв, энергия и любимые хиты.",
+    startDate: "5 апреля, 18:00",
+    price: 2500,
+    countPlace: 150,
+    countPlaceAll: 500,
+    address: "Стадион 'Динамо', ул. Спортивная, 1",
+    addressUrl: "https://maps.yandex.ru/?text=ул. Спортивная, 1",
+    organisation: {
+      name: "Rock Fest Organization",
+      phone: "+7 (999) 555-66-77",
+    },
+    participantsImg: [
+      "https://randomuser.me/api/portraits/men/7.jpg",
+      "https://randomuser.me/api/portraits/women/8.jpg",
+      "https://randomuser.me/api/portraits/men/7.jpg",
+      "https://randomuser.me/api/portraits/women/8.jpg",
+    ],
+    urlEvent: "https://example.com/event/6",
+  },
+};
+
+export const getEventDetailMock = (id: string): EventDetail | null => {
+  return eventDetailMocks[id] || null;
+};

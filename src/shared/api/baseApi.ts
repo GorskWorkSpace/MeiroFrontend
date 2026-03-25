@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const baseApi = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "/api/v1",
+  baseURL: import.meta.env.VITE_API_URL || "https://meiro-event.ru/api/v1/",
 });
 
 baseApi.interceptors.request.use((config) => {
@@ -20,5 +20,5 @@ baseApi.interceptors.response.use(
       window.location.href = "/login";
     }
     return Promise.reject(error);
-  }
+  },
 );

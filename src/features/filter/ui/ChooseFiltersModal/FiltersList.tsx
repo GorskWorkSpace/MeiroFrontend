@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectEventFilters } from "../../../../entities/event";
-// toggleFilterOpen - УБИРАЕМ, больше не нужен
 import { Accordion } from "../../../../shared/ui/accordion/ui/Accordion";
 import { Input } from "../../../../shared/ui/input";
 import { Tab } from "../../../../shared/ui/tab";
@@ -40,7 +39,6 @@ export const FiltersList: React.FC<FiltersListProps> = ({
 }) => {
   const appliedFilters = useSelector(selectEventFilters);
 
-  // При открытии модалки синхронизируем локальные фильтры с применёнными
   useEffect(() => {
     onLocalFiltersChange({
       category: appliedFilters.category,
@@ -50,7 +48,6 @@ export const FiltersList: React.FC<FiltersListProps> = ({
     });
   }, [appliedFilters, onLocalFiltersChange]);
 
-  // Обработчики выбора категории (одиночный выбор)
   const handleCategorySelect = (category: string) => {
     if (category === "Все" || localFilters.category === category) {
       onLocalFiltersChange({ ...localFilters, category: undefined });
@@ -92,9 +89,9 @@ export const FiltersList: React.FC<FiltersListProps> = ({
 
   return (
     <div className={styles.container}>
-      {/* Категории - убираем onToggle, так как Accordion сам управляет своим состоянием */}
       <Accordion title="Категории" type="grid">
         <Tab
+          variant="accent"
           onClick={() => handleCategorySelect("Все")}
           isActive={isCategorySelected("Все")}
         >
@@ -103,6 +100,7 @@ export const FiltersList: React.FC<FiltersListProps> = ({
 
         {MOCK_CATEGORIES.map((category) => (
           <Tab
+            variant="accent"
             key={category}
             onClick={() => handleCategorySelect(category)}
             isActive={isCategorySelected(category)}
@@ -112,7 +110,6 @@ export const FiltersList: React.FC<FiltersListProps> = ({
         ))}
       </Accordion>
 
-      {/* Цена */}
       <Accordion title="Цена" type="row">
         <Input
           placeholder="От"
@@ -128,9 +125,9 @@ export const FiltersList: React.FC<FiltersListProps> = ({
         />
       </Accordion>
 
-      {/* Количество мест */}
       <Accordion title="Количество мест" type="grid">
         <Tab
+          variant="accent"
           onClick={() =>
             onLocalFiltersChange({ ...localFilters, countPlace: undefined })
           }
@@ -141,6 +138,7 @@ export const FiltersList: React.FC<FiltersListProps> = ({
 
         {COUNT_PLACE_OPTIONS.map((option) => (
           <Tab
+            variant="accent"
             key={option.value}
             onClick={() => handleCountPlaceSelect(option.value)}
             isActive={localFilters.countPlace === option.value}

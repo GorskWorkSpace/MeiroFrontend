@@ -1,38 +1,44 @@
-import styles from './AdCard.module.css';
-import type { Ad } from '../../model/types';
-import { CategoryInfo } from '../../../../shared/ui/category-info';
+import { useNavigate } from "react-router-dom";
+import { CategoryInfo } from "../../../../shared/ui/category-info";
+import type { Ad } from "../../model/types";
+import styles from "./AdCard.module.css";
 
 export interface AdCardProps {
   ad: Ad;
-  onClick?: (ad: Ad) => void;
 }
 
-export const AdCard: React.FC<AdCardProps> = ({ ad, onClick }) => {
-  const handleClick = () => {
-    if (onClick) {
-      onClick(ad);
-    } else if (ad.url) {
+export const AdCard: React.FC<AdCardProps> = ({ ad }) => {
+  const navigate = useNavigate();
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (ad.url) {
       window.open(ad.url, "_blank", "noopener,noreferrer");
+    } else {
+      navigate(`/event/${ad.id}`);
     }
   };
 
   return (
-    <div 
-      className={styles.blockWrapper} 
-      style={{ backgroundImage: `url(${ad.img})` }} 
+    <div
+      className={styles.blockWrapper}
+      style={{ backgroundImage: ad.img ? `url(${ad.img})` : "none" }}
       onClick={handleClick}
-      role={ad.url ? "link" : "article"}
+      role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
-          handleClick();
+          e.preventDefault();
+          handleClick(e as any);
         }
       }}
     >
       <div className={styles.category}>
-        <CategoryInfo>{ad.category}</CategoryInfo> 
+        <CategoryInfo>{ad.category}</CategoryInfo>
       </div>
-      <div className={styles.adTitle}>{ad.title}</div> 
+      <div className={styles.adTitle}>{ad.title}</div>
     </div>
   );
 };

@@ -1,1 +1,1 @@
-export {SoonEventCardSkeleton} from './SoonEventCardSkeleton'
+export { SoonEventCardSkeleton } from "./SoonEventCardSkeleton";

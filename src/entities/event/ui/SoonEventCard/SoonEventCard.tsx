@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CalendarIcon, ImageIcon, PinIcon } from "../../../../shared/assets";
 import { Caption } from "../../../../shared/ui/caption";
 import { Title } from "../../../../shared/ui/title";
@@ -14,8 +15,13 @@ export const SoonEventCard = ({ event }: SoonEventCardProps) => {
 
   const hasImage = event.img && !imageError;
 
+  const navigate = useNavigate();
+
   return (
-    <div className={styles.cardContainer}>
+    <div
+      onClick={() => navigate(`/event/${event.id}`)}
+      className={styles.cardContainer}
+    >
       <div className={styles.imageWrapper}>
         {hasImage ? (
           <img

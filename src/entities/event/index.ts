@@ -19,11 +19,13 @@ export { eventMocks, soonEventMocks } from "./model/eventMocks";
 
 export {
   clearError,
+  clearEventDetail,
   default as eventReducer,
   eventSlice,
   resetEvents,
   resetFilters,
   selectAllEvents,
+  selectEventDetail,
   selectEventFilters,
   selectEventsError,
   selectEventsLoading,
@@ -38,6 +40,7 @@ export {
 
 export {
   fetchAllEventsThunk,
+  fetchEventByIdThunk,
   fetchNextPageThunk,
   fetchSoonEventsThunk,
   toggleFavouriteThunk,
@@ -45,5 +48,6 @@ export {
 
 export { EventCard } from "./ui/EventCard";
 export { EventCardSkeleton } from "./ui/EventCardSkeleton";
+export { EventInfo } from "./ui/EventInfo/EventInfo";
 export { SoonEventCard } from "./ui/SoonEventCard";
 export { SoonEventCardSkeleton } from "./ui/SoonEventCardSkeleton";

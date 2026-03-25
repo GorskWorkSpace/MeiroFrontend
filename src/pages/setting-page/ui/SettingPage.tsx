@@ -1,9 +1,9 @@
 import { Menu } from "../../../features/menu/ui/Menu";
-import { Switcher } from "../../../shared/ui/switcher";
-import styles from "./SettingPage.module.css";
 import { useTheme } from "../../../features/theme-switcher/lib/useTheme";
 import { ArrowBack } from "../../../shared/ui/arrow-back/arrow-back";
+import { Switcher } from "../../../shared/ui/switcher";
 import { Title } from "../../../shared/ui/title";
+import styles from "./SettingPage.module.css";
 
 export const SettingPage = () => {
   const { theme, toggleTheme } = useTheme();

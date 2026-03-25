@@ -47,11 +47,7 @@ export const SoonEventsList: React.FC = () => {
   const firstFiveEvents = events.slice(0, 5);
 
   if (!firstFiveEvents.length) {
-    return (
-      <div className={styles.empty}>
-        <p>У вас пока нет избранных событий</p>
-      </div>
-    );
+    return null;
   }
 
   const soonItems = [

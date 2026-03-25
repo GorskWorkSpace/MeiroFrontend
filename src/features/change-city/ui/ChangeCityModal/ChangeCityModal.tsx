@@ -7,7 +7,7 @@ import {
 import { Input } from "../../../../shared/ui/input";
 import { Modal } from "../../../../shared/ui/modal";
 import { CityList } from "../CityList/CityList";
-import { CityListSkeleton } from "../CityListSkeleton/CityListSkeleton"; // Импортируем скелетон
+import { CityListSkeleton } from "../CityListSkeleton/CityListSkeleton";
 import styles from "./ChangeCityModal.module.css";
 
 interface ChangeCityModalProps {

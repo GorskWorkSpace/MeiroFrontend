@@ -1,6 +1,11 @@
 import { baseApi } from "../../../shared/api/baseApi";
-import { eventMocks, soonEventMocks } from "../model/eventMocks";
+import {
+  eventMocks,
+  getEventDetailMock,
+  soonEventMocks,
+} from "../model/eventMocks";
 import type {
+  EventDetail,
   EventFilters,
   EventsResponse,
   FavouriteRequest,
@@ -8,7 +13,7 @@ import type {
   SoonEventsResponse,
 } from "../model/types";
 
-const USE_MOCKS = true;
+const USE_MOCKS = false;
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const fetchSoonEvents = async (): Promise<SoonEventsResponse> => {
@@ -94,6 +99,18 @@ export const fetchAllEvents = async (
 
   const { data } = await baseApi.get<EventsResponse>("/event/all", { params });
   return data;
+};
+
+export const fetchEventById = async (
+  id: string,
+): Promise<EventDetail | null> => {
+  if (USE_MOCKS) {
+    await delay(300);
+    return getEventDetailMock(id);
+  }
+
+  const { data } = await baseApi.get<{ event: EventDetail }>(`/event/${id}`);
+  return data.event;
 };
 
 export const toggleFavourite = async (

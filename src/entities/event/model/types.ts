@@ -36,12 +36,29 @@ export interface FavouriteResponse {
 export interface EventFilters {
   page: number;
   offset: number;
-  category?: string; // теперь строка (один таб), а не массив
+  category?: string;
   search?: string;
   priceFrom?: number;
   priceTo?: number;
   countPlace?: "many" | "little";
-  // date?: string; - УБИРАЕМ
+}
+
+export interface EventDetail {
+  id: string;
+  imgs?: string[];
+  category: string;
+  title: string;
+  description?: string;
+  startDate?: string;
+  finishRegDate?: string;
+  price?: number;
+  countPlace?: number;
+  countPlaceAll?: number;
+  address?: string;
+  addressUrl?: string;
+  organisation?: Record<string, unknown>;
+  participantsImg?: string[];
+  urlEvent?: string;
 }
 
 export interface EventState {
@@ -49,10 +66,10 @@ export interface EventState {
   favouriteEvents: Event[];
   soonEvents: SoonEvent[];
   soonEventsCount: number;
+  eventDetail: EventDetail | null;
   loading: boolean;
   loadingMore: boolean;
   error: string | null;
   hasMore: boolean;
   filters: EventFilters;
-  // filtersOpen: FiltersOpen; - УБИРАЕМ
 }

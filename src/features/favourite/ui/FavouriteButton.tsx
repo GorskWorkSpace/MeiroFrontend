@@ -1,9 +1,9 @@
+import { useCallback, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store/hooks";
 import { toggleFavouriteThunk } from "../../../entities/event/model/eventThunks";
 import { HeartIcon } from "../../../shared/assets";
 import { selectIsFavouritePending } from "../model/favouriteSelectors";
 import styles from "./FavouriteButton.module.css";
-import { useCallback, useRef, useEffect } from "react";
 
 interface FavouriteButtonProps {
   eventId: string;
