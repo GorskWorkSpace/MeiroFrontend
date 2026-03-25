@@ -1,13 +1,12 @@
 .cardContainer {
-  display: flex;
+  display: grid;
+  grid-template-columns: 80px 1fr;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
   gap: 16px;
   padding: 16px;
   background-color: var(--secondary-background);
   border-radius: 24px;
-  width: 320px;
+  width: 340px;
   height: 112px;
 }
 .image {
@@ -42,4 +41,13 @@
   height: 80px;
   border-radius: 12px;
   background-color: var(--main-background);
+}
+
+.title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }
