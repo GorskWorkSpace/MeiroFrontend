@@ -9,17 +9,6 @@
   color: #fff;
 }
 
-.container {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  background: var(--main-background);
-  padding-right: 16px;
-  padding-left: 16px;
-}
-
 .header {
   display: flex;
   flex-direction: row;
@@ -38,37 +27,49 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  height: 88vh;
 }
 
 .list {
   display: flex;
   flex-direction: column;
   width: 328px;
-  height: 315px;
+  height: 380px;
+  flex: 1;
   gap: 16px;
   margin-top: 16px;
 }
 
 .footer {
-  margin-top: 120px;
   display: flex;
   flex-direction: column;
+  justify-content: end;
   gap: 16px;
+  font-family: "Geologica", sans-serif;
 }
 
 .link {
   display: flex;
   flex-direction: row;
-  align-content: center;
+  align-items: center;
   color: var(--text-main);
   font-size: 18px;
   font-weight: 400;
   gap: 16px;
+  text-decoration: none;
 
-  &&:active {
-    color: var(--accent-color);
-  }
+  -webkit-tap-highlight-color: transparent;
 }
+
+.link p {
+  color: inherit;
+  margin: 0;
+}
+
+.link:active {
+  color: var(--accent-color);
+}
+
 .link:active svg path {
   fill: var(--accent-color);
 }
