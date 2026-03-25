@@ -10,14 +10,9 @@ export const MainPage = () => {
   return (
     <div className={styles.mainPage}>
       <Header />
-      <AdsCarousel
-        autoPlay={true}
-        infinite={true}
-        limit={10}
-        onAdClick={(ad) => console.log("Ad clicked:", ad)}
-      />
+      <AdsCarousel autoPlay={true} infinite={true} limit={10} />
       <SoonEventsList />
-      <EventsList />
+      <EventsList listTitle="Мероприятия для вас" />
       <MainFooter />
     </div>
   );

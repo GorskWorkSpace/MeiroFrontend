@@ -7,7 +7,6 @@ import {
   selectAdsError,
   selectAdsLoading,
   selectAllAds,
-  type Ad,
 } from "../../../entities/ad";
 import { Carousel } from "../../../shared/ui/carousel/Carousel";
 import styles from "./AdsCarousel.module.css";
@@ -16,14 +15,12 @@ export interface AdsCarouselProps {
   autoPlay?: boolean;
   infinite?: boolean;
   limit?: number;
-  onAdClick?: (ad: Ad) => void;
   className?: string;
   skeletonCount?: number;
 }
 
 export const AdsCarousel: React.FC<AdsCarouselProps> = ({
   limit = 10,
-  onAdClick,
   className = "",
   skeletonCount = 3,
 }) => {
@@ -77,7 +74,7 @@ export const AdsCarousel: React.FC<AdsCarouselProps> = ({
     <div className={`${styles.adsDisplay} ${className}`}>
       <Carousel
         items={displayedAds}
-        renderItem={(ad) => <AdCard ad={ad} onClick={onAdClick} />}
+        renderItem={(ad) => <AdCard ad={ad} />}
         spaceBetween={8}
         slidesPerView="auto"
         loop={true}

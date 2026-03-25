@@ -10,11 +10,22 @@
 }
 
 .active {
-  color: #fff;
   background-color: var(--accent-color);
+  color: white;
 }
 
 .inactive {
-  color: var(--text-main);
-  background-color: var(--secondary-background);
+  background-color: var(--primary-background);
+  color: var(--text-secondary);
+}
+
+.usual {
+  background-color: #f1f3f7;
+  color: black;
+  padding: 8px 12px;
+}
+
+:global(.dark) .usual {
+  background-color: #ffffff;
+  color: black;
 }

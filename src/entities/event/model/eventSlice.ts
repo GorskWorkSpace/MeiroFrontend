@@ -4,14 +4,16 @@ import {
   fetchNextPageThunk,
   fetchSoonEventsThunk,
   toggleFavouriteThunk,
+  fetchEventByIdThunk, // Добавлен импорт
 } from "./eventThunks";
-import type { Event, EventFilters, EventState, SoonEvent } from "./types";
+import type { Event, EventFilters, EventState, SoonEvent, EventDetail } from "./types";
 
 const initialState: EventState = {
   allEvents: [],
   favouriteEvents: [],
   soonEvents: [],
   soonEventsCount: 0,
+  eventDetail: null, // Добавлено
   loading: false,
   loadingMore: false,
   error: null,
@@ -24,7 +26,6 @@ const initialState: EventState = {
     priceFrom: undefined,
     priceTo: undefined,
     countPlace: undefined,
-    // date: undefined — убираем дату
   },
 };
 
@@ -43,7 +44,9 @@ export const eventSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
-
+    clearEventDetail: (state) => { // Добавлен редюсер
+      state.eventDetail = null;
+    },
     setFilters: (state, action: PayloadAction<Partial<EventFilters>>) => {
       state.filters = {
         ...state.filters,
@@ -53,7 +56,6 @@ export const eventSlice = createSlice({
       state.allEvents = [];
       state.hasMore = true;
     },
-
     resetFilters: (state) => {
       state.filters = {
         page: 0,
@@ -67,7 +69,6 @@ export const eventSlice = createSlice({
       state.allEvents = [];
       state.hasMore = true;
     },
-
     resetEvents: (state) => {
       state.allEvents = [];
       state.filters.page = 0;
@@ -98,7 +99,6 @@ export const eventSlice = createSlice({
         state.allEvents = [];
         state.favouriteEvents = [];
       })
-
       .addCase(fetchNextPageThunk.pending, (state) => {
         state.loadingMore = true;
         state.error = null;
@@ -119,7 +119,6 @@ export const eventSlice = createSlice({
         state.loadingMore = false;
         state.error = action.payload as string;
       })
-
       .addCase(fetchSoonEventsThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -141,7 +140,24 @@ export const eventSlice = createSlice({
         state.soonEvents = [];
         state.soonEventsCount = 0;
       })
-
+      // Добавлен обработчик для fetchEventByIdThunk
+      .addCase(fetchEventByIdThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.eventDetail = null;
+      })
+      .addCase(
+        fetchEventByIdThunk.fulfilled,
+        (state, action: PayloadAction<EventDetail>) => {
+          state.loading = false;
+          state.eventDetail = action.payload;
+        },
+      )
+      .addCase(fetchEventByIdThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.eventDetail = null;
+      })
       .addCase(toggleFavouriteThunk.pending, (state, action) => {
         const eventId = action.meta.arg.id;
         const event = state.allEvents.find((e) => e.id === eventId);
@@ -188,7 +204,7 @@ export const eventSlice = createSlice({
   },
 });
 
-export const { clearError, setFilters, resetFilters, resetEvents } =
+export const { clearError, clearEventDetail, setFilters, resetFilters, resetEvents } =
   eventSlice.actions;
 
 // Селекторы
@@ -200,6 +216,8 @@ export const selectSoonEvents = (state: { event: EventState }) =>
   state.event.soonEvents;
 export const selectSoonEventsCount = (state: { event: EventState }) =>
   state.event.soonEventsCount;
+export const selectEventDetail = (state: { event: EventState }) => // Добавлен селектор
+  state.event.eventDetail;
 export const selectEventsLoading = (state: { event: EventState }) =>
   state.event.loading;
 export const selectEventsLoadingMore = (state: { event: EventState }) =>

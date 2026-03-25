@@ -42,7 +42,7 @@ export function Carousel<T>({
       spaceBetween={spaceBetween}
       slidesPerView={slidesPerView}
       loop={loop}
-      autoplay={autoplayConfig} //если не нужен передаем false, задержку менять здесь же
+      autoplay={autoplayConfig}
       grabCursor={true}
       onSlideChange={(swiper) => onSlideChange?.(swiper.activeIndex)}
       className={`${styles.carousel} ${className}`}

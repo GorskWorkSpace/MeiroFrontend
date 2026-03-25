@@ -95,6 +95,7 @@ export const FiltersList: React.FC<FiltersListProps> = ({
       {/* Категории - убираем onToggle, так как Accordion сам управляет своим состоянием */}
       <Accordion title="Категории" type="grid">
         <Tab
+          variant="accent"
           onClick={() => handleCategorySelect("Все")}
           isActive={isCategorySelected("Все")}
         >
@@ -103,6 +104,7 @@ export const FiltersList: React.FC<FiltersListProps> = ({
 
         {MOCK_CATEGORIES.map((category) => (
           <Tab
+            variant="accent"
             key={category}
             onClick={() => handleCategorySelect(category)}
             isActive={isCategorySelected(category)}
@@ -131,6 +133,7 @@ export const FiltersList: React.FC<FiltersListProps> = ({
       {/* Количество мест */}
       <Accordion title="Количество мест" type="grid">
         <Tab
+          variant="accent"
           onClick={() =>
             onLocalFiltersChange({ ...localFilters, countPlace: undefined })
           }
@@ -141,6 +144,7 @@ export const FiltersList: React.FC<FiltersListProps> = ({
 
         {COUNT_PLACE_OPTIONS.map((option) => (
           <Tab
+            variant="accent"
             key={option.value}
             onClick={() => handleCountPlaceSelect(option.value)}
             isActive={localFilters.countPlace === option.value}

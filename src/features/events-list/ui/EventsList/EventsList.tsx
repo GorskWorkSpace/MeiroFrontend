@@ -2,15 +2,15 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/store/hooks";
 import {
-  EventCard,
-  EventCardSkeleton,
-  fetchAllEventsThunk,
-  fetchNextPageThunk,
-  selectAllEvents,
-  selectEventFilters,
-  selectEventsLoading,
-  selectEventsLoadingMore,
-  selectHasMoreEvents,
+    EventCard,
+    EventCardSkeleton,
+    fetchAllEventsThunk,
+    fetchNextPageThunk,
+    selectAllEvents,
+    selectEventFilters,
+    selectEventsLoading,
+    selectEventsLoadingMore,
+    selectHasMoreEvents,
 } from "../../../../entities/event";
 import { Caption } from "../../../../shared/ui/caption";
 import { Title } from "../../../../shared/ui/title";
@@ -19,7 +19,11 @@ import { useInfiniteScroll } from "../../lib/useInfiniteScroll";
 import { EventsListSkeleton } from "../EventsListSkeleton/EventsListSkeleton";
 import styles from "./EventsList.module.css";
 
-export const EventsList = () => {
+interface EventsListProps {
+  listTitle: string;
+}
+
+export const EventsList = ({ listTitle }: EventsListProps) => {
   const dispatch = useAppDispatch();
   const events = useAppSelector(selectAllEvents);
   const isLoading = useAppSelector(selectEventsLoading);
@@ -53,7 +57,7 @@ export const EventsList = () => {
   return (
     <>
       <Title size={18} weight={500} className={styles.head}>
-        Мероприятия для вас
+        {listTitle}
       </Title>
       <div className={styles.flex}>
         <div className={styles.grid}>

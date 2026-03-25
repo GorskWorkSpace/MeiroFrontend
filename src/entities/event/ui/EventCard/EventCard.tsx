@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CalendarIcon, ImageIcon } from "../../../../shared/assets";
 import { Caption } from "../../../../shared/ui/caption";
 import { CategoryInfo } from "../../../../shared/ui/category-info";
@@ -34,8 +35,14 @@ export const EventCard = ({
     return () => observer.disconnect();
   }, []);
 
+  const navigate = useNavigate();
+
   return (
-    <div ref={cardRef} className={styles.cardContainer}>
+    <div
+      onClick={() => navigate(`/event/${event.id}`)}
+      ref={cardRef}
+      className={styles.cardContainer}
+    >
       <div
         className={styles.cardWrapper}
         style={{
@@ -59,7 +66,7 @@ export const EventCard = ({
         <Caption className={styles.date} size={12} weight={400}>
           <CalendarIcon /> {event.date}
         </Caption>
-        <Title size={16} weight={500} className={styles.title}>
+        <Title size={15} weight={400} className={styles.title}>
           {event.title}
         </Title>
       </div>

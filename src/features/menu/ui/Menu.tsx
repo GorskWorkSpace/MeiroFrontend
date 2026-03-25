@@ -2,7 +2,7 @@ import { HeartIcon, MenuIcon, SettingsIcon } from "../../../shared/assets";
 import { useState } from "react";
 import styles from "./Menu.module.css";
 import { Avatar } from "../../../shared/assets/icons/Avatar";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Modal } from "../../../shared/ui/modal";
 
 export const Menu = () => {
@@ -19,20 +19,20 @@ export const Menu = () => {
       <Modal isOpen={isOpen} onClose={onClose} title="Mеню">
         <div className={styles.content}>
           <Avatar />
-
           <nav className={styles.list}>
-            <Link to="#" className={styles.link}>
+            <NavLink to="#" className={styles.link}>
               <HeartIcon
                 isFavourite={false}
                 size="18"
                 color="var(--text-main)"
               />
               <p>Избранное</p>
-            </Link>
-            <Link to="/settings" className={styles.link}>
+            </NavLink>
+
+            <NavLink to="/settings" className={styles.link}>
               <SettingsIcon color="var(--text-main)" size="18" />
               <p>Настройки</p>
-            </Link>
+            </NavLink>
           </nav>
           <div className={styles.footer}>
             <a href="#" className={styles.link}>

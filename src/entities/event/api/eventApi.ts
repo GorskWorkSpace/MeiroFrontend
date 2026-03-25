@@ -1,6 +1,8 @@
 import { baseApi } from "../../../shared/api/baseApi";
-import { eventMocks, soonEventMocks } from "../model/eventMocks";
+// Добавлен импорт
+import { eventMocks, getEventDetailMock, soonEventMocks } from "../model/eventMocks";
 import type {
+  EventDetail,
   EventFilters,
   EventsResponse,
   FavouriteRequest,
@@ -94,6 +96,19 @@ export const fetchAllEvents = async (
 
   const { data } = await baseApi.get<EventsResponse>("/event/all", { params });
   return data;
+};
+
+// Добавлена новая функция
+export const fetchEventById = async (
+  id: string,
+): Promise<EventDetail | null> => {
+  if (USE_MOCKS) {
+    await delay(300);
+    return getEventDetailMock(id);
+  }
+
+  const { data } = await baseApi.get<{ event: EventDetail }>(`/event/${id}`);
+  return data.event;
 };
 
 export const toggleFavourite = async (

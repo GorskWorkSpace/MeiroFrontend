@@ -3,6 +3,7 @@ import {
   fetchAllEvents,
   fetchSoonEvents,
   toggleFavourite,
+  fetchEventById, // Добавлен импорт
 } from "../api/eventApi";
 import type { EventFilters, FavouriteRequest } from "./types";
 
@@ -56,6 +57,24 @@ export const fetchNextPageThunk = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(
         error instanceof Error ? error.message : "Failed to fetch next page",
+      );
+    }
+  },
+);
+
+// Добавлен новый thunk
+export const fetchEventByIdThunk = createAsyncThunk(
+  "event/fetchById",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const event = await fetchEventById(id);
+      if (!event) {
+        return rejectWithValue("Event not found");
+      }
+      return event;
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : "Failed to fetch event",
       );
     }
   },
