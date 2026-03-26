@@ -20,7 +20,7 @@ export const Menu = () => {
         <div className={styles.content}>
           <Avatar />
           <nav className={styles.list}>
-            <NavLink to="#" className={styles.link}>
+            <NavLink to="/event/my-events" className={styles.link}>
               <HeartIcon
                 isFavourite={false}
                 size="18"

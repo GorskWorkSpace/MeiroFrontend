@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   fetchAllEvents,
   fetchEventById,
+  fetchFavouriteEvents,
   fetchSoonEvents,
   toggleFavourite,
 } from "../api/eventApi";
@@ -38,6 +39,18 @@ export const fetchAllEventsThunk = createAsyncThunk(
         error instanceof Error ? error.message : "Failed to fetch events",
       );
     }
+  },
+);
+
+export const fetchAllEventsFavouriteThunk = createAsyncThunk(
+  "event/fetchAll",
+  async () => {
+    try {
+      const response = await fetchFavouriteEvents();
+      return {
+        events: response.events,
+      };
+    } catch (error) {}
   },
 );
 

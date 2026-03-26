@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import {
+  fetchAllEventsFavouriteThunk,
   fetchAllEventsThunk,
   fetchEventByIdThunk,
   fetchNextPageThunk,
@@ -26,7 +27,7 @@ const initialState: EventState = {
   hasMore: true,
   filters: {
     page: 0,
-    offset: 12,
+    offset: 24,
     category: undefined,
     search: undefined,
     priceFrom: undefined,
@@ -65,7 +66,7 @@ export const eventSlice = createSlice({
     resetFilters: (state) => {
       state.filters = {
         page: 0,
-        offset: 12,
+        offset: 24,
         category: undefined,
         search: undefined,
         priceFrom: undefined,
@@ -105,6 +106,25 @@ export const eventSlice = createSlice({
         state.allEvents = [];
         state.favouriteEvents = [];
       })
+
+      .addCase(fetchAllEventsFavouriteThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllEventsFavouriteThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload) state.allEvents = action.payload.events;
+        state.favouriteEvents = state.allEvents.filter(
+          (event) => event.isFavourite,
+        );
+      })
+      .addCase(fetchAllEventsFavouriteThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.allEvents = [];
+        state.favouriteEvents = [];
+      })
+
       .addCase(fetchNextPageThunk.pending, (state) => {
         state.loadingMore = true;
         state.error = null;
@@ -125,6 +145,7 @@ export const eventSlice = createSlice({
         state.loadingMore = false;
         state.error = action.payload as string;
       })
+
       .addCase(fetchSoonEventsThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -146,6 +167,7 @@ export const eventSlice = createSlice({
         state.soonEvents = [];
         state.soonEventsCount = 0;
       })
+
       .addCase(fetchEventByIdThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -163,6 +185,7 @@ export const eventSlice = createSlice({
         state.error = action.payload as string;
         state.eventDetail = null;
       })
+
       .addCase(toggleFavouriteThunk.pending, (state, action) => {
         const eventId = action.meta.arg.id;
         const event = state.allEvents.find((e) => e.id === eventId);

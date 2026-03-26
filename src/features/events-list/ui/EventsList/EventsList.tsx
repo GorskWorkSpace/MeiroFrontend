@@ -89,12 +89,6 @@ export const EventsList = ({ listTitle }: EventsListProps) => {
             </>
           )}
         </div>
-
-        {!hasMore && events.length > 0 && (
-          <Caption className={styles.endMessage}>
-            Больше нет мероприятий
-          </Caption>
-        )}
       </div>
     </>
   );
