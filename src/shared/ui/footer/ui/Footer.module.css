@@ -10,10 +10,11 @@
 }
 
 .content {
-  position: relative;
-  display: inline-flex;
+  display: flex;
+
   align-items: center;
-  isolation: isolate;
+  padding: 0 16px;
+  width: 100%;
   gap: 8px;
   pointer-events: auto;
   margin-bottom: calc(12px + env(safe-area-inset-bottom));

@@ -2,8 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
+  padding: 13.38px;
   border-radius: 9999px;
   background-color: var(--accent-color);
   color: #fff;

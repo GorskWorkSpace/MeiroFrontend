@@ -61,7 +61,7 @@ export const SoonEventsList: React.FC = () => {
     <section className={styles.section}>
       <div className={styles.title}>
         <Title size={18} weight={500}>
-          Вы идёте
+          Избранные
         </Title>
         <Caption size={16} variant="accent">
           Все ({count})
