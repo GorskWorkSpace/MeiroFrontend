@@ -43,7 +43,7 @@ export const fetchAllEventsThunk = createAsyncThunk(
 );
 
 export const fetchAllEventsFavouriteThunk = createAsyncThunk(
-  "event/fetchAll",
+  "event/fetchAllEventsFavouriteThunk",
   async () => {
     try {
       const response = await fetchFavouriteEvents();
