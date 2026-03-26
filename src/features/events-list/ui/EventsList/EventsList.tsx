@@ -12,7 +12,6 @@ import {
   selectEventsLoadingMore,
   selectHasMoreEvents,
 } from "../../../../entities/event";
-import { Caption } from "../../../../shared/ui/caption";
 import { Title } from "../../../../shared/ui/title";
 import { FavouriteButton } from "../../../favourite";
 import { useInfiniteScroll } from "../../lib/useInfiniteScroll";
