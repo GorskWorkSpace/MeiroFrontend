@@ -1,8 +1,10 @@
 .grid {
-  display: grid;
-  grid-template-columns: repeat(2, 165px);
-  justify-content: space-between;
-  row-gap: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  column-gap: 8px;
+  row-gap: 8px;
   width: 100%;
 }
 

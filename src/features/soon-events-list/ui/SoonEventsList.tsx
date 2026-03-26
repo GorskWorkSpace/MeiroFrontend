@@ -13,6 +13,7 @@ import { ArrowDownRightIcon } from "../../../shared/assets";
 import { Caption } from "../../../shared/ui/caption";
 import { Title } from "../../../shared/ui/title";
 import styles from "./SoonEventsList.module.css";
+import { useNavigate } from "react-router-dom";
 
 const EmptyCard: React.FC = () => {
   return (
@@ -35,6 +36,7 @@ export const SoonEventsList: React.FC = () => {
   const count = useAppSelector(selectSoonEventsCount);
   const loading = useAppSelector(selectEventsLoading);
   const firstItemRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchSoonEventsThunk());
@@ -59,7 +61,10 @@ export const SoonEventsList: React.FC = () => {
 
   return (
     <section className={styles.section}>
-      <div className={styles.title}>
+      <div
+        className={styles.title}
+        onClick={() => navigate("/event/my-events")}
+      >
         <Title size={18} weight={500}>
           Избранные
         </Title>

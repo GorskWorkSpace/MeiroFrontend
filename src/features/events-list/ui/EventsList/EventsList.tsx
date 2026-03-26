@@ -12,7 +12,6 @@ import {
   selectEventsLoadingMore,
   selectHasMoreEvents,
 } from "../../../../entities/event";
-import { Caption } from "../../../../shared/ui/caption";
 import { Title } from "../../../../shared/ui/title";
 import { FavouriteButton } from "../../../favourite";
 import { useInfiniteScroll } from "../../lib/useInfiniteScroll";
@@ -89,12 +88,6 @@ export const EventsList = ({ listTitle }: EventsListProps) => {
             </>
           )}
         </div>
-
-        {!hasMore && events.length > 0 && (
-          <Caption className={styles.endMessage}>
-            Больше нет мероприятий
-          </Caption>
-        )}
       </div>
     </>
   );

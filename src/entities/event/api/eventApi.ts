@@ -16,6 +16,12 @@ import type {
 const USE_MOCKS = false;
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+export const fetchFavouriteEvents = async () => {
+  const { data } = await baseApi.get<EventsResponse>("/event/favourite/all");
+
+  return data;
+};
+
 export const fetchSoonEvents = async (): Promise<SoonEventsResponse> => {
   if (USE_MOCKS) {
     await delay(600);
