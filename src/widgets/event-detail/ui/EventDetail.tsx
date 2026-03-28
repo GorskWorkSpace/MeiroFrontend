@@ -64,7 +64,7 @@ export const EventDetail = () => {
   return (
     <div>
       <div className={styles.headerContainer}>
-        <ArrowLeftIcon onClick={() => navigate("/")} />
+        <ArrowLeftIcon onClick={() => navigate(-1)} />
         <p className={styles.logo}>MEIRO</p>
         <FavouriteButton eventId={eventId!} isFavourite={isFavourite} />
       </div>
