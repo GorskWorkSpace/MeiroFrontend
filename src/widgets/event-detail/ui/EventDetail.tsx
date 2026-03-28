@@ -13,6 +13,11 @@ import { FavouriteButton } from "../../../features/favourite";
 import { ArrowLeftIcon } from "../../../shared/assets";
 import { Carousel } from "../../../shared/ui/carousel/Carousel";
 import styles from "./EventDetail.module.css";
+import { Title } from "../../../shared/ui/title";
+import { Text } from "../../../shared/ui/text";
+import { Button } from "../../../shared/ui/button";
+import { selectIsLoading } from "../../../entities/event/model/eventSlice";
+import { EventDatailSkeleton } from "./skeleton/EventDatailSkeleton";
 
 export const EventDetail = () => {
   const { eventId } = useParams();
@@ -21,6 +26,7 @@ export const EventDetail = () => {
 
   const eventDetail = useAppSelector(selectEventDetail);
   const allEvents = useAppSelector(selectAllEvents);
+  const isLoading = useAppSelector(selectIsLoading);
 
   const event = allEvents.find((e) => e.id === eventId);
   const isFavourite = event?.isFavourite || false;
@@ -35,11 +41,25 @@ export const EventDetail = () => {
     };
   }, [dispatch, eventId]);
 
-  if (!eventDetail) {
-    return <div className={styles.notFound}>Событие не найдено</div>;
+  if (isLoading) {
+    return <EventDatailSkeleton />;
   }
 
-  const images = eventDetail.imgs || [];
+  if (!eventDetail && !isLoading) {
+    return (
+      <div className={styles.notFound}>
+        <Title size={16} weight={400}>
+          Error 404
+        </Title>{" "}
+        <Text size={16} weight={400}>
+          Событие не найдено
+        </Text>
+        <Button onClick={() => navigate("/")}>Вернуться на главную</Button>
+      </div>
+    );
+  }
+
+  const images = (eventDetail && eventDetail.imgs) || [];
 
   return (
     <div>
@@ -54,7 +74,11 @@ export const EventDetail = () => {
           items={images}
           renderItem={(img) => (
             <div className={styles.imageSlide}>
-              <img src={img} alt={eventDetail.title} className={styles.image} />
+              <img
+                src={img}
+                alt={(eventDetail && eventDetail.title) || ""}
+                className={styles.image}
+              />
             </div>
           )}
           spaceBetween={8}

@@ -72,4 +72,5 @@ export interface EventState {
   error: string | null;
   hasMore: boolean;
   filters: EventFilters;
+  isLoading: boolean;
 }

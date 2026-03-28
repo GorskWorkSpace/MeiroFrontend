@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: auto;
-  padding-top: 16px;
+  /* margin-top: auto; */
+  padding-top: 50px;
   background: var(--main-background-color);
   width: 100%;
 }

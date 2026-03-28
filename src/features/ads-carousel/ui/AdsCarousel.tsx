@@ -22,7 +22,7 @@ export interface AdsCarouselProps {
 export const AdsCarousel: React.FC<AdsCarouselProps> = ({
   limit = 10,
   className = "",
-  skeletonCount = 3,
+  skeletonCount = 5,
 }) => {
   const dispatch = useAppDispatch();
   const ads = useAppSelector(selectAllAds);

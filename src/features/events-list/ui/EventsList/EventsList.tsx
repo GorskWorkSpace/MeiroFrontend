@@ -47,7 +47,7 @@ export const EventsList = ({ listTitle }: EventsListProps) => {
     eventFilters.search,
   ]);
 
-  if (isLoading || events.length === 0) {
+  if (isLoading) {
     return <EventsListSkeleton />;
   }
 
@@ -56,6 +56,14 @@ export const EventsList = ({ listTitle }: EventsListProps) => {
       <Title size={18} weight={500} className={styles.head}>
         {listTitle}
       </Title>
+
+      {events.length === 0 && (
+        <div className={styles.noEvents}>
+          <Title size={16} weight={400} className={styles.noEventsTitle}>
+            Нет событий
+          </Title>
+        </div>
+      )}
       <div className={styles.flex}>
         <div className={styles.grid}>
           {events.map((event, index) => {

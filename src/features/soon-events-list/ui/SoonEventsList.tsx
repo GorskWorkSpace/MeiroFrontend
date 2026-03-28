@@ -15,9 +15,9 @@ import { Title } from "../../../shared/ui/title";
 import styles from "./SoonEventsList.module.css";
 import { useNavigate } from "react-router-dom";
 
-const EmptyCard: React.FC = () => {
+const EmptyCard: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   return (
-    <div className={styles.emptyCard}>
+    <div className={styles.emptyCard} onClick={onClick}>
       <div className={styles.emptyTitle}>
         <Title size={14} weight={500}>
           Все мероприятия
@@ -56,7 +56,7 @@ export const SoonEventsList: React.FC = () => {
     ...firstFiveEvents.map((event) => (
       <SoonEventCard key={event.id} event={event} />
     )),
-    <EmptyCard key="empty-card" />,
+    <EmptyCard key="empty-card" onClick={() => navigate("/event/my-events")} />,
   ];
 
   return (
