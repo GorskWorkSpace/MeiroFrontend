@@ -11,6 +11,7 @@ interface AccordionProps {
   onToggle?: () => void;
 }
 
+// Альтернативный вариант с использованием transform scaleY
 export const Accordion = ({
   title,
   children,
@@ -18,8 +19,7 @@ export const Accordion = ({
   isOpen: externalIsOpen,
   onToggle,
 }: AccordionProps) => {
-  const [internalIsOpen, setInternalIsOpen] = useState(false);
-
+  const [internalIsOpen, setInternalIsOpen] = useState(true);
   const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
 
   const toggleAccordion = () => {
@@ -37,12 +37,15 @@ export const Accordion = ({
           {title}
         </Title>
         <ArrowTopIcon
-          style={{ transform: isOpen ? "rotate(0deg)" : "rotate(180deg)" }}
+          style={{
+            transform: isOpen ? "rotate(180deg)" : "rotate(90deg)",
+            transition: "all 0.4s linear",
+          }}
         />
       </div>
-      {isOpen && (
+      <div className={`${styles.contentWrapper} ${isOpen ? styles.open : ""}`}>
         <div className={`${styles.content} ${styles[type]}`}>{children}</div>
-      )}
+      </div>
     </div>
   );
 };

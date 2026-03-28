@@ -6,6 +6,7 @@
   width: 320px;
   border-radius: 20px;
   position: relative;
+  padding: 20px;
 }
 
 .category {
@@ -17,10 +18,17 @@
 .adTitle {
   position: absolute;
   left: 20px;
+  right: 20px;
   bottom: 16px;
   font-family: "Unbounded", sans-serif;
   font-size: 16px;
   color: #fff;
   text-align: left;
-  max-width: 100px;
+  width: 250px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }

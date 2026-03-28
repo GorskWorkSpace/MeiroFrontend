@@ -8,7 +8,14 @@
   width: 160px;
   height: 250px;
   border-radius: 12px;
-  background-color: var(--skeleton);
+  background: linear-gradient(
+    90deg,
+    var(--skeleton) 25%,
+    var(--primary-background) 50%,
+    var(--skeleton) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
 }
 
 .description {
@@ -20,6 +27,22 @@
 .descriptionItem {
   width: 160px;
   height: 16px;
-  background-color: var(--skeleton);
+  background: linear-gradient(
+    90deg,
+    var(--skeleton) 25%,
+    var(--primary-background) 50%,
+    var(--skeleton) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
   border-radius: 24px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }

@@ -15,7 +15,14 @@
   margin-left: 4px;
   width: 100px;
   height: 20px;
-  background-color: var(--skeleton);
+  background: linear-gradient(
+    90deg,
+    var(--skeleton) 25%,
+    var(--primary-background) 50%,
+    var(--skeleton) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
   border-radius: 24px;
 }
 
@@ -23,13 +30,36 @@
   margin-right: 8px;
   width: 50px;
   height: 20px;
-  background-color: var(--skeleton);
+  background: linear-gradient(
+    90deg,
+    var(--skeleton) 25%,
+    var(--primary-background) 50%,
+    var(--skeleton) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
   border-radius: 24px;
 }
 
 .card {
   width: 320px;
   height: 112px;
-  background-color: var(--skeleton);
+  background: linear-gradient(
+    90deg,
+    var(--skeleton) 25%,
+    var(--primary-background) 50%,
+    var(--skeleton) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
   border-radius: 24px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }

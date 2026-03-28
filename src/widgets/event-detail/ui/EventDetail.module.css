@@ -34,3 +34,13 @@
   padding: 0 16px;
   margin-top: 24px;
 }
+
+.notFound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  height: 100vh;
+  padding: 0 16px;
+}

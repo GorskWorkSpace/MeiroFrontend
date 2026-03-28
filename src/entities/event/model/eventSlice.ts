@@ -21,6 +21,7 @@ const initialState: EventState = {
   soonEvents: [],
   soonEventsCount: 0,
   eventDetail: null,
+  isLoading: false,
   loading: false,
   loadingMore: false,
   error: null,
@@ -55,13 +56,12 @@ export const eventSlice = createSlice({
       state.eventDetail = null;
     },
     setFilters: (state, action: PayloadAction<Partial<EventFilters>>) => {
+      console.log(action.payload);
       state.filters = {
         ...state.filters,
         ...action.payload,
         page: 0,
       };
-      state.allEvents = [];
-      state.hasMore = true;
     },
     resetFilters: (state) => {
       state.filters = {
@@ -169,19 +169,19 @@ export const eventSlice = createSlice({
       })
 
       .addCase(fetchEventByIdThunk.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
         state.error = null;
-        state.eventDetail = null;
+        state.eventDetail = {} as EventDetail;
       })
       .addCase(
         fetchEventByIdThunk.fulfilled,
         (state, action: PayloadAction<EventDetail>) => {
-          state.loading = false;
+          state.isLoading = false;
           state.eventDetail = action.payload;
         },
       )
       .addCase(fetchEventByIdThunk.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload as string;
         state.eventDetail = null;
       })
@@ -263,5 +263,7 @@ export const selectFavouriteCount = (state: { event: EventState }) =>
   state.event.favouriteEvents.length;
 export const selectHasMoreEvents = (state: { event: EventState }) =>
   state.event.hasMore;
+export const selectIsLoading = (state: { event: EventState }) =>
+  state.event.isLoading;
 
 export default eventSlice.reducer;
