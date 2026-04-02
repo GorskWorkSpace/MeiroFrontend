@@ -24,6 +24,9 @@
 }
 
 .fullWidthButton button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 272px;
   height: 100%;
   border: none;
@@ -32,4 +35,15 @@
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
+}
+
+@media (min-width: 1020px) {
+  .content {
+    width: 300px;
+    gap: 0;
+  }
+  .wrapper {
+    justify-content: center;
+    padding-top: 30px;
+  }
 }

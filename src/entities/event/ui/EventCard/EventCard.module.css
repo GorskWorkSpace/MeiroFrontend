@@ -58,3 +58,19 @@
   text-overflow: ellipsis;
   word-break: break-word;
 }
+
+@media (min-width: 1020px) {
+  .cardContainer {
+    width: 310px;
+  }
+
+  .cardWrapper {
+    width: 310px;
+    height: 390px;
+  }
+
+  .empty {
+    width: 310px;
+    height: 390px;
+  }
+}

@@ -17,12 +17,15 @@ import { FavouriteButton } from "../../../favourite";
 import { useInfiniteScroll } from "../../lib/useInfiniteScroll";
 import { EventsListSkeleton } from "../EventsListSkeleton/EventsListSkeleton";
 import styles from "./EventsList.module.css";
+import { useMediaQuery } from "../../../../shared/lib/hooks/useMediaQuery";
 
 interface EventsListProps {
   listTitle: string;
 }
 
 export const EventsList = ({ listTitle }: EventsListProps) => {
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+
   const dispatch = useAppDispatch();
   const events = useAppSelector(selectAllEvents);
   const isLoading = useAppSelector(selectEventsLoading);
@@ -53,13 +56,17 @@ export const EventsList = ({ listTitle }: EventsListProps) => {
 
   return (
     <>
-      <Title size={18} weight={500} className={styles.head}>
+      <Title size={isDesktop ? 20 : 18} weight={500} className={styles.head}>
         {listTitle}
       </Title>
 
       {events.length === 0 && (
         <div className={styles.noEvents}>
-          <Title size={16} weight={400} className={styles.noEventsTitle}>
+          <Title
+            size={isDesktop ? 18 : 16}
+            weight={400}
+            className={styles.noEventsTitle}
+          >
             Нет событий
           </Title>
         </div>

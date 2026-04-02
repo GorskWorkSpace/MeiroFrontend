@@ -10,16 +10,17 @@ import {
 import { fetchSoonEventsThunk } from "../../../entities/event/model/eventThunks";
 import { SoonEventCard } from "../../../entities/event/ui/SoonEventCard/SoonEventCard";
 import { ArrowDownRightIcon } from "../../../shared/assets";
-import { Caption } from "../../../shared/ui/caption";
 import { Title } from "../../../shared/ui/title";
 import styles from "./SoonEventsList.module.css";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "../../../shared/lib/hooks/useMediaQuery";
 
 const EmptyCard: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
   return (
     <div className={styles.emptyCard} onClick={onClick}>
       <div className={styles.emptyTitle}>
-        <Title size={14} weight={500}>
+        <Title size={isDesktop ? 20 : 18} weight={500}>
           Все мероприятия
         </Title>
       </div>
@@ -37,6 +38,7 @@ export const SoonEventsList: React.FC = () => {
   const loading = useAppSelector(selectEventsLoading);
   const firstItemRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   useEffect(() => {
     dispatch(fetchSoonEventsThunk());
@@ -65,12 +67,12 @@ export const SoonEventsList: React.FC = () => {
         className={styles.title}
         onClick={() => navigate("/event/my-events")}
       >
-        <Title size={18} weight={500}>
+        <Title size={isDesktop ? 20 : 18} weight={500}>
           Избранные
         </Title>
-        <Caption size={16} variant="accent">
+        <Title className={styles.all} variant="accent">
           Все ({count})
-        </Caption>
+        </Title>
       </div>
 
       <div className={styles.soonEvents}>

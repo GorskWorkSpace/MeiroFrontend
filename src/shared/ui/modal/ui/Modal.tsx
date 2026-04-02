@@ -1,7 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import styles from "./Modal.module.css";
-
 import { CloseIcon } from "../../../assets";
 import { Title } from "../../title";
 

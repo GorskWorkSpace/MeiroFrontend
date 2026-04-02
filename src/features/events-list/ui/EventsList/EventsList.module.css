@@ -27,3 +27,11 @@
 .noEventsTitle {
   text-align: center;
 }
+
+@media (min-width: 1020px) {
+  .grid {
+    max-width: none;
+    column-gap: 10px;
+    row-gap: 30px;
+  }
+}

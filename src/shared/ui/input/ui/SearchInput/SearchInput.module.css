@@ -42,3 +42,9 @@ input::placeholder {
   color: var(--icon-color);
   opacity: 1;
 }
+
+@media (min-width: 1020px) {
+  .wrapper {
+    width: 250px;
+  }
+}

@@ -2,3 +2,7 @@
   font-family: "Unbounded", sans-serif;
   color: var(--text-main);
 }
+
+.accent {
+  color: var(--accent-color);
+}

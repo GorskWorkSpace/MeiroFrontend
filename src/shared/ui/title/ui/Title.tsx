@@ -5,13 +5,20 @@ interface TitleProps {
   className?: string;
   size?: number;
   weight?: 400 | 500 | 600 | 700 | 800 | 900;
+  variant?: "" | "accent";
 }
 
-export const Title = ({ children, className, size, weight }: TitleProps) => {
+export const Title = ({
+  children,
+  className,
+  size,
+  weight,
+  variant = "",
+}: TitleProps) => {
   return (
     <p
       style={{ fontSize: size, fontWeight: weight }}
-      className={`${styles.font} ${className || ""}`}
+      className={`${styles.font} ${styles[variant] || ""} ${className}`.trim()}
     >
       {children}
     </p>

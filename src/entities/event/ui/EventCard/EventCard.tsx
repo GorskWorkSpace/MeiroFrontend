@@ -6,6 +6,7 @@ import { CategoryInfo } from "../../../../shared/ui/category-info";
 import { Title } from "../../../../shared/ui/title";
 import type { Event } from "../../model/types";
 import styles from "./EventCard.module.css";
+import { useMediaQuery } from "../../../../shared/lib/hooks/useMediaQuery";
 
 interface EventCardProps {
   event: Event;
@@ -20,6 +21,8 @@ export const EventCard = ({
 }: EventCardProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -63,10 +66,14 @@ export const EventCard = ({
       </div>
 
       <div className={styles.descriptionContainer}>
-        <Caption className={styles.date} size={12} weight={400}>
+        <Caption
+          className={styles.date}
+          size={isDesktop ? 14 : 12}
+          weight={400}
+        >
           <CalendarIcon /> {event.date}
         </Caption>
-        <Title size={15} weight={400} className={styles.title}>
+        <Title size={isDesktop ? 16 : 15} weight={400} className={styles.title}>
           {event.title}
         </Title>
       </div>

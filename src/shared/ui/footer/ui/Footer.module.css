@@ -9,9 +9,13 @@
   z-index: 50;
 }
 
+.filterFooter {
+  display: flex;
+  justify-content: center;
+}
+
 .content {
   display: flex;
-
   align-items: center;
   padding: 0 16px;
   width: 100%;
@@ -38,4 +42,14 @@
   mask-image: radial-gradient(ellipse at center, black 10%, transparent 75%);
   z-index: -1;
   pointer-events: none;
+}
+
+@media (min-width: 1020px) {
+  .content {
+    flex-direction: row-reverse;
+  }
+  .content::before {
+    backdrop-filter: none;
+    background: none;
+  }
 }
