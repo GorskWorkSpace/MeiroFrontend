@@ -2,8 +2,7 @@ import { useAppSelector } from "../../../app/store/hooks";
 import { selectEventDetail } from "../../../entities/event";
 import { selectIsLoading } from "../../../entities/event/model/eventSlice";
 import { Menu } from "../../../features/menu/ui/Menu";
-import { SignUpEvent } from "../../../features/sign-up-event/ui/SignUpEvent";
-import { Footer } from "../../../shared/ui/footer";
+import styles from "./DetailFooter.module.css";
 
 export const DetailFooter = () => {
   const isLoading = useAppSelector(selectIsLoading);
@@ -14,9 +13,8 @@ export const DetailFooter = () => {
   }
 
   return (
-    <Footer>
-      <SignUpEvent />
+    <div className={styles.footer}>
       <Menu />
-    </Footer>
+    </div>
   );
 };

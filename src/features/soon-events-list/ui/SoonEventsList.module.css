@@ -105,3 +105,10 @@
     height: 112px;
   }
 }
+
+@media (min-width: 1020px) {
+  .emptyCard {
+    width: 400px;
+    height: 150px;
+  }
+}

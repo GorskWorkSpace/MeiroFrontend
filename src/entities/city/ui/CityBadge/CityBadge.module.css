@@ -9,3 +9,9 @@
 .city:hover {
   color: var(--accent-color);
 }
+
+@media (min-width: 1020px) {
+  .city {
+    font-size: 20px;
+  }
+}

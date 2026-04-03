@@ -3,6 +3,7 @@ import { setFilters } from "../../../../entities/event";
 import { Button } from "../../../../shared/ui/button";
 import { Footer } from "../../../../shared/ui/footer";
 import { ResetFilters } from "../ResetFilters/ResetFilters";
+import { useMediaQuery } from "../../../../shared/lib/hooks/useMediaQuery";
 import styles from "./FilterFooter.module.css";
 
 interface FilterFooterProps {
@@ -17,6 +18,7 @@ interface FilterFooterProps {
 
 export const FilterFooter = ({ onClose, localFilters }: FilterFooterProps) => {
   const dispatch = useDispatch();
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const handleShow = () => {
     dispatch(
@@ -32,7 +34,7 @@ export const FilterFooter = ({ onClose, localFilters }: FilterFooterProps) => {
 
   return (
     <div className={styles.wrapper}>
-      <Footer>
+      <Footer classFoot={isDesktop ? "filterFooter" : "footerWrapper"}>
         <div className={styles.content}>
           <div className={styles.fullWidthButton}>
             <Button className={styles.buttonFullWidth} onClick={handleShow}>

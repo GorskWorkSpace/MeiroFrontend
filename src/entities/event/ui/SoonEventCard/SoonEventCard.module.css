@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 80px 1fr;
   flex-direction: row;
+  align-items: center;
   gap: 16px;
   padding: 16px;
   background-color: var(--secondary-background);
@@ -50,4 +51,17 @@
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-word;
+}
+
+@media (min-width: 1020px) {
+  .cardContainer {
+    width: 400px;
+    height: 150px;
+  }
+
+  .image {
+    width: 150px;
+    height: 90px;
+    border-radius: 20px;
+  }
 }

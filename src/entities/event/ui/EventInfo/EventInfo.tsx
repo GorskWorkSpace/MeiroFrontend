@@ -7,6 +7,7 @@ import { Tab } from "../../../../shared/ui/tab";
 import { Text } from "../../../../shared/ui/text";
 import { Title } from "../../../../shared/ui/title";
 import { selectEventDetail } from "../../model/eventSlice";
+import { SignUpEvent } from "../../../../features/sign-up-event/ui/SignUpEvent";
 import styles from "./EventInfo.module.css";
 
 export const EventInfo = () => {
@@ -150,6 +151,7 @@ export const EventInfo = () => {
           </a>
         </div>
       )}
+      <SignUpEvent />
     </div>
   );
 };

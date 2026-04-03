@@ -9,8 +9,12 @@ import {
 } from "../../../entities/city";
 import { ChangeCityModal } from "../../../features/change-city";
 import styles from "./Header.module.css";
+import { SearchEvents } from "../../../features/search-events";
+import { useMediaQuery } from "../../../shared/lib/hooks/useMediaQuery";
 
 export const Header = () => {
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+
   const dispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -27,23 +31,44 @@ export const Header = () => {
     }
     return localStorage.getItem("selectedCity") || "Выберите город";
   };
-
-  return (
-    <div>
-      <div className={styles.headerContainer}>
-        <p className={styles.logo}>MEIRO</p>
-        {loading && !selectedCity && !localStorage.getItem("selectedCity") ? (
-          <CityBadgeSkeleton />
-        ) : (
-          <CityBadge onClick={() => setIsModalOpen(true)}>
-            {getCityDisplay()}
-          </CityBadge>
-        )}
+  if (isDesktop) {
+    return (
+      <div>
+        <div className={styles.headerContainer}>
+          <p className={styles.logo}>MEIRO</p>
+          <SearchEvents />
+          {loading && !selectedCity && !localStorage.getItem("selectedCity") ? (
+            <CityBadgeSkeleton />
+          ) : (
+            <CityBadge onClick={() => setIsModalOpen(true)}>
+              {getCityDisplay()}
+            </CityBadge>
+          )}
+        </div>
+        <ChangeCityModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </div>
-      <ChangeCityModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div>
+        <div className={styles.headerContainer}>
+          <p className={styles.logo}>MEIRO</p>
+          {loading && !selectedCity && !localStorage.getItem("selectedCity") ? (
+            <CityBadgeSkeleton />
+          ) : (
+            <CityBadge onClick={() => setIsModalOpen(true)}>
+              {getCityDisplay()}
+            </CityBadge>
+          )}
+        </div>
+        <ChangeCityModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      </div>
+    );
+  }
 };

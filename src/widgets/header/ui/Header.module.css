@@ -11,3 +11,9 @@
   color: var(--accent-color);
   font-weight: 800;
 }
+
+@media (min-width: 1020px) {
+  .logo {
+    font-size: 27px;
+  }
+}

@@ -32,3 +32,10 @@
   text-overflow: ellipsis;
   word-break: break-word;
 }
+
+@media (min-width: 1024px) {
+  .blockWrapper {
+    height: 280px;
+    width: 500px;
+  }
+}
