@@ -66,11 +66,7 @@ export const EventCard = ({
       </div>
 
       <div className={styles.descriptionContainer}>
-        <Caption
-          className={styles.date}
-          size={isDesktop ? 14 : 12}
-          weight={400}
-        >
+        <Caption className={styles.date} weight={400}>
           <CalendarIcon /> {event.date}
         </Caption>
         <Title size={isDesktop ? 16 : 15} weight={400} className={styles.title}>
