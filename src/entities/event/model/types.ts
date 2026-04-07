@@ -41,6 +41,7 @@ export interface EventFilters {
   priceFrom?: number;
   priceTo?: number;
   countPlace?: "many" | "little";
+  eventId?: string;
 }
 
 export interface EventDetail {
