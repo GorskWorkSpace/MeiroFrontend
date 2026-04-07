@@ -102,6 +102,7 @@ export const fetchAllEvents = async (
   if (filters.priceTo !== undefined)
     params.append("priceTo", filters.priceTo.toString());
   if (filters.countPlace) params.append("countPlace", filters.countPlace);
+  if (filters.eventId) params.append("eventId", filters.eventId);
 
   const { data } = await baseApi.get<EventsResponse>("/event/all", { params });
   return data;

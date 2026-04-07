@@ -18,6 +18,7 @@ import { useInfiniteScroll } from "../../lib/useInfiniteScroll";
 import { EventsListSkeleton } from "../EventsListSkeleton/EventsListSkeleton";
 import styles from "./EventsList.module.css";
 import { useMediaQuery } from "../../../../shared/lib/hooks/useMediaQuery";
+import { useParams } from "react-router-dom";
 
 interface EventsListProps {
   listTitle: string;
@@ -33,6 +34,8 @@ export const EventsList = ({ listTitle }: EventsListProps) => {
   const hasMore = useAppSelector(selectHasMoreEvents);
   const eventFilters = useAppSelector(selectEventFilters);
 
+  const { eventId } = useParams();
+
   const { preLastElementRef } = useInfiniteScroll({
     hasMore,
     isLoading,
@@ -41,7 +44,7 @@ export const EventsList = ({ listTitle }: EventsListProps) => {
   });
 
   useEffect(() => {
-    dispatch(fetchAllEventsThunk(eventFilters));
+    dispatch(fetchAllEventsThunk({ ...eventFilters, eventId }));
   }, [
     eventFilters.category,
     eventFilters.countPlace,
