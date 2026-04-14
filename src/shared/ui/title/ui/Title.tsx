@@ -16,11 +16,11 @@ export const Title = ({
   variant = "",
 }: TitleProps) => {
   return (
-    <p
+    <h1
       style={{ fontSize: size, fontWeight: weight }}
       className={`${styles.font} ${styles[variant] || ""} ${className}`.trim()}
     >
       {children}
-    </p>
+    </h1>
   );
 };

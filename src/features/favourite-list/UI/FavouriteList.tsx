@@ -13,9 +13,9 @@ export const FavouriteList = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <section className={styles.container}>
       <Title className={styles.head}>Избранные мероприятия</Title>
       <EventList />
-    </div>
+    </section>
   );
 };

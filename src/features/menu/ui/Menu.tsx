@@ -12,7 +12,7 @@ export const Menu = () => {
   };
 
   return (
-    <>
+    <dialog>
       <button className={styles.iconWrapper} onClick={() => setIsOpen(true)}>
         <MenuIcon />
       </button>
@@ -48,6 +48,6 @@ export const Menu = () => {
           </div>
         </div>
       </Modal>
-    </>
+    </dialog>
   );
 };
