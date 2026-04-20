@@ -10,9 +10,11 @@ export const MainPage = () => {
   return (
     <div className={styles.mainPage}>
       <Header />
-      <AdsCarousel autoPlay={true} infinite={true} limit={10} />
-      <SoonEventsList />
-      <EventsList listTitle="Мероприятия для вас" />
+      <main>
+        <AdsCarousel autoPlay={true} infinite={true} limit={10} />
+        <SoonEventsList />
+        <EventsList listTitle="Мероприятия для вас" />
+      </main>
       <MainFooter />
     </div>
   );

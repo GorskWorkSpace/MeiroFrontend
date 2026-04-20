@@ -8,25 +8,27 @@ export const EventList = () => {
   const events = useAppSelector(selectAllEvents);
 
   return (
-    <div className={styles.flex}>
-      <div className={styles.grid}>
-        {events.map((event) => {
-          return (
-            <div key={event.id}>
-              <EventCard
-                event={event}
-                category={event.category}
-                favouriteButton={
-                  <FavouriteButton
-                    eventId={event.id}
-                    isFavourite={event.isFavourite}
-                  />
-                }
-              />
-            </div>
-          );
-        })}
+    <article>
+      <div className={styles.flex}>
+        <div className={styles.grid}>
+          {events.map((event) => {
+            return (
+              <div key={event.id}>
+                <EventCard
+                  event={event}
+                  category={event.category}
+                  favouriteButton={
+                    <FavouriteButton
+                      eventId={event.id}
+                      isFavourite={event.isFavourite}
+                    />
+                  }
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </article>
   );
 };

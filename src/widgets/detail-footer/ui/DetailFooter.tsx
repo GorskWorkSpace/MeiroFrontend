@@ -13,8 +13,8 @@ export const DetailFooter = () => {
   }
 
   return (
-    <div className={styles.footer}>
+    <footer className={styles.footer}>
       <Menu />
-    </div>
+    </footer>
   );
 };

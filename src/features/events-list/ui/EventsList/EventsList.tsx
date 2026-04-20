@@ -58,7 +58,7 @@ export const EventsList = ({ listTitle }: EventsListProps) => {
   }
 
   return (
-    <>
+    <article>
       <Title size={isDesktop ? 20 : 18} weight={500} className={styles.head}>
         {listTitle}
       </Title>
@@ -107,6 +107,6 @@ export const EventsList = ({ listTitle }: EventsListProps) => {
           )}
         </div>
       </div>
-    </>
+    </article>
   );
 };

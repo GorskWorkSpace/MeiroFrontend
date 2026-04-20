@@ -33,7 +33,7 @@ export const Header = () => {
   };
   if (isDesktop) {
     return (
-      <div>
+      <header>
         <div className={styles.headerContainer}>
           <p className={styles.logo}>MEIRO</p>
           <SearchEvents />
@@ -49,11 +49,11 @@ export const Header = () => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         />
-      </div>
+      </header>
     );
   } else {
     return (
-      <div>
+      <header>
         <div className={styles.headerContainer}>
           <p className={styles.logo}>MEIRO</p>
           {loading && !selectedCity && !localStorage.getItem("selectedCity") ? (
@@ -68,7 +68,7 @@ export const Header = () => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         />
-      </div>
+      </header>
     );
   }
 };
