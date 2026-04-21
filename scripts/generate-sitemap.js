@@ -8,12 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const HOSTNAME = "https://meiro-event.ru";
 
 // СПИСОК МАРШРУТОВ — ДОБАВЛЯЙ СЮДА ВСЕ СТРАНИЦЫ
-const sitemapRoutes = [
-  "/",
-  "/settings",
-  "/event/my-events",
-  // Добавь сюда все статические страницы
-];
+const sitemapRoutes = ["/"];
 
 async function generateSitemap() {
   console.log("🔄 Генерация sitemap.xml...");
