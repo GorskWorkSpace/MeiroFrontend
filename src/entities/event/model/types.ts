@@ -60,6 +60,7 @@ export interface EventDetail {
   organisation?: Record<string, unknown>;
   participantsImg?: string[];
   urlEvent?: string;
+  isFavourite?: boolean;
 }
 
 export interface EventState {
