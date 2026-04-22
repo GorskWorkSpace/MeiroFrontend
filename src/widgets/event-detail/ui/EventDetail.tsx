@@ -5,7 +5,6 @@ import {
   clearEventDetail,
   EventInfo,
   fetchEventByIdThunk,
-  selectAllEvents,
   selectEventDetail,
 } from "../../../entities/event";
 import { EventsList } from "../../../features/events-list";
@@ -25,11 +24,7 @@ export const EventDetail = () => {
   const navigate = useNavigate();
 
   const eventDetail = useAppSelector(selectEventDetail);
-  const allEvents = useAppSelector(selectAllEvents);
   const isLoading = useAppSelector(selectIsLoading);
-
-  const event = allEvents.find((e) => e.id === eventId);
-  const isFavourite = event?.isFavourite || false;
 
   useEffect(() => {
     if (eventId) {
@@ -66,7 +61,10 @@ export const EventDetail = () => {
       <div className={styles.headerContainer}>
         <ArrowLeftIcon onClick={() => navigate(-1)} />
         <p className={styles.logo}>MEIRO</p>
-        <FavouriteButton eventId={eventId!} isFavourite={isFavourite} />
+        <FavouriteButton
+          eventId={eventId!}
+          isFavourite={eventDetail?.isFavourite || false}
+        />
       </div>
 
       {images.length > 0 && (
