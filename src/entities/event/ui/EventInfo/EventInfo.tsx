@@ -105,7 +105,7 @@ export const EventInfo = () => {
         </div>
       )}
 
-      {eventDetail.countPlaceAll && (
+      {eventDetail.countPlaceAll !== 0 && (
         <div className={styles.countPlaceСontainer}>
           <Title size={18} weight={500}>
             Количество мест
@@ -119,12 +119,14 @@ export const EventInfo = () => {
             </div>
             <ProgressBar
               items={eventDetail.countPlace || 0}
-              itemsAll={eventDetail.countPlaceAll}
+              itemsAll={eventDetail.countPlaceAll || 0}
             />
             {(() => {
               const left =
-                eventDetail.countPlaceAll - (eventDetail.countPlace || 0);
-              const isLessThanHalf = left < eventDetail.countPlaceAll / 2;
+                (eventDetail.countPlaceAll || 0) -
+                (eventDetail.countPlace || 0);
+              const isLessThanHalf =
+                left < (eventDetail.countPlaceAll || 0) / 2;
               const textColor = isLessThanHalf ? "#F84A00" : "#00A55E";
               const equal =
                 eventDetail.countPlace === eventDetail.countPlaceAll;
