@@ -28,7 +28,7 @@ const initialState: EventState = {
   hasMore: true,
   filters: {
     page: 0,
-    offset: 24,
+    offset: 12,
     category: undefined,
     search: undefined,
     priceFrom: undefined,
@@ -66,7 +66,7 @@ export const eventSlice = createSlice({
     resetFilters: (state) => {
       state.filters = {
         page: 0,
-        offset: 24,
+        offset: 12,
         category: undefined,
         search: undefined,
         priceFrom: undefined,
@@ -90,10 +90,9 @@ export const eventSlice = createSlice({
       })
       .addCase(
         fetchAllEventsThunk.fulfilled,
-        (state, action: PayloadAction<{ events: Event[]; page: number }>) => {
+        (state, action: PayloadAction<{ events: Event[] }>) => {
           state.loading = false;
           state.allEvents = action.payload.events;
-          state.filters.page = action.payload.page;
           state.hasMore = action.payload.events.length === 12;
           state.favouriteEvents = state.allEvents.filter(
             (event) => event.isFavourite,
@@ -134,7 +133,6 @@ export const eventSlice = createSlice({
         (state, action: PayloadAction<{ events: Event[]; page: number }>) => {
           state.loadingMore = false;
           state.allEvents = [...state.allEvents, ...action.payload.events];
-          state.filters.page = action.payload.page;
           state.hasMore = action.payload.events.length === 12;
           state.favouriteEvents = state.allEvents.filter(
             (event) => event.isFavourite,

@@ -24,15 +24,12 @@ export const fetchSoonEventsThunk = createAsyncThunk(
 
 export const fetchAllEventsThunk = createAsyncThunk(
   "event/fetchAll",
-  async (
-    filters: EventFilters = { page: 0, offset: 12 },
-    { rejectWithValue },
-  ) => {
+  async (filters: EventFilters, { rejectWithValue }) => {
     try {
       const response = await fetchAllEvents(filters);
       return {
         events: response.events,
-        page: filters.page || 0,
+        // page: filters.page || 0,
       };
     } catch (error) {
       return rejectWithValue(
