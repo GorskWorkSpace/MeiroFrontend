@@ -22,7 +22,7 @@ export const AdCard: React.FC<AdCardProps> = ({ ad }) => {
   };
 
   return (
-    <div
+    <article
       className={styles.blockWrapper}
       style={{ backgroundImage: ad.img ? `url(${ad.img})` : "none" }}
       onClick={handleClick}
@@ -39,6 +39,6 @@ export const AdCard: React.FC<AdCardProps> = ({ ad }) => {
         <CategoryInfo>{ad.category}</CategoryInfo>
       </div>
       <div className={styles.adTitle}>{ad.title}</div>
-    </div>
+    </article>
   );
 };

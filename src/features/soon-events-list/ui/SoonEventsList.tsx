@@ -63,7 +63,7 @@ export const SoonEventsList: React.FC = () => {
 
   return (
     <section className={styles.section}>
-      <div
+      <article
         className={styles.title}
         onClick={() => navigate("/event/my-events")}
       >
@@ -73,9 +73,9 @@ export const SoonEventsList: React.FC = () => {
         <Title className={styles.all} variant="accent">
           Все ({count})
         </Title>
-      </div>
+      </article>
 
-      <div className={styles.soonEvents}>
+      <article className={styles.soonEvents}>
         {soonItems.map((item, idx) => (
           <div
             key={idx}
@@ -85,7 +85,7 @@ export const SoonEventsList: React.FC = () => {
             {item}
           </div>
         ))}
-      </div>
+      </article>
     </section>
   );
 };

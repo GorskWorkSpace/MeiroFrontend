@@ -9,16 +9,18 @@ export const EventMyPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <div className={styles.headerContainer}>
+    <>
+      <header className={styles.headerContainer}>
         <ArrowLeftIcon onClick={() => navigate("/")} />
-        <p className={styles.logo}>MEIRO</p>
+        <h1 className={styles.logo}>MEIRO</h1>
         <div></div>
-      </div>
-      <FavouriteList />
+      </header>
+      <main>
+        <FavouriteList />
+      </main>
       <Footer className={styles.footer}>
         <Menu />
       </Footer>
-    </div>
+    </>
   );
 };

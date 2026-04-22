@@ -58,40 +58,39 @@ export const EventDetail = () => {
 
   return (
     <div>
-      <div className={styles.headerContainer}>
+      <header className={styles.headerContainer}>
         <ArrowLeftIcon onClick={() => navigate(-1)} />
-        <p className={styles.logo}>MEIRO</p>
-        <FavouriteButton
-          eventId={eventId!}
-          isFavourite={eventDetail?.isFavourite || false}
-        />
-      </div>
-
-      {images.length > 0 && (
-        <Carousel
-          items={images}
-          renderItem={(img) => (
-            <div className={styles.imageSlide}>
-              <img
-                src={img}
-                alt={(eventDetail && eventDetail.title) || ""}
-                className={styles.image}
-              />
-            </div>
+        <h1 className={styles.logo}>MEIRO</h1>
+        <FavouriteButton eventId={eventId!} isFavourite={eventDetail?.isFavourite || false} />
+      </header>
+      <main>
+        <figure>
+          {images.length > 0 && (
+            <Carousel
+              items={images}
+              renderItem={(img) => (
+                <div className={styles.imageSlide}>
+                  <img
+                    src={img}
+                    alt={(eventDetail && eventDetail.title) || ""}
+                    className={styles.image}
+                  />
+                </div>
+              )}
+              spaceBetween={8}
+              slidesPerView={1}
+              loop={false}
+              autoplay={false}
+              slideClassName={styles.slide}
+              className={styles.carouselContainer}
+            />
           )}
-          spaceBetween={8}
-          slidesPerView={1}
-          loop={false}
-          autoplay={false}
-          slideClassName={styles.slide}
-          className={styles.carouselContainer}
-        />
-      )}
-
-      <EventInfo />
-      <div className={styles.others}>
-        <EventsList listTitle="Другие мероприятия" />
-      </div>
+        </figure>
+        <EventInfo />
+        <div className={styles.others}>
+          <EventsList listTitle="Другие мероприятия" />
+        </div>
+      </main>
     </div>
   );
 };
