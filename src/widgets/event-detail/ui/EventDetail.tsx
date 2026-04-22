@@ -56,12 +56,29 @@ export const EventDetail = () => {
 
   const images = (eventDetail && eventDetail.imgs) || [];
 
+  const handleGoBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <div>
       <header className={styles.headerContainer}>
-        <ArrowLeftIcon onClick={() => navigate(-1)} />
-        <h1 className={styles.logo}>MEIRO</h1>
-        <FavouriteButton eventId={eventId!} isFavourite={eventDetail?.isFavourite || false} />
+        <ArrowLeftIcon onClick={handleGoBack} />
+        <h1
+          className={styles.logo}
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
+        >
+          MEIRO
+        </h1>
+        <FavouriteButton
+          eventId={eventId!}
+          isFavourite={eventDetail?.isFavourite || false}
+        />
       </header>
       <main>
         <figure>
