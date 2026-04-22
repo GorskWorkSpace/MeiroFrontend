@@ -83,7 +83,7 @@ export const EventInfo = () => {
         </div>
       )}
 
-      {eventDetail.price && (
+      {eventDetail.price !== 0 && (
         <div className={styles.price}>
           <Title size={18} weight={500}>
             Стоимость участия
@@ -94,7 +94,18 @@ export const EventInfo = () => {
         </div>
       )}
 
-      {eventDetail.countPlace && eventDetail.countPlaceAll && (
+      {eventDetail.price === 0 && (
+        <div className={styles.price}>
+          <Title size={18} weight={500}>
+            Стоимость участия
+          </Title>
+          <Text size={24} weight={500} textColor="#554FFD">
+            Бесплатно
+          </Text>
+        </div>
+      )}
+
+      {eventDetail.countPlaceAll && (
         <div className={styles.countPlaceСontainer}>
           <Title size={18} weight={500}>
             Количество мест
@@ -107,11 +118,12 @@ export const EventInfo = () => {
               </p>
             </div>
             <ProgressBar
-              items={eventDetail.countPlace}
+              items={eventDetail.countPlace || 0}
               itemsAll={eventDetail.countPlaceAll}
             />
             {(() => {
-              const left = eventDetail.countPlaceAll - eventDetail.countPlace;
+              const left =
+                eventDetail.countPlaceAll - (eventDetail.countPlace || 0);
               const isLessThanHalf = left < eventDetail.countPlaceAll / 2;
               const textColor = isLessThanHalf ? "#F84A00" : "#00A55E";
               const equal =
