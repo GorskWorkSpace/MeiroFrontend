@@ -189,6 +189,12 @@ export const eventSlice = createSlice({
       .addCase(toggleFavouriteThunk.pending, (state, action) => {
         const eventId = action.meta.arg.id;
         const event = state.allEvents.find((e) => e.id === eventId);
+        const eventDetail = state.eventDetail;
+
+        if (eventDetail) {
+          eventDetail.isFavourite = !eventDetail.isFavourite;
+        }
+
         if (event) {
           event.isFavourite = !event.isFavourite;
         }
