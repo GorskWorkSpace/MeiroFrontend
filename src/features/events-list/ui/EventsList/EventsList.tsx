@@ -1,12 +1,11 @@
 // Без изменений, так как уже использует selectEventFilters
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/store/hooks";
 import {
   EventCard,
   EventCardSkeleton,
   fetchAllEventsThunk,
   fetchNextPageThunk,
-  resetFilters,
   selectAllEvents,
   selectEventFilters,
   selectEventsLoading,
@@ -43,10 +42,6 @@ export const EventsList = ({ listTitle }: EventsListProps) => {
     isLoadingMore,
     onLoadMore: () => dispatch(fetchNextPageThunk()),
   });
-
-  useEffect(() => {
-    dispatch(resetFilters());
-  }, []);
 
   useEffect(() => {
     dispatch(fetchAllEventsThunk({ ...eventFilters, eventId }));
