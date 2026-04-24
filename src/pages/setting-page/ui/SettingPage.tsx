@@ -1,6 +1,7 @@
 import { Menu } from "../../../features/menu/ui/Menu";
 import { useTheme } from "../../../features/theme-switcher/lib/useTheme";
 import { ArrowBack } from "../../../shared/ui/arrow-back/arrow-back";
+import { Seo } from "../../../shared/ui/Seo/seo";
 import { Switcher } from "../../../shared/ui/switcher";
 import { Title } from "../../../shared/ui/title";
 import styles from "./SettingPage.module.css";
@@ -9,6 +10,7 @@ export const SettingPage = () => {
   const { theme, toggleTheme } = useTheme();
   return (
     <>
+      <Seo title="Настройки" description="Настройки" />
       <div className={styles.container}>
         <div className={styles.header}>
           <ArrowBack color="#BEC9DA" size="24" />

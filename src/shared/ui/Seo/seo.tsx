@@ -14,11 +14,12 @@ const DEFAULT_IMAGE = `${SITE_URL}/og-image.jpg`;
 export const Seo = ({ title, description, image, url }: SeoProps) => {
   const pageUrl = url ? `${SITE_URL}${url}` : SITE_URL;
   const ogImage = image || DEFAULT_IMAGE;
+  const pageName = `${title} | MEIRO`;
 
   return (
     <Helmet>
       {/* Базовые */}
-      <title>{title} | Meiro </title>
+      <title>{pageName}</title>
       <meta name="description" content={description} />
 
       {/* Open Graph для соцсетей */}
