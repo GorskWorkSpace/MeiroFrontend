@@ -45,11 +45,11 @@ export const SoonEventCard = ({ event }: SoonEventCardProps) => {
         <div className={styles.description}>
           <Caption className={styles.descriptionItem}>
             <CalendarIcon />
-            {event.date}
+            <div className={styles.text}>{event.date}</div>
           </Caption>
           <Caption className={styles.descriptionItem}>
             <PinIcon />
-            {event.address}
+            <div className={styles.text}>{event.address}</div>
           </Caption>
         </div>
       </div>
