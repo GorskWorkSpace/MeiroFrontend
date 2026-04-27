@@ -5,17 +5,7 @@ import { Accordion } from "../../../../shared/ui/accordion/ui/Accordion";
 import { Input } from "../../../../shared/ui/input";
 import { Tab } from "../../../../shared/ui/tab";
 import styles from "./FiltersList.module.css";
-
-const MOCK_CATEGORIES = [
-  "Юмор",
-  "Концерт",
-  "Спектакль",
-  "Еда",
-  "Спорт",
-  "Образование",
-  "Бизнес",
-  "Другое",
-];
+import { useAppSelector } from "../../../../app/store/hooks";
 
 const COUNT_PLACE_OPTIONS: Array<{ value: "many" | "little"; label: string }> =
   [
@@ -38,6 +28,7 @@ export const FiltersList: React.FC<FiltersListProps> = ({
   onLocalFiltersChange,
 }) => {
   const appliedFilters = useSelector(selectEventFilters);
+  const categories = useAppSelector((state) => state.category.categories);
 
   useEffect(() => {
     onLocalFiltersChange({
@@ -48,19 +39,12 @@ export const FiltersList: React.FC<FiltersListProps> = ({
     });
   }, [appliedFilters, onLocalFiltersChange]);
 
-  const handleCategorySelect = (category: string) => {
-    if (category === "Все" || localFilters.category === category) {
-      onLocalFiltersChange({ ...localFilters, category: undefined });
-    } else {
-      onLocalFiltersChange({ ...localFilters, category });
-    }
+  const handleCategorySelect = (id: string) => {
+    onLocalFiltersChange({ ...localFilters, category: id });
   };
 
-  const isCategorySelected = (category: string) => {
-    if (category === "Все") {
-      return localFilters.category === undefined;
-    }
-    return localFilters.category === category;
+  const isCategorySelected = (id: string) => {
+    return localFilters.category === id;
   };
 
   const handleCountPlaceSelect = (value: "many" | "little") => {
@@ -98,14 +82,14 @@ export const FiltersList: React.FC<FiltersListProps> = ({
           Все
         </Tab>
 
-        {MOCK_CATEGORIES.map((category) => (
+        {categories.map((category) => (
           <Tab
             variant="accent"
-            key={category}
-            onClick={() => handleCategorySelect(category)}
-            isActive={isCategorySelected(category)}
+            key={category.categoryId}
+            onClick={() => handleCategorySelect(category.categoryId)}
+            isActive={isCategorySelected(category.categoryId)}
           >
-            {category}
+            {category.name}
           </Tab>
         ))}
       </Accordion>
