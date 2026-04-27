@@ -45,6 +45,6 @@ input::placeholder {
 
 @media (min-width: 1020px) {
   .wrapper {
-    width: 250px;
+    width: 600px;
   }
 }

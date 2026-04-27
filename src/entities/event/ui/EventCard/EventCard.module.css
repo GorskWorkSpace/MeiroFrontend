@@ -74,3 +74,13 @@
     height: 390px;
   }
 }
+
+@media (max-width: 366px) {
+  .cardWrapper {
+    width: 140px;
+    height: 200px;
+  }
+  .cardContainer {
+    width: 140px;
+  }
+}
