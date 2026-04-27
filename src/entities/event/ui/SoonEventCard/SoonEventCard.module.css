@@ -53,6 +53,15 @@
   word-break: break-word;
 }
 
+.descriptionItem {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+
 @media (min-width: 1020px) {
   .cardContainer {
     width: 400px;
