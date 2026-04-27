@@ -17,6 +17,7 @@ export const EventInfo = () => {
       navigator.share({
         url: window.location.href,
         title: eventDetail?.title,
+        text: eventDetail?.title,
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
