@@ -9,6 +9,11 @@
   border-radius: 24px;
   width: 340px;
   height: 112px;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+.cardContainer:hover {
+  transform: scale(1.02);
 }
 .image {
   width: 80px;
@@ -53,15 +58,36 @@
   word-break: break-word;
 }
 
+.text {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+
 @media (min-width: 1020px) {
   .cardContainer {
     width: 400px;
     height: 150px;
   }
 
+  .text {
+    font-size: 16px;
+  }
+
+  .title {
+    font-size: 24px !important;
+  }
+
   .image {
     width: 150px;
-    height: 90px;
+    height: 110px;
     border-radius: 20px;
+  }
+
+  .cardContainer {
+    grid-template-columns: 120px 1fr;
   }
 }
