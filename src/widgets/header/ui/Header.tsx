@@ -35,7 +35,7 @@ export const Header = () => {
     return (
       <header>
         <div className={styles.headerContainer}>
-          <p className={styles.logo}>MEIRO</p>
+          <h1 className={styles.logo}>MEIRO</h1>
           <SearchEvents />
           {loading && !selectedCity && !localStorage.getItem("selectedCity") ? (
             <CityBadgeSkeleton />

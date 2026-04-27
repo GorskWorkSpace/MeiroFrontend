@@ -25,10 +25,10 @@
 }
 
 .logo {
-  font-family: "Bounded";
+  font-family: "Unbounded", sans-serif;
   font-size: 24px;
   color: var(--accent-color);
-  font-weight: 600;
+  font-weight: 800;
 }
 
 .others {
