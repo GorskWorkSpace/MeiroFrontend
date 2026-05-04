@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store/hooks";
 import { toggleFavouriteThunk } from "../../../entities/event/model/eventThunks";
 import { HeartIcon } from "../../../shared/assets";
 import { selectIsFavouritePending } from "../model/favouriteSelectors";
 import styles from "./FavouriteButton.module.css";
+import { useMediaQuery } from "../../../shared/lib/hooks/useMediaQuery";
 
 interface FavouriteButtonProps {
   eventId: string;
@@ -18,6 +19,7 @@ export const FavouriteButton = ({
   const isPending = useAppSelector(selectIsFavouritePending(eventId));
   const isClickedRef = useRef(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -26,6 +28,11 @@ export const FavouriteButton = ({
       }
     };
   }, []);
+
+  const animatingClick = () => {
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 300);
+  };
 
   const handleClick = useCallback(
     (e: React.MouseEvent | React.TouchEvent) => {
@@ -37,6 +44,8 @@ export const FavouriteButton = ({
 
       isClickedRef.current = true;
 
+      animatingClick();
+
       timeoutRef.current = setTimeout(() => {
         isClickedRef.current = false;
       }, 300);
@@ -45,6 +54,8 @@ export const FavouriteButton = ({
     },
     [dispatch, eventId, isPending],
   );
+
+  const isMikrovolnovka = useMediaQuery("(max-width: 366px)");
 
   return (
     <button
@@ -55,7 +66,15 @@ export const FavouriteButton = ({
       type="button"
       aria-label={isFavourite ? "Убрать из избранного" : "Добавить в избранное"}
     >
-      <HeartIcon isFavourite={isFavourite} />
+      <div
+        className={`${styles.heartContainer} ${isAnimating ? styles.animate : ""}`}
+      >
+        <HeartIcon
+          isFavourite={isFavourite}
+          ClassName={isAnimating ? "heartIconAnimate" : ""}
+          size={isMikrovolnovka ? 16 : 16}
+        />
+      </div>
     </button>
   );
 };
