@@ -33,8 +33,22 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const applyTheme = (newTheme: Theme) => {
     if (newTheme === "dark") {
       document.documentElement.classList.add("dark");
+      updateThemeColor("#14181f");
     } else {
       document.documentElement.classList.remove("dark");
+      updateThemeColor("#ffffff");
+    }
+  };
+
+  const updateThemeColor = (color: string) => {
+    const metas = document.querySelectorAll('meta[name="theme-color"]');
+    if (metas.length > 0) {
+      metas.forEach((meta) => meta.setAttribute("content", color));
+    } else {
+      const meta = document.createElement("meta");
+      meta.setAttribute("name", "theme-color");
+      meta.setAttribute("content", color);
+      document.head.appendChild(meta);
     }
   };
 
