@@ -9,7 +9,7 @@ interface SeoProps {
 }
 
 const SITE_URL = "https://meiro-event.ru";
-const DEFAULT_IMAGE = `${SITE_URL}/og-image.jpg`;
+const DEFAULT_IMAGE = `${SITE_URL}/public/favicon.svg`;
 
 export const Seo = ({ title, description, image, url }: SeoProps) => {
   const pageUrl = url ? `${SITE_URL}${url}` : SITE_URL;

@@ -5,6 +5,9 @@ import "./globals.css";
 import { StoreProvider } from "./providers/StoreProvider.tsx";
 import { ThemeProvider } from "./providers/ThemeProvider.tsx";
 import { InitialProjectProvider } from "./providers/InitialProject.tsx";
+import { registerSW } from 'virtual:pwa-register'
+
+registerSW({ immediate: true })
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
