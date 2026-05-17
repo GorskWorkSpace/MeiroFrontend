@@ -110,3 +110,37 @@
   font-size: 16px;
   color: var(--accent-color);
 }
+
+.descriptionWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.description {
+  overflow: hidden;
+}
+
+.clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+.expanded {
+  display: block;
+}
+
+.moreButton {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+
+  font-family: "Geologica";
+  font-size: 14px;
+  font-weight: 500;
+
+  color: var(--accent-color);
+}

@@ -83,6 +83,7 @@ export const EventsList = ({ listTitle }: EventsListProps) => {
               <div
                 key={event.id}
                 ref={isPreLast ? preLastElementRef : undefined}
+                className={styles.container}
               >
                 <EventCard
                   event={event}

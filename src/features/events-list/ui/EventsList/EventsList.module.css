@@ -11,13 +11,16 @@
 }
 
 .grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: start;
-  column-gap: 8px;
-  row-gap: 20px;
-  max-width: 664px;
+  display: grid;
+  width: 100%;
+  min-width: 340px;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  justify-items: center;
+  gap: 20px;
+}
+
+.container {
+  width: 160px;
 }
 
 .noEvents {
@@ -30,8 +33,10 @@
 
 @media (min-width: 1020px) {
   .grid {
-    max-width: none;
-    column-gap: 10px;
-    row-gap: 30px;
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 350px));
+    justify-items: center;
+    gap: 20px;
   }
 }
