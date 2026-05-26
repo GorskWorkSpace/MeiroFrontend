@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../../../app/store/hooks";
 import { CalendarIcon, InfoIcon } from "../../../../shared/assets";
 import { ShareIcon } from "../../../../shared/assets/icons/ShareIcon";
@@ -12,6 +13,10 @@ import styles from "./EventInfo.module.css";
 
 export const EventInfo = () => {
   const eventDetail = useAppSelector(selectEventDetail);
+  const [expanded, setExpanded] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+
+  const descriptionRef = useRef<HTMLDivElement>(null);
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
@@ -24,6 +29,15 @@ export const EventInfo = () => {
       alert("Ссылка скопирована");
     }
   };
+
+  useEffect(() => {
+    const el = descriptionRef.current;
+
+    if (el) {
+      setShowMore(el.scrollHeight > el.clientHeight);
+    }
+  }, [eventDetail?.description]);
+
   if (!eventDetail) {
     return null;
   }
@@ -48,9 +62,27 @@ export const EventInfo = () => {
       )}
 
       {eventDetail.description && (
-        <Text size={16} weight={500}>
-          {eventDetail.description}
-        </Text>
+        <div className={styles.descriptionWrapper}>
+          <div
+            ref={descriptionRef}
+            className={`${styles.description} ${
+              expanded ? styles.expanded : styles.clamped
+            }`}
+          >
+            <Text size={16} weight={500}>
+              {eventDetail.description}
+            </Text>
+          </div>
+
+          {showMore && (
+            <button
+              className={styles.moreButton}
+              onClick={() => setExpanded((prev) => !prev)}
+            >
+              {expanded ? "Скрыть" : "Еще"}
+            </button>
+          )}
+        </div>
       )}
 
       {eventDetail.startDate && eventDetail.finishRegDate && (
