@@ -13,7 +13,7 @@ import { SearchEvents } from "../../../features/search-events";
 import { useMediaQuery } from "../../../shared/lib/hooks/useMediaQuery";
 
 export const Header = () => {
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const isDesktop = useMediaQuery("(min-width: 1020px)");
 
   const dispatch = useAppDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
