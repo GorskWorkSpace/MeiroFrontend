@@ -1,6 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store/hooks";
-
 import { SoonEventCardSkeleton } from "../../../entities/event";
 import {
   selectEventsLoading,
@@ -14,6 +13,7 @@ import { Title } from "../../../shared/ui/title";
 import styles from "./SoonEventsList.module.css";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "../../../shared/lib/hooks/useMediaQuery";
+import { useHorizontalScroll } from "../../../shared/lib/hooks/useHorizontSckroll";
 
 const EmptyCard: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
@@ -36,9 +36,12 @@ export const SoonEventsList: React.FC = () => {
   const events = useAppSelector(selectSoonEvents);
   const count = useAppSelector(selectSoonEventsCount);
   const loading = useAppSelector(selectEventsLoading);
-  const firstItemRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const isDesktop = useMediaQuery("(min-width: 1024px)");
+
+  const { containerRef, handlers, isDragging } = useHorizontalScroll({
+    speed: 20,
+  });
 
   useEffect(() => {
     dispatch(fetchSoonEventsThunk());
@@ -63,25 +66,27 @@ export const SoonEventsList: React.FC = () => {
 
   return (
     <section className={styles.section}>
-      <article
-        className={styles.title}
-        onClick={() => navigate("/event/my-events")}
-      >
+      <article className={styles.title}>
         <Title size={isDesktop ? 20 : 18} weight={500}>
           Избранные
         </Title>
-        <Title className={styles.all} variant="accent">
-          Все ({count})
-        </Title>
+        <span
+          onClick={() => navigate("/event/my-events")}
+          style={{ cursor: "pointer" }}
+        >
+          <Title className={styles.all} variant="accent">
+            Все ({count})
+          </Title>
+        </span>
       </article>
 
-      <article className={styles.soonEvents}>
+      <article
+        ref={containerRef}
+        className={`${styles.soonEvents} ${isDragging ? styles.dragging : ""}`}
+        {...handlers}
+      >
         {soonItems.map((item, idx) => (
-          <div
-            key={idx}
-            ref={idx === 0 ? firstItemRef : null}
-            className={styles.soonEventsElem}
-          >
+          <div key={idx} className={styles.soonEventsElem}>
             {item}
           </div>
         ))}

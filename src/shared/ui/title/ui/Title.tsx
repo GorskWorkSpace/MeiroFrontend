@@ -6,6 +6,8 @@ interface TitleProps {
   size?: number;
   weight?: 400 | 500 | 600 | 700 | 800 | 900;
   variant?: "" | "accent";
+  style?: React.CSSProperties; // ← добавляем
+  onClick?: () => void;
 }
 
 export const Title = ({

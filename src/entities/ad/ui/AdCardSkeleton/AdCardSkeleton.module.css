@@ -23,3 +23,10 @@
     background-position: -200% 0;
   }
 }
+
+@media (min-width: 1024px) {
+  .skeletonCard {
+    height: 280px;
+    width: 500px;
+  }
+}
