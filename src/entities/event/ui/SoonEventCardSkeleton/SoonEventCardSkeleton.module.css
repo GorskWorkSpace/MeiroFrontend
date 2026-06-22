@@ -63,3 +63,20 @@
     background-position: -200% 0;
   }
 }
+
+@media (min-width: 1020px) {
+  .card {
+    width: 400px;
+    height: 150px;
+  }
+
+  .image {
+    width: 150px;
+    height: 110px;
+    border-radius: 20px;
+  }
+
+  .cardContainer {
+    grid-template-columns: 120px 1fr;
+  }
+}

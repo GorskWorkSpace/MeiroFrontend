@@ -41,10 +41,11 @@
 }
 
 .empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 160px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+  width: 100%;
   height: 250px;
   border-radius: 12px;
   background-color: var(--secondary-background);
@@ -58,19 +59,3 @@
   text-overflow: ellipsis;
   word-break: break-word;
 }
-
-/* @media (min-width: 1020px) {
-  .cardContainer {
-    width: 310px;
-  }
-
-  .cardWrapper {
-    width: 310px;
-    height: 390px;
-  }
-
-  .empty {
-    width: 310px;
-    height: 390px;
-  }
-} */
