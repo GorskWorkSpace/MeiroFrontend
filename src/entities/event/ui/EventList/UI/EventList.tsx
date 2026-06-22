@@ -13,7 +13,7 @@ export const EventList = () => {
         <div className={styles.grid}>
           {events.map((event) => {
             return (
-              <div key={event.id}>
+              <div key={event.id} className={styles.container}>
                 <EventCard
                   event={event}
                   category={event.category}
