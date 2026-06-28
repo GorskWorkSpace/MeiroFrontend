@@ -41,7 +41,7 @@ export const Menu = () => {
             <a href="#" className={styles.link}>
               Пользовательское соглашение
             </a>
-            <a href="https://t.me/dayr1man" className={styles.link}>
+            <a href="https://t.me/da1ryman" className={styles.link}>
               Поддержка
             </a>
             <p className={styles.anyText}> &copy; 2026</p>
