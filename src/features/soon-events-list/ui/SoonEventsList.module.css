@@ -4,16 +4,15 @@
   gap: 24px;
   margin: 0 auto 32px auto;
   box-sizing: border-box;
-  overflow: hidden;
   width: 100%;
   max-width: 100%;
+  overflow: visible;
 }
 
 .title {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0 16px;
   width: 100%;
   box-sizing: border-box;
 }
@@ -36,13 +35,14 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 8px 16px;
-  padding-bottom: 12px;
-  width: 100%;
-  box-sizing: border-box;
   user-select: none;
   -webkit-user-select: none;
   cursor: grab;
+  margin: 0 -16px;
+  padding: 8px 16px;
+
+  box-sizing: border-box;
+  position: relative;
 }
 
 .soonEvents::-webkit-scrollbar {
@@ -132,8 +132,8 @@
 
 @media (max-width: 768px) {
   .soonEvents {
-    padding: 12px 16px;
     gap: 8px;
+    margin: 0 -16px;
   }
 
   .soonEventsElem {
@@ -157,6 +157,7 @@
   .soonEvents {
     gap: 8px;
     padding: 8px 32px;
+    margin: 0 -32px;
   }
 
   .title {
