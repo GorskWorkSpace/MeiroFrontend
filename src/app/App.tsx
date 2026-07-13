@@ -68,7 +68,7 @@ const AnimatedRoutes = () => {
           }
         />
         <Route
-          path="/login"
+          path="/sign_in"
           element={
             <PageWrapper>
               <LoginMenu />

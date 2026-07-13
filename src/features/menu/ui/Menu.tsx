@@ -25,7 +25,7 @@ export const Menu = () => {
         <div className={styles.content}>
           <Avatar />
           <nav className={styles.list}>
-            <NavLink to="/login" className={styles.link}>
+            <NavLink to="/sign_in" className={styles.link}>
               <UserIcon size="18" color="var(--text-main)" />
               <p>Профиль</p>
             </NavLink>

@@ -16,6 +16,8 @@
 
 .search {
   display: flex;
+  justify-content: space-between;
+  width: 100%;
   gap: 8px;
 }
 
