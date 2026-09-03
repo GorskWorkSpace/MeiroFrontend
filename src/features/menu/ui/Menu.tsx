@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { HeartIcon, MenuIcon, SettingsIcon } from "../../../shared/assets";
+import {
+  HeartIcon,
+  MenuIcon,
+  SettingsIcon,
+  UserIcon,
+} from "../../../shared/assets";
 import { Avatar } from "../../../shared/assets/icons/Avatar";
 import { NavLink } from "react-router-dom";
 import { Modal } from "../../../shared/ui/modal";
@@ -20,6 +25,11 @@ export const Menu = () => {
         <div className={styles.content}>
           <Avatar />
           <nav className={styles.list}>
+            <NavLink to="/sign_in" className={styles.link}>
+              <UserIcon size="18" color="var(--text-main)" />
+              <p>Профиль</p>
+            </NavLink>
+
             <NavLink to="/event/my-events" className={styles.link}>
               <HeartIcon
                 isFavourite={false}
@@ -41,7 +51,7 @@ export const Menu = () => {
             <a href="#" className={styles.link}>
               Пользовательское соглашение
             </a>
-            <a href="https://t.me/dayr1man" className={styles.link}>
+            <a href="https://t.me/da1ryman" className={styles.link}>
               Поддержка
             </a>
             <p className={styles.anyText}> &copy; 2026</p>

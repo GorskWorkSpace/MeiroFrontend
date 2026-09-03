@@ -1,0 +1,23 @@
+.content {
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 80vh;
+}
+
+.inputCont {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.forgotPass {
+  margin-left: auto;
+}
+
+.entryBtn {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

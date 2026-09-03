@@ -6,6 +6,8 @@ import { EventMyPage } from "../pages/EventMyPage";
 import { HelmetProvider } from "react-helmet-async";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
+import { LoginMenu } from "../features/login-menu";
+import { SignUpMain } from "../pages/sign-up-pages/SignUpMain";
 
 const PageWrapper = ({ children }: { children: React.ReactNode }) => (
   <motion.div
@@ -63,6 +65,22 @@ const AnimatedRoutes = () => {
           element={
             <PageWrapper>
               <EventMyPage />
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/sign_in"
+          element={
+            <PageWrapper>
+              <LoginMenu />
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/sign_up"
+          element={
+            <PageWrapper>
+              <SignUpMain />
             </PageWrapper>
           }
         />

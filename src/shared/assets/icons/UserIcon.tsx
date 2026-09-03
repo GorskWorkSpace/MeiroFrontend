@@ -1,8 +1,18 @@
-export const UserIcon = () => {
+interface UserIconProps {
+  color?: string;
+  size?: string;
+  onClick?: () => void;
+}
+
+export const UserIcon = ({
+  color = "currentColor",
+  size = "12",
+  onClick,
+}: UserIconProps) => {
   return (
     <svg
-      width="16"
-      height="16"
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org"
@@ -11,9 +21,8 @@ export const UserIcon = () => {
         fill-rule="evenodd"
         clip-rule="evenodd"
         d="M12 2C9.23858 2 7 4.23858 7 7s2.23858 5 5 5 5-2.23858 5-5-2.23858-5-5-5zm-3 5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm-2 9c-1.32608 0-2.59785.5268-3.53553 1.4645C2.52678 18.4021 2 19.6739 2 21a1 1 0 1 0 2 0c0-.7956.31607-1.5587.87868-2.1213C5.44129 18.3161 6.20435 18 7 18h10c.7957 0 1.5587.3161 2.1213.8787.5626.5626.8787 1.3257.8787 2.1213a1 1 0 1 0 2 0c0-1.3261-.5268-2.5979-1.4645-3.5355C19.5979 16.5268 18.3261 16 17 16H7z"
-        fill="#1F1F1F"
+        fill={color}
       />
-
     </svg>
   );
 };

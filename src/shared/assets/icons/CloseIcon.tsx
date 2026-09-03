@@ -1,9 +1,8 @@
-
 interface CloseIconProps {
-  color: string
+  color: string;
 }
 
-export const CloseIcon = ({color}: CloseIconProps) => {
+export const CloseIcon = ({ color }: CloseIconProps) => {
   return (
     <svg
       width="24"
