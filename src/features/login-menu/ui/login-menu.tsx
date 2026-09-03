@@ -22,7 +22,7 @@ export const LoginMenu = () => {
         <NavLink to="#" className={styles.forgotPass}>
           <p>Забыли пароль?</p>
         </NavLink>
-        <NavLink to="#">
+        <NavLink to="/sign_up">
           <p>Нет профиля? Зарегестрироваться</p>
         </NavLink>
       </div>

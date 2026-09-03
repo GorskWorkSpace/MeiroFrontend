@@ -10,8 +10,8 @@ interface LoginInputProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder: string;
   onClear?: () => void;
   variant?: string;
-  type: "text" | "password" | "tel" | "email";
-  e: string | number;
+  type?: "text" | "password" | "tel" | "email";
+  e?: string | number;
 }
 
 export const LoginInput = ({
