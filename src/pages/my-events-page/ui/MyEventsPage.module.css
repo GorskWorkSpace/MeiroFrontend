@@ -1,0 +1,39 @@
+.page {
+  max-width: calc(var(--container-width) + 2 * var(--page-padding));
+  margin: 0 auto;
+  padding: 0 var(--page-padding) var(--bottom-bar-space);
+}
+
+.headerContainer {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  height: var(--header-height);
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  transition: background-color var(--transition-fast);
+}
+
+.backButton:hover {
+  background-color: var(--secondary-background);
+}
+
+.logo {
+  justify-self: center;
+  font-family: "Unbounded", sans-serif;
+  font-size: 24px;
+  color: var(--accent-color);
+  font-weight: 800;
+}
+
+.footer {
+  display: flex;
+  justify-content: end;
+}

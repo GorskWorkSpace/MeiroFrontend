@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ArrowTopIcon } from "../../../assets";
+import { cn } from "../../../lib/classNames";
 import { Title } from "../../title";
 import styles from "./Accordion.module.css";
 
@@ -11,7 +12,6 @@ interface AccordionProps {
   onToggle?: () => void;
 }
 
-// Альтернативный вариант с использованием transform scaleY
 export const Accordion = ({
   title,
   children,
@@ -20,13 +20,13 @@ export const Accordion = ({
   onToggle,
 }: AccordionProps) => {
   const [internalIsOpen, setInternalIsOpen] = useState(true);
-  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+  const isOpen = externalIsOpen ?? internalIsOpen;
 
   const toggleAccordion = () => {
     if (onToggle) {
       onToggle();
     } else {
-      setInternalIsOpen(!internalIsOpen);
+      setInternalIsOpen((prev) => !prev);
     }
   };
 
@@ -43,8 +43,8 @@ export const Accordion = ({
           }}
         />
       </div>
-      <div className={`${styles.contentWrapper} ${isOpen ? styles.open : ""}`}>
-        <div className={`${styles.content} ${styles[type]}`}>{children}</div>
+      <div className={cn(styles.contentWrapper, isOpen && styles.open)}>
+        <div className={cn(styles.content, styles[type])}>{children}</div>
       </div>
     </div>
   );

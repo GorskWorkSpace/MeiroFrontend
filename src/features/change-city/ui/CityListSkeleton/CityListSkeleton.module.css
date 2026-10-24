@@ -14,7 +14,7 @@
 }
 
 .letter {
-  font-family: "Bounded";
+  font-family: "Unbounded", sans-serif;
   font-size: 16px;
   font-weight: 600;
   color: var(--letter);
@@ -31,7 +31,8 @@
 }
 
 .skeletonCity {
-  width: 288px;
+  width: 100%;
+  max-width: 288px;
   height: 20px;
   background-color: var(--skeleton);
   animation: loading 1.5s infinite;

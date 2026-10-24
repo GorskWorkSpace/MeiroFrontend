@@ -4,24 +4,22 @@ import {
   fetchAllCitiesThunk,
   fetchUserCityThunk,
 } from "./cityThunks";
-import type { CityState } from "./types";
-
-const getInitialCity = () => {
-  const savedCityId = localStorage.getItem("selectedCityId");
-  const savedCityName = localStorage.getItem("selectedCity");
-
-  if (savedCityId && savedCityName) {
-    return { id: savedCityId, cityName: savedCityName };
-  }
-
-  return null;
-};
+import { getSavedCity, saveCity } from "./storage";
+import type { CityState, UserCityResponse } from "./types";
 
 const initialState: CityState = {
   cities: [],
-  selectedCity: getInitialCity(),
+  selectedCity: getSavedCity(),
   loading: false,
   error: null,
+};
+
+const applySelectedCity = (state: CityState, city: UserCityResponse) => {
+  state.selectedCity = { id: city.id || "", cityName: city.cityName || "" };
+
+  if (city.id && city.cityName) {
+    saveCity({ id: city.id, cityName: city.cityName });
+  }
 };
 
 export const citySlice = createSlice({
@@ -44,32 +42,17 @@ export const citySlice = createSlice({
         state.cities = [];
       })
       .addCase(fetchUserCityThunk.fulfilled, (state, action) => {
+        // Город, выбранный пользователем вручную, имеет приоритет
         if (!state.selectedCity) {
-          state.selectedCity = {
-            id: action.payload.id || "",
-            cityName: action.payload.cityName || "",
-          };
-
-          if (action.payload.id && action.payload.cityName) {
-            localStorage.setItem("selectedCityId", action.payload.id);
-            localStorage.setItem("selectedCity", action.payload.cityName);
-          }
+          applySelectedCity(state, action.payload);
         }
         state.loading = false;
       })
       .addCase(changeCityThunk.fulfilled, (state, action) => {
-        state.selectedCity = {
-          id: action.payload.id || "",
-          cityName: action.payload.cityName || "",
-        };
-
-        if (action.payload.id && action.payload.cityName) {
-          localStorage.setItem("selectedCityId", action.payload.id);
-          localStorage.setItem("selectedCity", action.payload.cityName);
-        }
+        applySelectedCity(state, action.payload);
         state.loading = false;
       });
   },
 });
 
-export default citySlice.reducer;
+export const cityReducer = citySlice.reducer;

@@ -1,63 +1,26 @@
 import type { City } from "../../../entities/city";
 
-export interface GroupedCities {
-  [key: string]: City[];
-}
+export type GroupedCities = Record<string, City[]>;
 
-export const groupCitiesByFirstLetter = (
-  cities: City[] = [],
-): GroupedCities => {
-  if (!cities || !Array.isArray(cities)) {
-    return {};
-  }
+const compareCities = (a: City, b: City) => a.cityName.localeCompare(b.cityName);
 
+/** Группирует города по первой букве и сортирует внутри групп */
+export const groupCitiesByFirstLetter = (cities: City[]): GroupedCities => {
   const grouped: GroupedCities = {};
 
-  cities.forEach((city) => {
-    if (city?.cityName) {
-      const firstLetter = city.cityName.charAt(0).toUpperCase();
+  for (const city of cities) {
+    if (!city?.cityName) continue;
 
-      if (!grouped[firstLetter]) {
-        grouped[firstLetter] = [];
-      }
-
-      grouped[firstLetter].push(city);
-    }
-  });
-
-  return grouped;
-};
-
-export const getSortedLetters = (
-  groupedCities: GroupedCities = {},
-): string[] => {
-  if (!groupedCities || typeof groupedCities !== "object") {
-    return [];
-  }
-  return Object.keys(groupedCities).sort((a, b) => a.localeCompare(b));
-};
-
-export const sortCitiesInGroup = (cities: City[] = []): City[] => {
-  if (!cities || !Array.isArray(cities)) {
-    return [];
-  }
-  return [...cities].sort((a, b) => a.cityName.localeCompare(b.cityName));
-};
-
-export const processCities = (cities: City[] = []): GroupedCities => {
-  if (!cities || !Array.isArray(cities)) {
-    return {};
+    const firstLetter = city.cityName.charAt(0).toUpperCase();
+    (grouped[firstLetter] ??= []).push(city);
   }
 
-  const grouped = groupCitiesByFirstLetter(cities);
-
-  if (grouped && typeof grouped === "object") {
-    Object.keys(grouped).forEach((letter) => {
-      if (Array.isArray(grouped[letter])) {
-        grouped[letter] = sortCitiesInGroup(grouped[letter]);
-      }
-    });
+  for (const letter of Object.keys(grouped)) {
+    grouped[letter].sort(compareCities);
   }
 
   return grouped;
 };
+
+export const getSortedLetters = (groupedCities: GroupedCities): string[] =>
+  Object.keys(groupedCities).sort((a, b) => a.localeCompare(b));

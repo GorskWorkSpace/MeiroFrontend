@@ -65,14 +65,16 @@ export interface EventDetail {
 
 export interface EventState {
   allEvents: Event[];
-  favouriteEvents: Event[];
   soonEvents: SoonEvent[];
   soonEventsCount: number;
   eventDetail: EventDetail | null;
+  /** Первая страница списка событий */
   loading: boolean;
+  /** Следующие страницы списка событий */
   loadingMore: boolean;
+  soonLoading: boolean;
+  detailLoading: boolean;
   error: string | null;
   hasMore: boolean;
   filters: EventFilters;
-  isLoading: boolean;
 }

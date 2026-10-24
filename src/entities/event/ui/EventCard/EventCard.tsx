@@ -1,29 +1,26 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CalendarIcon, ImageIcon } from "../../../../shared/assets";
+import { getEventDetailRoute } from "../../../../shared/config/routes";
+import { useIsDesktop } from "../../../../shared/lib/hooks/useIsDesktop";
 import { Caption } from "../../../../shared/ui/caption";
 import { CategoryInfo } from "../../../../shared/ui/category-info";
 import { Title } from "../../../../shared/ui/title";
 import type { Event } from "../../model/types";
 import styles from "./EventCard.module.css";
-import { useMediaQuery } from "../../../../shared/lib/hooks/useMediaQuery";
 
 interface EventCardProps {
   event: Event;
-  category: string;
   favouriteButton?: React.ReactNode;
 }
 
-export const EventCard = ({
-  event,
-  category,
-  favouriteButton,
-}: EventCardProps) => {
-  const [isVisible, setIsVisible] = useState(false);
+export const EventCard = ({ event, favouriteButton }: EventCardProps) => {
+  const navigate = useNavigate();
+  const isDesktop = useIsDesktop();
   const cardRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
-
+  // Картинка подгружается только когда карточка близко к viewport
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -38,12 +35,10 @@ export const EventCard = ({
     return () => observer.disconnect();
   }, []);
 
-  const navigate = useNavigate();
-
   return (
     <div
-      onClick={() => navigate(`/event/${event.id}`)}
       ref={cardRef}
+      onClick={() => navigate(getEventDetailRoute(event.id))}
       className={styles.cardContainer}
     >
       <div
@@ -60,7 +55,7 @@ export const EventCard = ({
         )}
 
         <div className={styles.category}>
-          <CategoryInfo>{category}</CategoryInfo>
+          <CategoryInfo>{event.category}</CategoryInfo>
         </div>
         <div className={styles.favourite}>{favouriteButton}</div>
       </div>

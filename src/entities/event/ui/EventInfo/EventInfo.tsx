@@ -1,38 +1,57 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../../../app/store/hooks";
-import { CalendarIcon, InfoIcon } from "../../../../shared/assets";
-import { ShareIcon } from "../../../../shared/assets/icons/ShareIcon";
+import { CalendarIcon, InfoIcon, ShareIcon } from "../../../../shared/assets";
+import { cn } from "../../../../shared/lib/classNames";
 import { Caption } from "../../../../shared/ui/caption";
 import { ProgressBar } from "../../../../shared/ui/progress-bar";
 import { Tab } from "../../../../shared/ui/tab";
 import { Text } from "../../../../shared/ui/text";
 import { Title } from "../../../../shared/ui/title";
-import { selectEventDetail } from "../../model/eventSlice";
-import { SignUpEvent } from "../../../../features/sign-up-event/ui/SignUpEvent";
+import { selectEventDetail } from "../../model/selectors";
 import styles from "./EventInfo.module.css";
 
-export const EventInfo = () => {
+const ACCENT_COLOR = "#554FFD";
+const FEW_PLACES_COLOR = "#F84A00";
+const MANY_PLACES_COLOR = "#00A55E";
+
+interface PlacesLeftProps {
+  taken: number;
+  total: number;
+}
+
+const PlacesLeft = ({ taken, total }: PlacesLeftProps) => {
+  const left = total - taken;
+  const isLessThanHalf = left < total / 2;
+  const textColor = isLessThanHalf ? FEW_PLACES_COLOR : MANY_PLACES_COLOR;
+
+  let label = `Осталось ${left} мест`;
+  if (taken === total) {
+    label = "Мест нет";
+  } else if (isLessThanHalf) {
+    label = `Осталось всего ${left} мест`;
+  }
+
+  return (
+    <Text textColor={textColor} size={14} weight={500}>
+      {label}
+    </Text>
+  );
+};
+
+interface EventInfoProps {
+  /** Действие под описанием события, например кнопка записи */
+  action?: React.ReactNode;
+}
+
+export const EventInfo = ({ action }: EventInfoProps) => {
   const eventDetail = useAppSelector(selectEventDetail);
   const [expanded, setExpanded] = useState(false);
   const [showMore, setShowMore] = useState(false);
-
   const descriptionRef = useRef<HTMLDivElement>(null);
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        url: window.location.href,
-        title: eventDetail?.title,
-        text: eventDetail?.title,
-      });
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert("Ссылка скопирована");
-    }
-  };
 
+  // Кнопка «Еще» нужна, только если описание не помещается в свернутый блок
   useEffect(() => {
     const el = descriptionRef.current;
-
     if (el) {
       setShowMore(el.scrollHeight > el.clientHeight);
     }
@@ -42,18 +61,38 @@ export const EventInfo = () => {
     return null;
   }
 
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        url: window.location.href,
+        title: eventDetail.title,
+        text: eventDetail.title,
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert("Ссылка скопирована");
+    }
+  };
+
+  const takenPlaces = eventDetail.countPlace || 0;
+  const totalPlaces = eventDetail.countPlaceAll || 0;
+
   return (
     <div className={styles.detail}>
       {eventDetail.title && (
         <div className={styles.titleContainer}>
           <div className={styles.titleTab}>
-            <Tab
-              variant="usual"
-              isActive={false}
-              children={eventDetail.category}
-            />
-
-            <ShareIcon onClick={handleShare} />
+            <Tab variant="usual" isActive={false}>
+              {eventDetail.category}
+            </Tab>
+            <button
+              type="button"
+              className={styles.shareButton}
+              onClick={handleShare}
+              aria-label="Поделиться"
+            >
+              <ShareIcon />
+            </button>
           </div>
           <Title size={24} weight={500}>
             {eventDetail.title}
@@ -65,9 +104,10 @@ export const EventInfo = () => {
         <div className={styles.descriptionWrapper}>
           <div
             ref={descriptionRef}
-            className={`${styles.description} ${
-              expanded ? styles.expanded : styles.clamped
-            }`}
+            className={cn(
+              styles.description,
+              expanded ? styles.expanded : styles.clamped,
+            )}
           >
             <Text size={16} weight={500}>
               {eventDetail.description}
@@ -76,6 +116,7 @@ export const EventInfo = () => {
 
           {showMore && (
             <button
+              type="button"
               className={styles.moreButton}
               onClick={() => setExpanded((prev) => !prev)}
             >
@@ -117,29 +158,24 @@ export const EventInfo = () => {
         </div>
       )}
 
-      {eventDetail.price !== 0 && (
+      {eventDetail.price !== undefined && (
         <div className={styles.price}>
           <Title size={18} weight={500}>
             Стоимость участия
           </Title>
-          <Text size={24} weight={500}>
-            {eventDetail.price} ₽ <span className={styles.caption}>\чел</span>
-          </Text>
+          {eventDetail.price === 0 ? (
+            <Text size={24} weight={500} textColor={ACCENT_COLOR}>
+              Бесплатно
+            </Text>
+          ) : (
+            <Text size={24} weight={500}>
+              {eventDetail.price} ₽ <span className={styles.caption}>\чел</span>
+            </Text>
+          )}
         </div>
       )}
 
-      {eventDetail.price === 0 && (
-        <div className={styles.price}>
-          <Title size={18} weight={500}>
-            Стоимость участия
-          </Title>
-          <Text size={24} weight={500} textColor="#554FFD">
-            Бесплатно
-          </Text>
-        </div>
-      )}
-
-      {eventDetail.countPlaceAll !== 0 && (
+      {totalPlaces > 0 && (
         <div className={styles.countPlaceСontainer}>
           <Title size={18} weight={500}>
             Количество мест
@@ -148,38 +184,11 @@ export const EventInfo = () => {
             <div className={styles.placeLeft}>
               <p className={styles.caption}>Занято мест</p>
               <p className={styles.caption}>
-                {eventDetail.countPlace} из {eventDetail.countPlaceAll}
+                {takenPlaces} из {totalPlaces}
               </p>
             </div>
-            <ProgressBar
-              items={eventDetail.countPlace || 0}
-              itemsAll={eventDetail.countPlaceAll || 0}
-            />
-            {(() => {
-              const left =
-                (eventDetail.countPlaceAll || 0) -
-                (eventDetail.countPlace || 0);
-              const isLessThanHalf =
-                left < (eventDetail.countPlaceAll || 0) / 2;
-              const textColor = isLessThanHalf ? "#F84A00" : "#00A55E";
-              const equal =
-                eventDetail.countPlace === eventDetail.countPlaceAll;
-
-              if (equal) {
-                return (
-                  <Text textColor={textColor} size={14} weight={500}>
-                    Мест нет
-                  </Text>
-                );
-              }
-              return (
-                <Text textColor={textColor} size={14} weight={500}>
-                  {isLessThanHalf
-                    ? `Осталось всего ${left} мест`
-                    : `Осталось ${left} мест`}
-                </Text>
-              );
-            })()}
+            <ProgressBar items={takenPlaces} itemsAll={totalPlaces} />
+            <PlacesLeft taken={takenPlaces} total={totalPlaces} />
           </div>
         </div>
       )}
@@ -199,7 +208,8 @@ export const EventInfo = () => {
           </a>
         </div>
       )}
-      <SignUpEvent />
+
+      {action}
     </div>
   );
 };

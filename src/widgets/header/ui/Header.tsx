@@ -8,14 +8,15 @@ import {
   selectSelectedCity,
 } from "../../../entities/city";
 import { ChangeCityModal } from "../../../features/change-city";
-import styles from "./Header.module.css";
+import { Filter } from "../../../features/filter";
+import { Menu } from "../../../features/menu";
 import { SearchEvents } from "../../../features/search-events";
 import { useMediaQuery } from "../../../shared/lib/hooks/useMediaQuery";
+import styles from "./Header.module.css";
 
 export const Header = () => {
-  const isDesktop = useMediaQuery("(min-width: 1020px)");
-
   const dispatch = useAppDispatch();
+  const isDesktop = useMediaQuery("(min-width: 1020px)");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const selectedCity = useAppSelector(selectSelectedCity);
@@ -25,50 +26,40 @@ export const Header = () => {
     dispatch(fetchUserCityThunk());
   }, [dispatch]);
 
-  const getCityDisplay = () => {
-    if (selectedCity?.cityName) {
-      return selectedCity.cityName;
-    }
-    return localStorage.getItem("selectedCity") || "Выберите город";
-  };
-  if (isDesktop) {
-    return (
-      <header>
-        <div className={styles.headerContainer}>
-          <h1 className={styles.logo}>MEIRO</h1>
-          <SearchEvents />
-          {loading && !selectedCity && !localStorage.getItem("selectedCity") ? (
+  const Logo = isDesktop ? "h1" : "p";
+
+  return (
+    <header className={styles.header}>
+      <div className={styles.headerContainer}>
+        <Logo className={styles.logo}>MEIRO</Logo>
+
+        {/* На мобильных поиск, фильтр и меню находятся в нижней панели */}
+        {isDesktop && (
+          <div className={styles.search}>
+            <SearchEvents />
+          </div>
+        )}
+
+        <div className={styles.actions}>
+          {loading && !selectedCity ? (
             <CityBadgeSkeleton />
           ) : (
             <CityBadge onClick={() => setIsModalOpen(true)}>
-              {getCityDisplay()}
+              {selectedCity?.cityName || "Выберите город"}
             </CityBadge>
           )}
-        </div>
-        <ChangeCityModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-      </header>
-    );
-  } else {
-    return (
-      <header>
-        <div className={styles.headerContainer}>
-          <p className={styles.logo}>MEIRO</p>
-          {loading && !selectedCity && !localStorage.getItem("selectedCity") ? (
-            <CityBadgeSkeleton />
-          ) : (
-            <CityBadge onClick={() => setIsModalOpen(true)}>
-              {getCityDisplay()}
-            </CityBadge>
+          {isDesktop && (
+            <>
+              <Filter />
+              <Menu />
+            </>
           )}
         </div>
-        <ChangeCityModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-      </header>
-    );
-  }
+      </div>
+      <ChangeCityModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </header>
+  );
 };

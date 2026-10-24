@@ -1,11 +1,19 @@
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { EventDetailPage } from "../pages/event-detail-page/ui/EventDetailPage";
-import { MainPage } from "../pages/main-page/ui/MainPage";
-import { SettingPage } from "../pages/setting-page/ui/SettingPage";
-import { EventMyPage } from "../pages/EventMyPage";
-import { HelmetProvider } from "react-helmet-async";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
+import { HelmetProvider } from "react-helmet-async";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { EventDetailPage } from "../pages/event-detail-page";
+import { MainPage } from "../pages/main-page";
+import { MyEventsPage } from "../pages/my-events-page";
+import { SettingPage } from "../pages/setting-page";
+import { ROUTES } from "../shared/config/routes";
+
+const routes = [
+  { path: ROUTES.main, element: <MainPage /> },
+  { path: ROUTES.eventDetail, element: <EventDetailPage /> },
+  { path: ROUTES.settings, element: <SettingPage /> },
+  { path: ROUTES.myEvents, element: <MyEventsPage /> },
+];
 
 const PageWrapper = ({ children }: { children: React.ReactNode }) => (
   <motion.div
@@ -34,38 +42,13 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route
-          path="/"
-          element={
-            <PageWrapper>
-              <MainPage />
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/event/:eventId"
-          element={
-            <PageWrapper>
-              <EventDetailPage />
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <PageWrapper>
-              <SettingPage />
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/event/my-events"
-          element={
-            <PageWrapper>
-              <EventMyPage />
-            </PageWrapper>
-          }
-        />
+        {routes.map(({ path, element }) => (
+          <Route
+            key={path}
+            path={path}
+            element={<PageWrapper>{element}</PageWrapper>}
+          />
+        ))}
       </Routes>
     </AnimatePresence>
   );

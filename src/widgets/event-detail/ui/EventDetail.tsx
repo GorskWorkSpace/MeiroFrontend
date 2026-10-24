@@ -6,17 +6,19 @@ import {
   EventInfo,
   fetchEventByIdThunk,
   selectEventDetail,
+  selectEventDetailLoading,
 } from "../../../entities/event";
 import { EventsList } from "../../../features/events-list";
 import { FavouriteButton } from "../../../features/favourite";
+import { SignUpEvent } from "../../../features/sign-up-event";
 import { ArrowLeftIcon } from "../../../shared/assets";
-import { Carousel } from "../../../shared/ui/carousel/Carousel";
-import styles from "./EventDetail.module.css";
-import { Title } from "../../../shared/ui/title";
-import { Text } from "../../../shared/ui/text";
+import { ROUTES } from "../../../shared/config/routes";
 import { Button } from "../../../shared/ui/button";
-import { selectIsLoading } from "../../../entities/event/model/eventSlice";
-import { EventDatailSkeleton } from "./skeleton/EventDatailSkeleton";
+import { Carousel } from "../../../shared/ui/carousel";
+import { Text } from "../../../shared/ui/text";
+import { Title } from "../../../shared/ui/title";
+import styles from "./EventDetail.module.css";
+import { EventDetailSkeleton } from "./skeleton/EventDetailSkeleton";
 
 export const EventDetail = () => {
   const { eventId } = useParams();
@@ -24,7 +26,7 @@ export const EventDetail = () => {
   const navigate = useNavigate();
 
   const eventDetail = useAppSelector(selectEventDetail);
-  const isLoading = useAppSelector(selectIsLoading);
+  const isLoading = useAppSelector(selectEventDetailLoading);
 
   useEffect(() => {
     if (eventId) {
@@ -37,10 +39,10 @@ export const EventDetail = () => {
   }, [dispatch, eventId]);
 
   if (isLoading) {
-    return <EventDatailSkeleton />;
+    return <EventDetailSkeleton />;
   }
 
-  if (!eventDetail && !isLoading) {
+  if (!eventDetail) {
     return (
       <div className={styles.notFound}>
         <Title size={16} weight={400}>
@@ -49,61 +51,68 @@ export const EventDetail = () => {
         <Text size={16} weight={400}>
           Событие не найдено
         </Text>
-        <Button onClick={() => navigate("/")}>Вернуться на главную</Button>
+        <Button onClick={() => navigate(ROUTES.main)}>
+          Вернуться на главную
+        </Button>
       </div>
     );
   }
 
-  const images = (eventDetail && eventDetail.imgs) || [];
+  const images = eventDetail.imgs ?? [];
 
   const handleGoBack = () => {
     if (window.history.length > 1) {
       navigate(-1);
     } else {
-      navigate("/");
+      navigate(ROUTES.main);
     }
   };
 
   return (
-    <div>
+    <div className={styles.page}>
       <header className={styles.headerContainer}>
-        <ArrowLeftIcon onClick={handleGoBack} />
-        <h1
-          className={styles.logo}
-          onClick={() => navigate("/")}
-          style={{ cursor: "pointer" }}
+        <button
+          type="button"
+          className={styles.backButton}
+          onClick={handleGoBack}
+          aria-label="Назад"
         >
+          <ArrowLeftIcon />
+        </button>
+        <h1 className={styles.logo} onClick={() => navigate(ROUTES.main)}>
           MEIRO
         </h1>
-        <FavouriteButton
-          eventId={eventId!}
-          isFavourite={eventDetail?.isFavourite || false}
-        />
+        <div className={styles.favourite}>
+          <FavouriteButton
+            eventId={eventDetail.id}
+            isFavourite={eventDetail.isFavourite ?? false}
+          />
+        </div>
       </header>
       <main>
-        <figure>
+        <div className={styles.content}>
           {images.length > 0 && (
-            <Carousel
-              items={images}
-              renderItem={(img) => (
-                <div className={styles.imageSlide}>
+            <figure className={styles.gallery}>
+              <Carousel
+                items={images}
+                renderItem={(img) => (
                   <img
                     src={img}
-                    alt={(eventDetail && eventDetail.title) || ""}
+                    alt={eventDetail.title}
                     className={styles.image}
                   />
-                </div>
-              )}
-              spaceBetween={8}
-              slidesPerView={1}
-              loop={false}
-              autoplay={false}
-              slideClassName={styles.slide}
-              className={styles.carouselContainer}
-            />
+                )}
+                spaceBetween={8}
+                slidesPerView={1}
+                loop={false}
+                autoplay={false}
+                slideClassName={styles.slide}
+                className={styles.carouselContainer}
+              />
+            </figure>
           )}
-        </figure>
-        <EventInfo />
+          <EventInfo action={<SignUpEvent />} />
+        </div>
         <div className={styles.others}>
           <EventsList listTitle="Другие мероприятия" />
         </div>

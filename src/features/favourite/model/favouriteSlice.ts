@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { toggleFavouriteThunk } from "./favouriteThunks";
+import { toggleFavouriteThunk } from "../../../entities/event";
 
 interface FavouriteState {
+  /** id событий, для которых запрос на изменение избранного еще выполняется */
   pendingIds: string[];
   error: string | null;
 }
@@ -9,6 +10,10 @@ interface FavouriteState {
 const initialState: FavouriteState = {
   pendingIds: [],
   error: null,
+};
+
+const removePending = (state: FavouriteState, id: string) => {
+  state.pendingIds = state.pendingIds.filter((pendingId) => pendingId !== id);
 };
 
 export const favouriteSlice = createSlice({
@@ -22,25 +27,21 @@ export const favouriteSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(toggleFavouriteThunk.pending, (state, action) => {
-        const id = action.meta.arg.id;
+        const { id } = action.meta.arg;
         if (!state.pendingIds.includes(id)) {
           state.pendingIds.push(id);
         }
       })
       .addCase(toggleFavouriteThunk.fulfilled, (state, action) => {
-        state.pendingIds = state.pendingIds.filter(
-          (id) => id !== action.payload.id,
-        );
+        removePending(state, action.meta.arg.id);
       })
       .addCase(toggleFavouriteThunk.rejected, (state, action) => {
-        const id = action.meta.arg.id;
-        state.pendingIds = state.pendingIds.filter(
-          (pendingId) => pendingId !== id,
-        );
+        removePending(state, action.meta.arg.id);
         state.error = action.payload as string;
       });
   },
 });
 
 export const { clearError } = favouriteSlice.actions;
-export default favouriteSlice.reducer;
+export const favouriteReducer = favouriteSlice.reducer;
+export type { FavouriteState };

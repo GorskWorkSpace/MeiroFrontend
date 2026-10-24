@@ -1,3 +1,4 @@
+import { cn } from "../../../lib/classNames";
 import styles from "./Footer.module.css";
 
 interface FooterProps {
@@ -13,7 +14,7 @@ export const Footer = ({
 }: FooterProps) => {
   return (
     <footer className={styles[classFoot]}>
-      <div className={`${styles.content} ${className}`}>{children}</div>
+      <div className={cn(styles.content, className)}>{children}</div>
     </footer>
   );
 };

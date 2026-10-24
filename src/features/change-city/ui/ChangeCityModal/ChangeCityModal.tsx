@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from "../../../../app/store/hooks";
 import {
   changeCityThunk,
   fetchAllCitiesThunk,
+  selectAllCities,
+  selectCityLoading,
 } from "../../../../entities/city";
 import { Input } from "../../../../shared/ui/input";
 import { Modal } from "../../../../shared/ui/modal";
@@ -17,8 +19,9 @@ interface ChangeCityModalProps {
 
 export const ChangeCityModal = ({ isOpen, onClose }: ChangeCityModalProps) => {
   const dispatch = useAppDispatch();
+  const cities = useAppSelector(selectAllCities);
+  const loading = useAppSelector(selectCityLoading);
   const [searchTerm, setSearchTerm] = useState("");
-  const { cities = [], loading } = useAppSelector((state) => state.city);
 
   useEffect(() => {
     if (isOpen) {
@@ -27,31 +30,17 @@ export const ChangeCityModal = ({ isOpen, onClose }: ChangeCityModalProps) => {
   }, [isOpen, dispatch]);
 
   const filteredCities = useMemo(() => {
-    if (!cities || !Array.isArray(cities)) {
-      return [];
-    }
-
-    if (!searchTerm.trim()) return cities;
+    const query = searchTerm.trim().toLowerCase();
+    if (!query) return cities;
 
     return cities.filter((city) =>
-      city?.cityName?.toLowerCase().includes(searchTerm.toLowerCase()),
+      city.cityName?.toLowerCase().includes(query),
     );
   }, [searchTerm, cities]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const clearSearch = () => {
-    setSearchTerm("");
-  };
-
-  const handleCitySelect = (cityId: string, cityName: string) => {
-    if (cityId && cityName) {
-      dispatch(changeCityThunk(cityId));
-      localStorage.setItem("selectedCity", cityName);
-      onClose();
-    }
+  const handleCitySelect = (cityId: string) => {
+    dispatch(changeCityThunk(cityId));
+    onClose();
   };
 
   return (
@@ -63,8 +52,7 @@ export const ChangeCityModal = ({ isOpen, onClose }: ChangeCityModalProps) => {
         <Input
           placeholder="Поиск..."
           value={searchTerm}
-          onChange={handleSearchChange}
-          onClear={clearSearch}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       }
     >

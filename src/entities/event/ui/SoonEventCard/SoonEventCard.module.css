@@ -1,41 +1,50 @@
 .cardContainer {
   display: grid;
   grid-template-columns: 80px 1fr;
-  flex-direction: row;
   align-items: center;
   gap: 16px;
-  padding: 16px;
-  background-color: var(--secondary-background);
-  border-radius: 24px;
   width: 340px;
   height: 112px;
-  transition: transform 0.2s ease;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background-color: var(--secondary-background);
   cursor: pointer;
+  transition: transform var(--transition-fast);
 }
+
 .cardContainer:hover {
   transform: scale(1.02);
 }
+
+.imageWrapper {
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
 .image {
+  display: block;
   width: 80px;
   height: 80px;
-  border-radius: 12px;
+  object-fit: cover;
 }
 
 .info {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+  min-width: 0;
 }
 
 .description {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .descriptionItem {
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 8px;
 }
 
@@ -45,19 +54,11 @@
   justify-content: center;
   width: 80px;
   height: 80px;
-  border-radius: 12px;
+  color: var(--icon-color);
   background-color: var(--main-background);
 }
 
-.title {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-word;
-}
-
+.title,
 .text {
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -67,27 +68,35 @@
   word-break: break-word;
 }
 
+@media (max-width: 360px) {
+  .cardContainer {
+    width: 300px;
+  }
+}
+
 @media (min-width: 1020px) {
   .cardContainer {
+    grid-template-columns: 118px 1fr;
     width: 400px;
     height: 150px;
+    gap: 20px;
   }
 
-  .text {
-    font-size: 16px;
-  }
-
-  .title {
-    font-size: 24px !important;
-  }
-
-  .image {
-    width: 150px;
-    height: 110px;
+  .imageWrapper {
     border-radius: 20px;
   }
 
-  .cardContainer {
-    grid-template-columns: 120px 1fr;
+  .image,
+  .empty {
+    width: 118px;
+    height: 118px;
+  }
+
+  .title {
+    font-size: 18px !important;
+  }
+
+  .text {
+    font-size: 14px;
   }
 }

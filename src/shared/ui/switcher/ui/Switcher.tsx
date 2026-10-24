@@ -1,3 +1,4 @@
+import { cn } from "../../../lib/classNames";
 import styles from "./Switcher.module.css";
 
 interface SwitcherProps {
@@ -8,7 +9,10 @@ interface SwitcherProps {
 export const Switcher = ({ isActive, onToggle }: SwitcherProps) => {
   return (
     <button
-      className={`${styles.switch} ${isActive ? styles.active : ""}`}
+      type="button"
+      role="switch"
+      aria-checked={isActive}
+      className={cn(styles.switch, isActive && styles.active)}
       onClick={onToggle}
     >
       <div className={styles.slider} />

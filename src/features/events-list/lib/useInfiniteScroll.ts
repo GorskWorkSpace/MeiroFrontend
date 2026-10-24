@@ -9,6 +9,7 @@ interface UseInfiniteScrollProps {
   rootMargin?: string;
 }
 
+/** Возвращает ref-колбэк: когда помеченный элемент появляется на экране, вызывается onLoadMore */
 export const useInfiniteScroll = ({
   hasMore,
   isLoading,
@@ -19,22 +20,18 @@ export const useInfiniteScroll = ({
 }: UseInfiniteScrollProps) => {
   const observerRef = useRef<IntersectionObserver>(undefined);
 
-  const preLastElementRef = useCallback(
+  const triggerRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (isLoading || isLoadingMore) return;
-      if (observerRef.current) observerRef.current.disconnect();
+      observerRef.current?.disconnect();
 
       observerRef.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting && hasMore) {
-            console.log("соо при каждом запросе пачки ивентов");
             onLoadMore();
           }
         },
-        {
-          threshold,
-          rootMargin,
-        },
+        { threshold, rootMargin },
       );
 
       if (node) observerRef.current.observe(node);
@@ -42,5 +39,5 @@ export const useInfiniteScroll = ({
     [isLoading, isLoadingMore, hasMore, onLoadMore, threshold, rootMargin],
   );
 
-  return { preLastElementRef };
+  return { triggerRef };
 };

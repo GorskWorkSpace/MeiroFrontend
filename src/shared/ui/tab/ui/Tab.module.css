@@ -2,27 +2,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 16px;
-  border-radius: 500px;
-  font-family: "Geologica";
+  padding: 10px 16px;
+  border-radius: var(--radius-full);
+  font-family: "Geologica", sans-serif;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 13px;
+  white-space: nowrap;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 .active {
   background-color: var(--accent-color);
   color: white;
+  cursor: pointer;
 }
 
 .inactive {
   background-color: var(--primary-background);
   color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.inactive:hover {
+  color: var(--accent-color);
 }
 
 .usual {
+  padding: 8px 12px;
+  font-size: 12px;
   background-color: #f1f3f7;
   color: black;
-  padding: 8px 12px;
 }
 
 :global(.dark) .usual {

@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { getErrorMessage } from "../../../shared/lib/getErrorMessage";
 import {
   fetchAllEvents,
   fetchEventById,
@@ -6,17 +7,16 @@ import {
   fetchSoonEvents,
   toggleFavourite,
 } from "../api/eventApi";
-import type { EventFilters, FavouriteRequest } from "./types";
+import type { EventFilters, EventState, FavouriteRequest } from "./types";
 
 export const fetchSoonEventsThunk = createAsyncThunk(
   "event/fetchSoon",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetchSoonEvents();
-      return { count: response.count, events: response.events };
+      return await fetchSoonEvents();
     } catch (error) {
       return rejectWithValue(
-        error instanceof Error ? error.message : "Failed to fetch soon events",
+        getErrorMessage(error, "Failed to fetch soon events"),
       );
     }
   },
@@ -26,28 +26,23 @@ export const fetchAllEventsThunk = createAsyncThunk(
   "event/fetchAll",
   async (filters: EventFilters, { rejectWithValue }) => {
     try {
-      const response = await fetchAllEvents(filters);
-      return {
-        events: response.events,
-        // page: filters.page || 0,
-      };
+      return await fetchAllEvents(filters);
     } catch (error) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Failed to fetch events",
-      );
+      return rejectWithValue(getErrorMessage(error, "Failed to fetch events"));
     }
   },
 );
 
-export const fetchAllEventsFavouriteThunk = createAsyncThunk(
-  "event/fetchAllEventsFavouriteThunk",
-  async () => {
+export const fetchFavouriteEventsThunk = createAsyncThunk(
+  "event/fetchFavourite",
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await fetchFavouriteEvents();
-      return {
-        events: response.events,
-      };
-    } catch (error) {}
+      return await fetchFavouriteEvents();
+    } catch (error) {
+      return rejectWithValue(
+        getErrorMessage(error, "Failed to fetch favourite events"),
+      );
+    }
   },
 );
 
@@ -55,39 +50,27 @@ export const fetchNextPageThunk = createAsyncThunk(
   "event/fetchNextPage",
   async (_, { getState, rejectWithValue }) => {
     try {
-      const state = getState() as { event: { filters: EventFilters } };
-      const nextPage = (state.event.filters.page || 0) + 1;
+      const { filters } = (getState() as { event: EventState }).event;
+      const nextPage = filters.page + 1;
+      const { events } = await fetchAllEvents({ ...filters, page: nextPage });
 
-      const response = await fetchAllEvents({
-        ...state.event.filters,
-        page: nextPage,
-      });
-
-      return {
-        events: response.events,
-        page: nextPage,
-      };
+      return { events, page: nextPage };
     } catch (error) {
       return rejectWithValue(
-        error instanceof Error ? error.message : "Failed to fetch next page",
+        getErrorMessage(error, "Failed to fetch next page"),
       );
     }
   },
 );
 
 export const fetchEventByIdThunk = createAsyncThunk(
-  "event/fetchEventByIdThunk",
+  "event/fetchEventById",
   async (id: string, { rejectWithValue }) => {
     try {
       const event = await fetchEventById(id);
-      if (!event) {
-        return rejectWithValue("Event not found");
-      }
-      return event;
+      return event ?? rejectWithValue("Event not found");
     } catch (error) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Failed to fetch event",
-      );
+      return rejectWithValue(getErrorMessage(error, "Failed to fetch event"));
     }
   },
 );
@@ -96,11 +79,10 @@ export const toggleFavouriteThunk = createAsyncThunk(
   "event/toggleFavourite",
   async (request: FavouriteRequest, { rejectWithValue }) => {
     try {
-      const response = await toggleFavourite(request);
-      return { id: response.id, isFavourite: response.isFavourite };
+      return await toggleFavourite(request);
     } catch (error) {
       return rejectWithValue(
-        error instanceof Error ? error.message : "Failed to toggle favourite",
+        getErrorMessage(error, "Failed to toggle favourite"),
       );
     }
   },

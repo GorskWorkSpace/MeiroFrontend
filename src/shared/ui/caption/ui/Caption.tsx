@@ -1,5 +1,6 @@
+import { cn } from "../../../lib/classNames";
+import { useIsDesktop } from "../../../lib/hooks/useIsDesktop";
 import styles from "./Caption.module.css";
-import { useMediaQuery } from "../../../lib/hooks/useMediaQuery";
 
 interface CaptionProps {
   children: React.ReactNode;
@@ -10,17 +11,16 @@ interface CaptionProps {
 
 export const Caption = ({
   children,
-
   weight = 500,
   className,
   variant = "usual",
 }: CaptionProps) => {
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const isDesktop = useIsDesktop();
 
   return (
     <p
       style={{ fontSize: isDesktop ? 14 : 12, fontWeight: weight }}
-      className={`${styles.font} ${styles[variant] || ""} ${className}`.trim()}
+      className={cn(styles.font, styles[variant], className)}
     >
       {children}
     </p>

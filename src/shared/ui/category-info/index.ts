@@ -1,1 +1,1 @@
-export { CategoryInfo } from './ui/CategoryInfo'
+export { CategoryInfo } from "./ui/CategoryInfo";

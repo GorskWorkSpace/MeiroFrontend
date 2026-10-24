@@ -1,3 +1,4 @@
+import { cn } from "../../../lib/classNames";
 import styles from "./Tab.module.css";
 
 interface TabProps {
@@ -8,17 +9,15 @@ interface TabProps {
 }
 
 export const Tab = ({ onClick, isActive, children, variant }: TabProps) => {
+  const variantClass =
+    variant === "usual"
+      ? styles.usual
+      : isActive
+        ? styles.active
+        : styles.inactive;
+
   return (
-    <div
-      onClick={onClick}
-      className={`${styles.container} ${
-        variant === "accent"
-          ? isActive
-            ? styles.active
-            : styles.inactive
-          : styles.usual
-      }`}
-    >
+    <div onClick={onClick} className={cn(styles.container, variantClass)}>
       {children}
     </div>
   );

@@ -1,13 +1,14 @@
-import { Menu } from "../../../features/menu/ui/Menu";
-import { useTheme } from "../../../features/theme-switcher/lib/useTheme";
-import { ArrowBack } from "../../../shared/ui/arrow-back/arrow-back";
-import { Seo } from "../../../shared/ui/Seo/seo";
+import { Menu } from "../../../features/menu";
+import { useTheme } from "../../../shared/lib/theme";
+import { ArrowBack } from "../../../shared/ui/arrow-back";
+import { Seo } from "../../../shared/ui/seo";
 import { Switcher } from "../../../shared/ui/switcher";
 import { Title } from "../../../shared/ui/title";
 import styles from "./SettingPage.module.css";
 
 export const SettingPage = () => {
   const { theme, toggleTheme } = useTheme();
+
   return (
     <>
       <Seo title="Настройки" description="Настройки" />
@@ -18,18 +19,16 @@ export const SettingPage = () => {
         </div>
         <Title className={styles.title}>Настройки</Title>
         <div className={styles.content}>
-          <div className={styles.switchContainer}>
-            <p>Темная тема</p>
-            <Switcher isActive={theme === "dark"} onToggle={toggleTheme} />
+          <div className={styles.card}>
+            <div className={styles.switchContainer}>
+              <p className={styles.label}>Темная тема</p>
+              <Switcher isActive={theme === "dark"} onToggle={toggleTheme} />
+            </div>
+            <p className={styles.textSecondary}>
+              Не пропустите важное: напомним о скорых событиях и покажем новые
+              мероприятия по вашим интересам
+            </p>
           </div>
-          {/* <div className={styles.switchContainer}>
-            <p>Получать уведомления</p>
-            <Switcher />
-          </div> */}
-          <p className={styles.textSecondary}>
-            Не пропустите важное: напомним о скорых событиях и покажем новые
-            мероприятия по вашим интересам
-          </p>
         </div>
         <div className={styles.footer}>
           <Menu />

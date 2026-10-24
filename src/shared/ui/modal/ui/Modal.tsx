@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
-import styles from "./Modal.module.css";
+import { createPortal } from "react-dom";
 import { CloseIcon } from "../../../assets";
 import { Title } from "../../title";
+import styles from "./Modal.module.css";
 
 interface ModalProps {
   isOpen: boolean;
@@ -12,25 +13,31 @@ interface ModalProps {
   component?: React.ReactNode;
 }
 
-export const Modal: React.FC<ModalProps> = ({
+export const Modal = ({
   isOpen,
   onClose,
   children,
   title,
   component,
-}) => {
+}: ModalProps) => {
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen]);
+    if (!isOpen) return;
 
-  return (
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  // Портал в body: иначе fixed-позиционирование ломается внутри шапки с backdrop-filter
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
@@ -44,14 +51,13 @@ export const Modal: React.FC<ModalProps> = ({
           />
           <motion.div
             className={styles.modal}
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{
-              damping: 30,
-              stiffness: 300,
-              duration: 0.4,
-            }}
+            role="dialog"
+            aria-modal="true"
+            aria-label={title}
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "100%", opacity: 0 }}
+            transition={{ type: "spring", damping: 30, stiffness: 300 }}
           >
             <div className={styles.wrapper}>
               <div className={styles.header}>
@@ -59,6 +65,7 @@ export const Modal: React.FC<ModalProps> = ({
                   {title}
                 </Title>
                 <button
+                  type="button"
                   className={styles.closeButton}
                   onClick={onClose}
                   aria-label="Закрыть"
@@ -73,6 +80,7 @@ export const Modal: React.FC<ModalProps> = ({
           </motion.div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 };

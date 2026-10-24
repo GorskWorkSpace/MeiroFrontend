@@ -1,49 +1,33 @@
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../../../app/store/hooks";
 import { setFilters } from "../../../../entities/event";
 import { Button } from "../../../../shared/ui/button";
-import { Footer } from "../../../../shared/ui/footer";
+import type { FilterValues } from "../../model/filterValues";
 import { ResetFilters } from "../ResetFilters/ResetFilters";
-import { useMediaQuery } from "../../../../shared/lib/hooks/useMediaQuery";
 import styles from "./FilterFooter.module.css";
 
 interface FilterFooterProps {
+  filters: FilterValues;
   onClose: () => void;
-  localFilters: {
-    category?: string;
-    priceFrom?: number;
-    priceTo?: number;
-    countPlace?: "many" | "little";
-  };
 }
 
-export const FilterFooter = ({ onClose, localFilters }: FilterFooterProps) => {
-  const dispatch = useDispatch();
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
+export const FilterFooter = ({ filters, onClose }: FilterFooterProps) => {
+  const dispatch = useAppDispatch();
 
   const handleShow = () => {
-    dispatch(
-      setFilters({
-        category: localFilters.category,
-        priceFrom: localFilters.priceFrom,
-        priceTo: localFilters.priceTo,
-        countPlace: localFilters.countPlace,
-      }),
-    );
+    dispatch(setFilters(filters));
     onClose();
   };
 
   return (
     <div className={styles.wrapper}>
-      <Footer classFoot={isDesktop ? "filterFooter" : "footerWrapper"}>
-        <div className={styles.content}>
-          <div className={styles.fullWidthButton}>
-            <Button className={styles.buttonFullWidth} onClick={handleShow}>
-              Показать
-            </Button>
-          </div>
-          <ResetFilters onClose={onClose} />
+      <div className={styles.content}>
+        <div className={styles.fullWidthButton}>
+          <Button className={styles.buttonFullWidth} onClick={handleShow}>
+            Показать
+          </Button>
         </div>
-      </Footer>
+        <ResetFilters onClose={onClose} />
+      </div>
     </div>
   );
 };

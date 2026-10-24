@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../../../app/store/hooks";
 import { setFilters } from "../../../../entities/event";
 import { TrashIcon } from "../../../../shared/assets";
 import styles from "./ResetFilters.module.css";
@@ -8,7 +8,7 @@ interface ResetFiltersProps {
 }
 
 export const ResetFilters = ({ onClose }: ResetFiltersProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleReset = () => {
     dispatch(
@@ -20,9 +20,7 @@ export const ResetFilters = ({ onClose }: ResetFiltersProps) => {
         search: undefined,
       }),
     );
-    if (onClose) {
-      onClose();
-    }
+    onClose?.();
   };
 
   return (

@@ -1,17 +1,23 @@
 import { useAppSelector } from "../../../app/store/hooks";
+import { selectEventDetail } from "../../../entities/event";
 import { Button } from "../../../shared/ui/button";
-import { EventParticipation } from "../api/api";
+import { participateInEvent } from "../api/api";
 
 export const SignUpEvent = () => {
-  const url = useAppSelector((state) => state.event.eventDetail?.urlEvent);
-  const id = useAppSelector((state) => state.event.eventDetail?.id);
+  const eventDetail = useAppSelector(selectEventDetail);
+
   const handleClick = async () => {
-    if (id) {
-      EventParticipation({ eventId: id });
+    if (!eventDetail) return;
+
+    try {
+      // Дожидаемся запроса, иначе переход по ссылке может его оборвать
+      await participateInEvent({ eventId: eventDetail.id });
+    } catch (error) {
+      console.error("Failed to register participation:", error);
     }
 
-    if (url) {
-      window.location.href = url;
+    if (eventDetail.urlEvent) {
+      window.location.href = eventDetail.urlEvent;
     }
   };
 

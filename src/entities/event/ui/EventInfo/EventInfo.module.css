@@ -6,9 +6,23 @@
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
   background-color: var(--main-background);
-  padding: 24px 16px 0px;
+  padding: 24px var(--page-padding) 0;
   margin-top: -24px;
   gap: 32px;
+}
+
+/* Без галереи карточке не на что наезжать */
+.detail:first-child {
+  margin-top: 0;
+}
+
+@media (min-width: 1020px) {
+  .detail {
+    margin-top: 0;
+    padding: 8px 0 0;
+    border-radius: 0;
+    gap: 36px;
+  }
 }
 
 .titleContainer {
@@ -143,4 +157,23 @@
   font-weight: 500;
 
   color: var(--accent-color);
+}
+
+.addressLink:hover,
+.moreButton:hover {
+  text-decoration: underline;
+}
+
+.shareButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  transition: background-color var(--transition-fast);
+}
+
+.shareButton:hover {
+  background-color: var(--secondary-background);
 }

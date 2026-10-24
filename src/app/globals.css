@@ -138,6 +138,30 @@ textarea,
   --letter: #94a2b8;
   --like-icon-border: #ced6e3;
   --skeleton: #f1f3f7;
+  --border-color: #ced6e3;
+  --overlay-background: rgba(255, 255, 255, 0.85);
+  --card-shadow: 0 12px 32px rgba(20, 24, 31, 0.12);
+
+  /* Сетка и отступы */
+  --page-padding: 16px;
+  --container-width: 1200px;
+  --header-height: 72px;
+  --bottom-bar-space: 96px;
+
+  /* Скругления */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  --transition-fast: 0.2s ease;
+}
+
+@media (min-width: 1020px) {
+  :root {
+    --page-padding: 32px;
+    --bottom-bar-space: 48px;
+  }
 }
 
 html.dark {
@@ -151,9 +175,37 @@ html.dark {
   --icon-color: #bec9da !important;
   --letter: #dee4ed;
   --like-icon-border: #51617b;
+  --border-color: #3d495c;
+  --overlay-background: rgba(20, 24, 31, 0.85);
+  --card-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
+
 body {
+  min-height: 100vh;
+  min-height: 100dvh;
   background-color: var(--main-background);
+  color: var(--text-main);
+  font-family: "Geologica", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--transition-fast);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* Убираем стрелки у числовых полей (фильтр по цене) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 html,

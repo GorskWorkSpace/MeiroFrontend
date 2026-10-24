@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { getErrorMessage } from "../../../shared/lib/getErrorMessage";
 import { changeUserCity, fetchAllCities, fetchUserCity } from "../api/cityApi";
 
 export const fetchAllCitiesThunk = createAsyncThunk(
@@ -7,7 +8,7 @@ export const fetchAllCitiesThunk = createAsyncThunk(
     try {
       return await fetchAllCities();
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(getErrorMessage(error, "Failed to fetch cities"));
     }
   },
 );
@@ -18,7 +19,9 @@ export const fetchUserCityThunk = createAsyncThunk(
     try {
       return await fetchUserCity();
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(
+        getErrorMessage(error, "Failed to fetch user city"),
+      );
     }
   },
 );
@@ -29,7 +32,7 @@ export const changeCityThunk = createAsyncThunk(
     try {
       return await changeUserCity(id);
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(getErrorMessage(error, "Failed to change city"));
     }
   },
 );

@@ -1,7 +1,10 @@
-import type { RootState } from "../../../app/store/store";
+import type { FavouriteState } from "./favouriteSlice";
 
-export const selectFavouritePendingIds = (state: RootState) =>
-  state.favourite?.pendingIds || [];
+type StateWithFavourite = { favourite: FavouriteState };
 
-export const selectIsFavouritePending = (id: string) => (state: RootState) =>
-  state.favourite?.pendingIds?.includes(id) || false;
+export const selectFavouritePendingIds = (state: StateWithFavourite) =>
+  state.favourite.pendingIds;
+
+export const selectIsFavouritePending =
+  (id: string) => (state: StateWithFavourite) =>
+    state.favourite.pendingIds.includes(id);

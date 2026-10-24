@@ -1,9 +1,10 @@
-// Без изменений, так как уже использует selectEventFilters
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../app/store/hooks";
 import {
-  EventCard,
+  EVENTS_PAGE_SIZE,
   EventCardSkeleton,
+  EventsGrid,
   fetchAllEventsThunk,
   fetchNextPageThunk,
   selectAllEvents,
@@ -12,50 +13,62 @@ import {
   selectEventsLoadingMore,
   selectHasMoreEvents,
 } from "../../../../entities/event";
+import { useIsDesktop } from "../../../../shared/lib/hooks/useIsDesktop";
 import { Title } from "../../../../shared/ui/title";
 import { FavouriteButton } from "../../../favourite";
 import { useInfiniteScroll } from "../../lib/useInfiniteScroll";
-import { EventsListSkeleton } from "../EventsListSkeleton/EventsListSkeleton";
+import { EventsListSkeleton } from "../EventsListSkeleton";
 import styles from "./EventsList.module.css";
-import { useMediaQuery } from "../../../../shared/lib/hooks/useMediaQuery";
-import { useParams } from "react-router-dom";
+
+const LOADING_MORE_SKELETONS = 2;
 
 interface EventsListProps {
   listTitle: string;
 }
 
 export const EventsList = ({ listTitle }: EventsListProps) => {
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
-
   const dispatch = useAppDispatch();
+  const isDesktop = useIsDesktop();
+  const { eventId } = useParams();
+
   const events = useAppSelector(selectAllEvents);
   const isLoading = useAppSelector(selectEventsLoading);
   const isLoadingMore = useAppSelector(selectEventsLoadingMore);
   const hasMore = useAppSelector(selectHasMoreEvents);
-  const eventFilters = useAppSelector(selectEventFilters);
+  const { category, countPlace, priceFrom, priceTo, search } =
+    useAppSelector(selectEventFilters);
 
-  const { eventId } = useParams();
+  const loadMore = useCallback(() => dispatch(fetchNextPageThunk()), [dispatch]);
 
-  const { preLastElementRef } = useInfiniteScroll({
+  const { triggerRef } = useInfiniteScroll({
     hasMore,
     isLoading,
     isLoadingMore,
-    onLoadMore: () => dispatch(fetchNextPageThunk()),
+    onLoadMore: loadMore,
   });
 
+  // При изменении фильтров список загружается заново с первой страницы
   useEffect(() => {
-    dispatch(fetchAllEventsThunk({ ...eventFilters, eventId }));
-  }, [
-    eventFilters.category,
-    eventFilters.countPlace,
-    eventFilters.priceFrom,
-    eventFilters.priceTo,
-    eventFilters.search,
-  ]);
+    dispatch(
+      fetchAllEventsThunk({
+        page: 0,
+        offset: EVENTS_PAGE_SIZE,
+        category,
+        countPlace,
+        priceFrom,
+        priceTo,
+        search,
+        eventId,
+      }),
+    );
+  }, [dispatch, category, countPlace, priceFrom, priceTo, search, eventId]);
 
   if (isLoading) {
     return <EventsListSkeleton />;
   }
+
+  // Подгрузку запускает предпоследняя карточка, чтобы следующая страница успела загрузиться
+  const triggerIndex = events.length - 2;
 
   return (
     <article>
@@ -74,40 +87,19 @@ export const EventsList = ({ listTitle }: EventsListProps) => {
           </Title>
         </div>
       )}
-      <div className={styles.flex}>
-        <div className={styles.grid}>
-          {events.map((event, index) => {
-            const isPreLast = index === events.length - 2;
 
-            return (
-              <div
-                key={event.id}
-                ref={isPreLast ? preLastElementRef : undefined}
-                className={styles.container}
-              >
-                <EventCard
-                  event={event}
-                  category={event.category}
-                  favouriteButton={
-                    <FavouriteButton
-                      eventId={event.id}
-                      isFavourite={event.isFavourite}
-                    />
-                  }
-                />
-              </div>
-            );
-          })}
-
-          {isLoadingMore && (
-            <>
-              {[...Array(2)].map((_, index) => (
-                <EventCardSkeleton key={`loading-more-${index}`} />
-              ))}
-            </>
-          )}
-        </div>
-      </div>
+      <EventsGrid
+        events={events}
+        getItemRef={(index) => (index === triggerIndex ? triggerRef : undefined)}
+        renderFavourite={(event) => (
+          <FavouriteButton eventId={event.id} isFavourite={event.isFavourite} />
+        )}
+      >
+        {isLoadingMore &&
+          Array.from({ length: LOADING_MORE_SKELETONS }, (_, index) => (
+            <EventCardSkeleton key={`loading-more-${index}`} />
+          ))}
+      </EventsGrid>
     </article>
   );
 };

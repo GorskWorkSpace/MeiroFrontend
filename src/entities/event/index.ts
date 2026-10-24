@@ -1,5 +1,6 @@
 export type {
   Event,
+  EventDetail,
   EventFilters,
   EventsResponse,
   EventState,
@@ -9,38 +10,35 @@ export type {
   SoonEventsResponse,
 } from "./model/types";
 
-export {
-  fetchAllEvents,
-  fetchSoonEvents,
-  toggleFavourite,
-} from "./api/eventApi";
-
-export { eventMocks, soonEventMocks } from "./model/eventMocks";
+export { EVENTS_PAGE_SIZE, SOON_EVENTS_LIMIT } from "./model/constants";
 
 export {
   clearError,
   clearEventDetail,
-  default as eventReducer,
+  eventReducer,
   eventSlice,
-  resetEvents,
   resetFilters,
-  selectAllEvents,
-  selectEventDetail,
-  selectEventFilters,
-  selectEventsError,
-  selectEventsLoading,
-  selectEventsLoadingMore,
-  selectFavouriteCount,
-  selectFavouriteEvents,
-  selectHasMoreEvents,
-  selectSoonEvents,
-  selectSoonEventsCount,
   setFilters,
 } from "./model/eventSlice";
 
 export {
+  selectAllEvents,
+  selectEventDetail,
+  selectEventDetailLoading,
+  selectEventFilters,
+  selectEventsError,
+  selectEventsLoading,
+  selectEventsLoadingMore,
+  selectHasMoreEvents,
+  selectSoonEvents,
+  selectSoonEventsCount,
+  selectSoonEventsLoading,
+} from "./model/selectors";
+
+export {
   fetchAllEventsThunk,
   fetchEventByIdThunk,
+  fetchFavouriteEventsThunk,
   fetchNextPageThunk,
   fetchSoonEventsThunk,
   toggleFavouriteThunk,
@@ -48,6 +46,7 @@ export {
 
 export { EventCard } from "./ui/EventCard";
 export { EventCardSkeleton } from "./ui/EventCardSkeleton";
-export { EventInfo } from "./ui/EventInfo/EventInfo";
+export { EventInfo } from "./ui/EventInfo";
+export { EventsGrid } from "./ui/EventsGrid";
 export { SoonEventCard } from "./ui/SoonEventCard";
 export { SoonEventCardSkeleton } from "./ui/SoonEventCardSkeleton";

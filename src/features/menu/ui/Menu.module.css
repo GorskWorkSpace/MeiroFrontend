@@ -2,49 +2,47 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 13.38px;
-  border-radius: 9999px;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
   background-color: var(--accent-color);
   color: #fff;
+  transition:
+    filter var(--transition-fast),
+    transform var(--transition-fast);
 }
 
-.header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 24px;
-  margin-bottom: 38px;
-  padding-right: 16px;
+.iconWrapper:hover {
+  filter: brightness(1.1);
 }
 
-.title {
-  color: var(--text-main);
-  font-size: 20px;
+.iconWrapper:active {
+  transform: scale(0.95);
 }
 
 .content {
-  padding-top: 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  height: 88vh;
+  min-height: 60vh;
+  padding-top: 8px;
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  width: 328px;
-  height: 380px;
   flex: 1;
-  gap: 16px;
+  gap: 4px;
   margin-top: 16px;
 }
 
 .footer {
   display: flex;
   flex-direction: column;
-  justify-content: end;
-  gap: 16px;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
   font-family: "Geologica", sans-serif;
 }
 
@@ -52,30 +50,47 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 16px;
+  padding: 10px 0;
   color: var(--text-main);
   font-size: 18px;
   font-weight: 400;
-  gap: 16px;
   text-decoration: none;
+  transition: color var(--transition-fast);
+}
 
-  -webkit-tap-highlight-color: transparent;
+.footer .link {
+  padding: 0;
+  font-size: 14px;
+  color: var(--text-secondary);
 }
 
 .link p {
   color: inherit;
-  margin: 0;
 }
 
+.link:hover,
 .link:active {
   color: var(--accent-color);
 }
 
+.link:hover svg path,
 .link:active svg path {
   fill: var(--accent-color);
 }
 
 .anyText {
-  color: white !important;
-  font-size: smaller;
-  font-weight: lighter;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 300;
+}
+
+@media (min-width: 1020px) {
+  .content {
+    min-height: 0;
+  }
+
+  .list {
+    margin-bottom: 24px;
+  }
 }

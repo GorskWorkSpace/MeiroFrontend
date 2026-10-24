@@ -1,12 +1,17 @@
 import { baseApi } from "../../../shared/api/baseApi";
+import { USE_MOCKS } from "../../../shared/config/mocks";
+import { delay } from "../../../shared/lib/delay";
 import { cityMocks } from "../model/mocks";
-import type { AllCitiesResponse, UserCityResponse } from "../model/types";
+import { getSavedCity, saveCity } from "../model/storage";
+import type {
+  AllCitiesResponse,
+  City,
+  UserCityResponse,
+} from "../model/types";
 
-const USE_MOCKS = false;
-
-export const fetchAllCities = async () => {
+export const fetchAllCities = async (): Promise<City[]> => {
   if (USE_MOCKS) {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay(500);
     return cityMocks;
   }
 
@@ -14,38 +19,26 @@ export const fetchAllCities = async () => {
   return data.cities;
 };
 
-export const fetchUserCity = async () => {
+export const fetchUserCity = async (): Promise<UserCityResponse> => {
   if (USE_MOCKS) {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-
-    const savedCityId = localStorage.getItem("selectedCityId");
-    const savedCityName = localStorage.getItem("selectedCity");
-
-    if (savedCityId && savedCityName) {
-      return { id: savedCityId, cityName: savedCityName };
-    }
-
-    return { id: cityMocks[0].id, cityName: cityMocks[0].cityName };
+    await delay(300);
+    return getSavedCity() ?? cityMocks[0];
   }
 
   const { data } = await baseApi.get<UserCityResponse>("/user/city");
   return data;
 };
 
-export const changeUserCity = async (id: string) => {
+export const changeUserCity = async (id: string): Promise<UserCityResponse> => {
   if (USE_MOCKS) {
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    await delay(300);
     const selectedCity = cityMocks.find((city) => city.id === id);
 
     if (selectedCity) {
-      localStorage.setItem("selectedCityId", selectedCity.id);
-      localStorage.setItem("selectedCity", selectedCity.cityName);
+      saveCity(selectedCity);
     }
 
-    return {
-      id: selectedCity?.id || id,
-      cityName: selectedCity?.cityName || "Москва",
-    };
+    return selectedCity ?? { id, cityName: "Москва" };
   }
 
   const { data } = await baseApi.put<UserCityResponse>("/user/city/change", {

@@ -1,15 +1,13 @@
-import { DetailFooter } from "../../../widgets/detail-footer";
-import { EventDetail } from "../../../widgets/event-detail";
-import { Seo } from "../../../shared/ui/Seo/seo";
+import { motion } from "framer-motion";
 import { useAppSelector } from "../../../app/store/hooks";
 import { selectEventDetail } from "../../../entities/event";
-import { motion } from "framer-motion";
-
+import { Seo } from "../../../shared/ui/seo";
+import { DetailFooter } from "../../../widgets/detail-footer";
+import { EventDetail } from "../../../widgets/event-detail";
 import styles from "./EventDetailPage.module.css";
 
 export const EventDetailPage = () => {
   const eventDetail = useAppSelector(selectEventDetail);
-  const previewImage = eventDetail?.imgs?.[0];
 
   return (
     <motion.div
@@ -20,7 +18,7 @@ export const EventDetailPage = () => {
       <Seo
         title={eventDetail?.title || "Мероприятие"}
         description={eventDetail?.description || eventDetail?.title || ""}
-        image={previewImage}
+        image={eventDetail?.imgs?.[0]}
       />
       <div className={styles.container}>
         <EventDetail />

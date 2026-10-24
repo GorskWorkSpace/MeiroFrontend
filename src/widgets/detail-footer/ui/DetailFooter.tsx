@@ -1,11 +1,13 @@
 import { useAppSelector } from "../../../app/store/hooks";
-import { selectEventDetail } from "../../../entities/event";
-import { selectIsLoading } from "../../../entities/event/model/eventSlice";
-import { Menu } from "../../../features/menu/ui/Menu";
+import {
+  selectEventDetail,
+  selectEventDetailLoading,
+} from "../../../entities/event";
+import { Menu } from "../../../features/menu";
 import styles from "./DetailFooter.module.css";
 
 export const DetailFooter = () => {
-  const isLoading = useAppSelector(selectIsLoading);
+  const isLoading = useAppSelector(selectEventDetailLoading);
   const eventDetail = useAppSelector(selectEventDetail);
 
   if (!eventDetail || isLoading) {
