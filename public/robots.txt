@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /setting-page/
+Disallow: /event/my-events
+
+Sitemap: https://meiro-event.ru/sitemap.xml

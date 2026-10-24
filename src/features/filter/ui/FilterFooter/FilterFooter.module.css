@@ -1,0 +1,38 @@
+/* Кнопки прилипают к низу прокручиваемой модалки */
+.wrapper {
+  position: sticky;
+  bottom: -16px;
+  width: 100%;
+  margin-bottom: -16px;
+  padding: 16px 0;
+  background-color: var(--main-background);
+}
+
+@media (min-width: 1020px) {
+  .wrapper {
+    bottom: -28px;
+    margin-bottom: -28px;
+    padding-bottom: 28px;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.fullWidthButton {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.buttonFullWidth {
+  width: 100%;
+}
+
+.fullWidthButton > div {
+  width: 100%;
+}

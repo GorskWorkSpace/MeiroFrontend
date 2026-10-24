@@ -1,0 +1,16 @@
+/* Карусель выходит за боковые отступы страницы, чтобы слайды доходили до края экрана */
+.adsDisplay {
+  margin: 8px calc(-1 * var(--page-padding)) 0;
+}
+
+.slide {
+  width: 500px;
+}
+
+@media (min-width: 1020px) {
+  .adsDisplay {
+    margin: 16px 0 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+}

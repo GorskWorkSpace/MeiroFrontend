@@ -1,0 +1,75 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  max-width: calc(720px + 2 * var(--page-padding));
+  margin: 0 auto;
+  padding: 0 var(--page-padding);
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  height: var(--header-height);
+}
+
+.logo {
+  justify-self: center;
+  font-family: "Unbounded", sans-serif;
+  font-size: 24px;
+  color: var(--accent-color);
+  font-weight: 800;
+}
+
+.title {
+  color: var(--text-main);
+  font-size: 20px;
+  margin-top: 24px;
+}
+
+.content {
+  flex: 1;
+  margin-top: 24px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background-color: var(--secondary-background);
+}
+
+.switchContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.label {
+  color: var(--text-main);
+  font-size: 18px;
+}
+
+.textSecondary {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.footer {
+  display: flex;
+  justify-content: end;
+  padding: 16px 0;
+}
+
+@media (min-width: 1020px) {
+  .title {
+    font-size: 28px;
+    margin-top: 40px;
+  }
+}

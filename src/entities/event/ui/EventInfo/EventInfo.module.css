@@ -1,0 +1,179 @@
+.detail {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  background-color: var(--main-background);
+  padding: 24px var(--page-padding) 0;
+  margin-top: -24px;
+  gap: 32px;
+}
+
+/* Без галереи карточке не на что наезжать */
+.detail:first-child {
+  margin-top: 0;
+}
+
+@media (min-width: 1020px) {
+  .detail {
+    margin-top: 0;
+    padding: 8px 0 0;
+    border-radius: 0;
+    gap: 36px;
+  }
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.titleTab {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.schedule {
+  display: flex;
+  flex-direction: column;
+
+  gap: 24px;
+}
+
+.startBefore {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+.scheduleItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.scheduleInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.iconWrapper {
+  --icon: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: var(--icon);
+  background-color: var(--secondary-background);
+}
+
+:global(html.dark) .iconWrapper {
+  --icon: #fff;
+}
+
+.caption {
+  font-family: "Geologica";
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.price {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.countPlaceСontainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.countPlace {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.placeLeft {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.address {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.addressLink {
+  font-family: "Geologica";
+  font-size: 16px;
+  color: var(--accent-color);
+}
+
+.descriptionWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.description {
+  overflow: hidden;
+}
+
+.clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+.expanded {
+  display: block;
+}
+
+.moreButton {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+
+  font-family: "Geologica";
+  font-size: 14px;
+  font-weight: 500;
+
+  color: var(--accent-color);
+}
+
+.addressLink:hover,
+.moreButton:hover {
+  text-decoration: underline;
+}
+
+.shareButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  transition: background-color var(--transition-fast);
+}
+
+.shareButton:hover {
+  background-color: var(--secondary-background);
+}

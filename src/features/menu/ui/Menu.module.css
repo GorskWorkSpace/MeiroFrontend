@@ -1,0 +1,96 @@
+.iconWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background-color: var(--accent-color);
+  color: #fff;
+  transition:
+    filter var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.iconWrapper:hover {
+  filter: brightness(1.1);
+}
+
+.iconWrapper:active {
+  transform: scale(0.95);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 60vh;
+  padding-top: 8px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 4px;
+  margin-top: 16px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+  font-family: "Geologica", sans-serif;
+}
+
+.link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+  color: var(--text-main);
+  font-size: 18px;
+  font-weight: 400;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer .link {
+  padding: 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.link p {
+  color: inherit;
+}
+
+.link:hover,
+.link:active {
+  color: var(--accent-color);
+}
+
+.link:hover svg path,
+.link:active svg path {
+  fill: var(--accent-color);
+}
+
+.anyText {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 300;
+}
+
+@media (min-width: 1020px) {
+  .content {
+    min-height: 0;
+  }
+
+  .list {
+    margin-bottom: 24px;
+  }
+}

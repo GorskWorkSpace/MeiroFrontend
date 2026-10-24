@@ -1,0 +1,12 @@
+.mainPage {
+  max-width: calc(var(--container-width) + 2 * var(--page-padding));
+  margin: 0 auto;
+  padding: 0 var(--page-padding) var(--bottom-bar-space);
+  background: var(--main-background);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}

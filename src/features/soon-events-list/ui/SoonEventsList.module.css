@@ -1,0 +1,110 @@
+/* Лента выходит за боковые отступы страницы, заголовок выровнен по контенту */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0 calc(-1 * var(--page-padding));
+  overflow: visible;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--page-padding);
+}
+
+.all {
+  cursor: pointer;
+  font-size: 16px;
+  transition: opacity var(--transition-fast);
+}
+
+.all:hover {
+  opacity: 0.8;
+}
+
+/* Вертикальный отступ оставляет место под увеличение карточки при наведении */
+.soonEvents {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 8px var(--page-padding);
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+
+.soonEvents::-webkit-scrollbar {
+  display: none;
+}
+
+.soonEvents.dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
+.soonEvents.dragging .soonEventsElem {
+  scroll-snap-align: none;
+}
+
+.soonEventsElem {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  touch-action: pan-x;
+}
+
+.emptyCard {
+  position: relative;
+  width: 320px;
+  height: 112px;
+  border-radius: var(--radius-lg);
+  border: 2px dashed var(--border-color);
+  background-color: var(--secondary-background);
+  cursor: pointer;
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.emptyCard:hover {
+  transform: scale(1.02);
+  border-color: var(--accent-color);
+}
+
+.emptyTitle {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+}
+
+.emptyIcon {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  color: var(--text-main);
+}
+
+@media (max-width: 360px) {
+  .emptyCard {
+    width: 280px;
+  }
+}
+
+@media (min-width: 1020px) {
+  .soonEvents {
+    gap: 16px;
+  }
+
+  .emptyCard {
+    width: 400px;
+    height: 150px;
+  }
+}

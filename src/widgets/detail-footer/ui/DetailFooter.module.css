@@ -1,0 +1,13 @@
+.footer {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: flex;
+  padding: 16px var(--page-padding);
+  pointer-events: none;
+}
+
+.footer > * {
+  pointer-events: auto;
+}

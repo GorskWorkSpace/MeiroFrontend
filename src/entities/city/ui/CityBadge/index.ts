@@ -1,0 +1,1 @@
+export { CityBadge } from "./CityBadge";

@@ -1,0 +1,1 @@
+export { EventsListSkeleton } from "./EventsListSkeleton";

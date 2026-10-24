@@ -1,0 +1,17 @@
+.head {
+  margin-bottom: 20px;
+}
+
+.noEvents {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  border-radius: var(--radius-lg);
+  background-color: var(--secondary-background);
+}
+
+.noEventsTitle {
+  text-align: center;
+  color: var(--text-secondary);
+}

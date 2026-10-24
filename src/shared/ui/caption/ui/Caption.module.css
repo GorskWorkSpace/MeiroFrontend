@@ -1,0 +1,10 @@
+.font {
+  font-family: "Geologica", sans-serif;
+}
+.usual {
+  color: var(--text-secondary);
+}
+
+.accent {
+  color: var(--accent-color);
+}
