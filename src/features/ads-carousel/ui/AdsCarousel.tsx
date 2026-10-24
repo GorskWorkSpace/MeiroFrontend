@@ -1,33 +1,33 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store/hooks";
 import {
   AdCard,
   AdCardSkeleton,
   fetchAllAdsThunk,
-  // selectAdsError,
   selectAdsLoading,
   selectAllAds,
 } from "../../../entities/ad";
-import { Carousel } from "../../../shared/ui/carousel/Carousel";
+import { cn } from "../../../shared/lib/classNames";
+import { Carousel } from "../../../shared/ui/carousel";
 import styles from "./AdsCarousel.module.css";
 
+const AUTOPLAY_DELAY = 5000;
+const SLIDES_GAP = 8;
+
 export interface AdsCarouselProps {
-  autoPlay?: boolean;
-  infinite?: boolean;
   limit?: number;
   className?: string;
   skeletonCount?: number;
 }
 
-export const AdsCarousel: React.FC<AdsCarouselProps> = ({
+export const AdsCarousel = ({
   limit = 10,
-  className = "",
+  className,
   skeletonCount = 5,
-}) => {
+}: AdsCarouselProps) => {
   const dispatch = useAppDispatch();
   const ads = useAppSelector(selectAllAds);
   const loading = useAppSelector(selectAdsLoading);
-  // const error = useAppSelector(selectAdsError);
 
   useEffect(() => {
     dispatch(fetchAllAdsThunk());
@@ -35,50 +35,28 @@ export const AdsCarousel: React.FC<AdsCarouselProps> = ({
 
   if (loading) {
     return (
-      <div className={`${styles.adsDisplay} ${className}`}>
+      <div className={cn(styles.adsDisplay, className)}>
         <Carousel
-          items={Array(skeletonCount).fill(null)}
+          items={Array.from({ length: skeletonCount })}
           renderItem={() => <AdCardSkeleton />}
-          spaceBetween={8}
+          spaceBetween={SLIDES_GAP}
           slidesPerView="auto"
         />
       </div>
     );
   }
 
-  // if (error) {
-  //   return (
-  //     <div className={`${styles.adsDisplay} ${styles.error} ${className}`}>
-  //       <p>Не удалось загрузить рекламу</p>
-  //       <button
-  //         onClick={() => dispatch(fetchAllAdsThunk())}
-  //         className={styles.retryButton}
-  //       >
-  //         Попробовать снова
-  //       </button>
-  //     </div>
-  //   );
-  // }
-
   const displayedAds = limit ? ads.slice(0, limit) : ads;
 
-  // if (!displayedAds.length) {
-  //   return (
-  //     <div className={`${styles.adsDisplay} ${styles.empty} ${className}`}>
-  //       <p>Нет доступных объявлений</p>
-  //     </div>
-  //   );
-  // }
-
   return (
-    <div className={`${styles.adsDisplay} ${className}`}>
+    <div className={cn(styles.adsDisplay, className)}>
       <Carousel
         items={displayedAds}
         renderItem={(ad) => <AdCard ad={ad} />}
-        spaceBetween={8}
+        spaceBetween={SLIDES_GAP}
         slidesPerView="auto"
         loop={true}
-        autoplay={{ delay: 5000 }}
+        autoplay={{ delay: AUTOPLAY_DELAY }}
         slideClassName={styles.slide}
       />
     </div>

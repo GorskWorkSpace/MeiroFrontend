@@ -1,14 +1,10 @@
 export { FavouriteButton } from "./ui/FavouriteButton";
-
-export { clearError, favouriteSlice } from "./model/favouriteSlice";
-
-export { toggleFavouriteThunk } from "./model/favouriteThunks";
-
+export {
+  clearError,
+  favouriteReducer,
+  favouriteSlice,
+} from "./model/favouriteSlice";
 export {
   selectFavouritePendingIds,
   selectIsFavouritePending,
 } from "./model/favouriteSelectors";
-
-export type { FavouriteRequest, FavouriteResponse } from "./model/types";
-
-export { default as favouriteReducer } from "./model/favouriteSlice";

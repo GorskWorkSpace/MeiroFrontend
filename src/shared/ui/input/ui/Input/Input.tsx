@@ -3,20 +3,13 @@ import styles from "./Input.module.css";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder: string;
-  onClear?: () => void;
 }
 
-export const Input = ({ placeholder, value, onChange }: InputProps) => {
+export const Input = ({ type = "text", ...inputProps }: InputProps) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.search}>
-        <input
-          className={styles.input}
-          type="text"
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-        />
+        <input className={styles.input} type={type} {...inputProps} />
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { getErrorMessage } from "../../../shared/lib/getErrorMessage";
 import { fetchAdById, fetchAllAds } from "../api/adApi";
 
 export const fetchAllAdsThunk = createAsyncThunk(
@@ -7,9 +8,7 @@ export const fetchAllAdsThunk = createAsyncThunk(
     try {
       return await fetchAllAds();
     } catch (error) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Failed to fetch ads",
-      );
+      return rejectWithValue(getErrorMessage(error, "Failed to fetch ads"));
     }
   },
 );
@@ -19,14 +18,9 @@ export const fetchAdByIdThunk = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const ad = await fetchAdById(id);
-      if (!ad) {
-        return rejectWithValue("Ad not found");
-      }
-      return ad;
+      return ad ?? rejectWithValue("Ad not found");
     } catch (error) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Failed to fetch ad",
-      );
+      return rejectWithValue(getErrorMessage(error, "Failed to fetch ad"));
     }
   },
 );

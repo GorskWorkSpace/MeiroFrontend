@@ -1,3 +1,4 @@
+import { cn } from "../../../lib/classNames";
 import styles from "./Text.module.css";
 
 interface TextProps {
@@ -18,7 +19,7 @@ export const Text = ({
   return (
     <p
       style={{ fontSize: size, fontWeight: weight, color: textColor }}
-      className={`${styles.font} ${className || ""}`}
+      className={cn(styles.font, className)}
     >
       {children}
     </p>

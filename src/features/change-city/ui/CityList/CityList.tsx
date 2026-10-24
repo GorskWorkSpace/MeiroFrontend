@@ -1,30 +1,27 @@
 import { useMemo } from "react";
 import type { City } from "../../../../entities/city";
-import { getSortedLetters, processCities } from "../../lib/citySort";
+import {
+  getSortedLetters,
+  groupCitiesByFirstLetter,
+} from "../../lib/citySort";
 import styles from "./CityList.module.css";
 
 interface CityListProps {
   cities: City[];
-  onCitySelect: (cityId: string, cityName: string) => void;
+  onCitySelect: (cityId: string) => void;
 }
 
-export const CityList = ({ cities = [], onCitySelect }: CityListProps) => {
-  const groupedCities = useMemo(() => {
-    if (!cities || !Array.isArray(cities)) {
-      return {};
-    }
-    return processCities(cities);
-  }, [cities]);
+export const CityList = ({ cities, onCitySelect }: CityListProps) => {
+  const groupedCities = useMemo(
+    () => groupCitiesByFirstLetter(cities),
+    [cities],
+  );
+  const sortedLetters = useMemo(
+    () => getSortedLetters(groupedCities),
+    [groupedCities],
+  );
 
-  const sortedLetters = useMemo(() => {
-    return getSortedLetters(groupedCities);
-  }, [groupedCities]);
-
-  if (!cities || !Array.isArray(cities) || cities.length === 0) {
-    return <div className={styles.empty}>Ничего не найдено</div>;
-  }
-
-  if (!groupedCities || Object.keys(groupedCities).length === 0) {
+  if (sortedLetters.length === 0) {
     return <div className={styles.empty}>Ничего не найдено</div>;
   }
 
@@ -34,10 +31,10 @@ export const CityList = ({ cities = [], onCitySelect }: CityListProps) => {
         <div key={letter} className={styles.listContainer}>
           <p className={styles.letter}>{letter}</p>
           <div className={styles.citiesList}>
-            {groupedCities[letter]?.map((city) => (
+            {groupedCities[letter].map((city) => (
               <div
-                onClick={() => onCitySelect(city.id, city.cityName)}
                 key={city.id}
+                onClick={() => onCitySelect(city.id)}
                 className={styles.city}
               >
                 {city.cityName}

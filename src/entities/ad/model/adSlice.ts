@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { fetchAdByIdThunk, fetchAllAdsThunk } from "./adThunks";
-import type { Ad, AdState } from "./types";
+import type { AdState } from "./types";
 
 const initialState: AdState = {
   ads: [],
@@ -30,13 +30,10 @@ export const adSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        fetchAllAdsThunk.fulfilled,
-        (state, action: PayloadAction<Ad[]>) => {
-          state.loading = false;
-          state.ads = action.payload;
-        },
-      )
+      .addCase(fetchAllAdsThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.ads = action.payload;
+      })
       .addCase(fetchAllAdsThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -46,13 +43,10 @@ export const adSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        fetchAdByIdThunk.fulfilled,
-        (state, action: PayloadAction<Ad>) => {
-          state.loading = false;
-          state.currentAd = action.payload;
-        },
-      )
+      .addCase(fetchAdByIdThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentAd = action.payload;
+      })
       .addCase(fetchAdByIdThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -62,4 +56,4 @@ export const adSlice = createSlice({
 });
 
 export const { clearCurrentAd, clearAds, removeAd } = adSlice.actions;
-export default adSlice.reducer;
+export const adReducer = adSlice.reducer;

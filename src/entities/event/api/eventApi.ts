@@ -1,4 +1,7 @@
 import { baseApi } from "../../../shared/api/baseApi";
+import { USE_MOCKS } from "../../../shared/config/mocks";
+import { delay } from "../../../shared/lib/delay";
+import { EVENTS_PAGE_SIZE, SOON_EVENTS_LIMIT } from "../model/constants";
 import {
   eventMocks,
   getEventDetailMock,
@@ -13,12 +16,13 @@ import type {
   SoonEventsResponse,
 } from "../model/types";
 
-const USE_MOCKS = false;
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+export const fetchFavouriteEvents = async (): Promise<EventsResponse> => {
+  if (USE_MOCKS) {
+    await delay(500);
+    return { events: eventMocks.filter((event) => event.isFavourite) };
+  }
 
-export const fetchFavouriteEvents = async () => {
   const { data } = await baseApi.get<EventsResponse>("/event/favourite/all");
-
   return data;
 };
 
@@ -26,85 +30,70 @@ export const fetchSoonEvents = async (): Promise<SoonEventsResponse> => {
   if (USE_MOCKS) {
     await delay(600);
 
-    const favouriteEventIds = eventMocks
-      .filter((event) => event.isFavourite)
-      .map((event) => event.id);
-
-    const favouriteSoonEvents = soonEventMocks.filter((event) =>
-      favouriteEventIds.includes(event.id),
+    const favouriteIds = new Set(
+      eventMocks.filter((event) => event.isFavourite).map((event) => event.id),
     );
+    const favouriteSoon = soonEventMocks.filter((e) => favouriteIds.has(e.id));
+    const otherSoon = soonEventMocks.filter((e) => !favouriteIds.has(e.id));
+    const events = [...favouriteSoon, ...otherSoon].slice(0, SOON_EVENTS_LIMIT);
 
-    let resultEvents = [...favouriteSoonEvents];
-
-    if (resultEvents.length < 5) {
-      const otherEvents = soonEventMocks
-        .filter((event) => !favouriteEventIds.includes(event.id))
-        .slice(0, 5 - resultEvents.length);
-
-      resultEvents = [...resultEvents, ...otherEvents];
-    }
-
-    return {
-      count: resultEvents.length,
-      events: resultEvents.slice(0, 5),
-    };
+    return { count: events.length, events };
   }
 
   const { data } = await baseApi.get<SoonEventsResponse>("/event/soon/all");
   return data;
 };
 
-export const fetchAllEvents = async (
-  filters: EventFilters,
-): Promise<EventsResponse> => {
-  if (USE_MOCKS) {
-    await delay(2500);
+const getMockEvents = ({ page = 0, search, category }: EventFilters) => {
+  let events = [...eventMocks];
 
-    const page = filters.page || 0;
-    const offset = 12;
-
-    let filteredEvents = [...eventMocks];
-
-    if (filters.search) {
-      const searchLower = filters.search.toLowerCase();
-      filteredEvents = filteredEvents.filter(
-        (event) =>
-          event.title.toLowerCase().includes(searchLower) ||
-          event.category.toLowerCase().includes(searchLower),
-      );
-    }
-    if (filters.category) {
-      const categories = filters.category.split(",").map((c) => c.trim());
-      filteredEvents = filteredEvents.filter((event) =>
-        categories.includes(event.category),
-      );
-    }
-
-    const start = page * offset;
-    const end = start + offset;
-
-    return {
-      events: filteredEvents.slice(start, end),
-    };
+  if (search) {
+    const searchLower = search.toLowerCase();
+    events = events.filter(
+      (event) =>
+        event.title.toLowerCase().includes(searchLower) ||
+        event.category.toLowerCase().includes(searchLower),
+    );
   }
 
+  if (category && category !== "Все") {
+    const categories = category.split(",").map((c) => c.trim());
+    events = events.filter((event) => categories.includes(event.category));
+  }
+
+  const start = page * EVENTS_PAGE_SIZE;
+  return events.slice(start, start + EVENTS_PAGE_SIZE);
+};
+
+const buildEventsParams = (filters: EventFilters) => {
   const params = new URLSearchParams();
 
-  if (filters.page !== undefined) {
-    params.append("page", filters.page.toString());
-  }
-  params.append("offset", "12");
+  params.append("page", String(filters.page));
+  params.append("offset", String(EVENTS_PAGE_SIZE));
 
   if (filters.category) params.append("category", filters.category);
   if (filters.search) params.append("search", filters.search);
   if (filters.priceFrom !== undefined)
-    params.append("priceFrom", filters.priceFrom.toString());
+    params.append("priceFrom", String(filters.priceFrom));
   if (filters.priceTo !== undefined)
-    params.append("priceTo", filters.priceTo.toString());
+    params.append("priceTo", String(filters.priceTo));
   if (filters.countPlace) params.append("countPlace", filters.countPlace);
   if (filters.eventId) params.append("eventId", filters.eventId);
 
-  const { data } = await baseApi.get<EventsResponse>("/event/all", { params });
+  return params;
+};
+
+export const fetchAllEvents = async (
+  filters: EventFilters,
+): Promise<EventsResponse> => {
+  if (USE_MOCKS) {
+    await delay(800);
+    return { events: getMockEvents(filters) };
+  }
+
+  const { data } = await baseApi.get<EventsResponse>("/event/all", {
+    params: buildEventsParams(filters),
+  });
   return data;
 };
 
@@ -126,25 +115,15 @@ export const toggleFavourite = async (
   if (USE_MOCKS) {
     await delay(300);
 
-    const eventIndex = eventMocks.findIndex((e) => e.id === request.id);
-    if (eventIndex !== -1) {
-      const newStatus = !eventMocks[eventIndex].isFavourite;
-
-      eventMocks[eventIndex] = {
-        ...eventMocks[eventIndex],
-        isFavourite: newStatus,
-      };
-
-      return {
-        id: request.id,
-        isFavourite: newStatus,
-      };
+    const index = eventMocks.findIndex((e) => e.id === request.id);
+    if (index === -1) {
+      return { id: request.id, isFavourite: false };
     }
 
-    return {
-      id: request.id,
-      isFavourite: false,
-    };
+    // Объекты моков могут быть заморожены Immer, поэтому заменяем, а не мутируем
+    const isFavourite = !eventMocks[index].isFavourite;
+    eventMocks[index] = { ...eventMocks[index], isFavourite };
+    return { id: request.id, isFavourite };
   }
 
   const { data } = await baseApi.post<FavouriteResponse>(

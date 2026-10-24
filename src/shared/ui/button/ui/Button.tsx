@@ -1,3 +1,4 @@
+import { cn } from "../../../lib/classNames";
 import styles from "./Button.module.css";
 
 interface ButtonProps {
@@ -8,9 +9,10 @@ interface ButtonProps {
 
 export const Button = ({ onClick, children, className }: ButtonProps) => {
   return (
-    <div className={`${styles.container} `}>
+    <div className={styles.container}>
       <button
-        className={`${styles.label} ${className || ""}`}
+        type="button"
+        className={cn(styles.label, className)}
         onClick={onClick}
       >
         {children}

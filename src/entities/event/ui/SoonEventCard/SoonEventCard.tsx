@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CalendarIcon, ImageIcon, PinIcon } from "../../../../shared/assets";
+import { getEventDetailRoute } from "../../../../shared/config/routes";
 import { Caption } from "../../../../shared/ui/caption";
 import { Title } from "../../../../shared/ui/title";
 import type { SoonEvent } from "../../model/types";
@@ -11,15 +12,13 @@ interface SoonEventCardProps {
 }
 
 export const SoonEventCard = ({ event }: SoonEventCardProps) => {
-  const [imageError, setImageError] = useState(false);
-
-  const hasImage = event.img && !imageError;
-
   const navigate = useNavigate();
+  const [imageError, setImageError] = useState(false);
+  const hasImage = Boolean(event.img) && !imageError;
 
   return (
     <div
-      onClick={() => navigate(`/event/${event.id}`)}
+      onClick={() => navigate(getEventDetailRoute(event.id))}
       className={styles.cardContainer}
     >
       <div className={styles.imageWrapper}>

@@ -1,18 +1,52 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  margin: 0 calc(-1 * var(--page-padding));
+  padding: 0 var(--page-padding);
+  background-color: var(--main-background);
+}
+
 .headerContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
+  height: 56px;
 }
 
 .logo {
+  flex-shrink: 0;
   font-family: "Unbounded", sans-serif;
   font-size: 24px;
   color: var(--accent-color);
   font-weight: 800;
 }
 
+.search {
+  flex: 1;
+  max-width: 560px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
 @media (min-width: 1020px) {
+  .header {
+    background-color: var(--overlay-background);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .headerContainer {
+    height: var(--header-height);
+    gap: 32px;
+  }
+
   .logo {
     font-size: 27px;
   }

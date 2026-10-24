@@ -1,11 +1,9 @@
-import { number } from "framer-motion";
-
 interface HeartIconProps {
   isFavourite: boolean;
   color?: string;
   size?: string | number;
   onClick?: () => void;
-  ClassName: string;
+  className?: string;
 }
 
 export const HeartIcon = ({
@@ -13,14 +11,12 @@ export const HeartIcon = ({
   size = "40",
   color,
   onClick,
-  ClassName,
+  className,
 }: HeartIconProps) => {
   const getColor = () => {
     if (color) return color;
     return isFavourite ? "#F84A00" : "#1F1F1F";
   };
-
-  // Цвет при наведении/активном состоянии
 
   const fillColor = getColor();
 
@@ -30,9 +26,9 @@ export const HeartIcon = ({
       height={size}
       viewBox="0 0 16 16"
       fill="none"
-      xmlns="http://www.w3.org"
+      xmlns="http://www.w3.org/2000/svg"
       onClick={onClick}
-      className={ClassName}
+      className={className}
     >
       {isFavourite ? (
         <path

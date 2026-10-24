@@ -1,5 +1,4 @@
-
-import styles from './ProgressBar.module.css';
+import styles from "./ProgressBar.module.css";
 
 interface ProgressBarProps {
   items: number;
@@ -7,14 +6,11 @@ interface ProgressBarProps {
 }
 
 export const ProgressBar = ({ items, itemsAll }: ProgressBarProps) => {
-  const percent = (items / itemsAll) * 100;
+  const percent = itemsAll > 0 ? (items / itemsAll) * 100 : 0;
 
   return (
     <div className={styles.track}>
-      <div
-        className={styles.fill}
-        style={{ width: `${percent}%` }}
-      />
+      <div className={styles.fill} style={{ width: percent + "%" }} />
     </div>
   );
 };

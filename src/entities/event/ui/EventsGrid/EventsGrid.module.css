@@ -1,0 +1,25 @@
+.flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 24px 10px;
+}
+
+.container {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 1020px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 40px 24px;
+  }
+}

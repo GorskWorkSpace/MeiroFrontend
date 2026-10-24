@@ -1,54 +1,16 @@
+/* Карусель выходит за боковые отступы страницы, чтобы слайды доходили до края экрана */
 .adsDisplay {
-  margin: 16px -16px;
-  margin-bottom: 32px;
+  margin: 8px calc(-1 * var(--page-padding)) 0;
 }
 
 .slide {
   width: 500px;
 }
 
-.error {
-  padding: 30px 20px;
-  text-align: center;
-  color: #dc3545;
-  background: rgba(220, 53, 69, 0.1);
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.error p {
-  margin: 0;
-  font-size: 16px;
-}
-
-.retryButton {
-  padding: 8px 24px;
-  background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.retryButton:hover {
-  background: #c82333;
-}
-
-.empty {
-  padding: 40px 20px;
-  text-align: center;
-  color: #6c757d;
-  background: rgba(108, 117, 125, 0.1);
-  border-radius: 12px;
-}
-
-.empty p {
-  margin: 0;
-  font-size: 16px;
+@media (min-width: 1020px) {
+  .adsDisplay {
+    margin: 16px 0 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
 }

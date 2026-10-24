@@ -1,93 +1,51 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { selectEventFilters } from "../../../../entities/event";
-import { Accordion } from "../../../../shared/ui/accordion/ui/Accordion";
+import { useAppSelector } from "../../../../app/store/hooks";
+import { selectCategories } from "../../../../entities/category";
+import { Accordion } from "../../../../shared/ui/accordion";
 import { Input } from "../../../../shared/ui/input";
 import { Tab } from "../../../../shared/ui/tab";
+import type { CountPlace, FilterValues } from "../../model/filterValues";
 import styles from "./FiltersList.module.css";
-import { useAppSelector } from "../../../../app/store/hooks";
 
-const COUNT_PLACE_OPTIONS: Array<{ value: "many" | "little"; label: string }> =
-  [
-    { value: "many", label: "Много мест" },
-    { value: "little", label: "Мало мест" },
-  ];
+const ALL_CATEGORIES = "Все";
+
+const COUNT_PLACE_OPTIONS: Array<{ value: CountPlace; label: string }> = [
+  { value: "many", label: "Много мест" },
+  { value: "little", label: "Мало мест" },
+];
+
+const parsePrice = (value: string) => (value === "" ? undefined : Number(value));
 
 interface FiltersListProps {
-  localFilters: {
-    category?: string;
-    priceFrom?: number;
-    priceTo?: number;
-    countPlace?: "many" | "little";
-  };
-  onLocalFiltersChange: (filters: any) => void;
+  filters: FilterValues;
+  onChange: (filters: FilterValues) => void;
 }
 
-export const FiltersList: React.FC<FiltersListProps> = ({
-  localFilters,
-  onLocalFiltersChange,
-}) => {
-  const appliedFilters = useSelector(selectEventFilters);
-  const categories = useAppSelector((state) => state.category.categories);
+export const FiltersList = ({ filters, onChange }: FiltersListProps) => {
+  const categories = useAppSelector(selectCategories);
 
-  useEffect(() => {
-    onLocalFiltersChange({
-      category: appliedFilters.category,
-      priceFrom: appliedFilters.priceFrom,
-      priceTo: appliedFilters.priceTo,
-      countPlace: appliedFilters.countPlace,
-    });
-  }, [appliedFilters, onLocalFiltersChange]);
+  const update = (patch: Partial<FilterValues>) =>
+    onChange({ ...filters, ...patch });
 
-  const handleCategorySelect = (id: string) => {
-    onLocalFiltersChange({ ...localFilters, category: id });
-  };
-
-  const isCategorySelected = (id: string) => {
-    return localFilters.category === id;
-  };
-
-  const handleCountPlaceSelect = (value: "many" | "little") => {
-    if (localFilters.countPlace === value) {
-      onLocalFiltersChange({ ...localFilters, countPlace: undefined });
-    } else {
-      onLocalFiltersChange({ ...localFilters, countPlace: value });
-    }
-  };
-
-  const handlePriceFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    onLocalFiltersChange({
-      ...localFilters,
-      priceFrom: value === "" ? undefined : Number(value),
-    });
-  };
-
-  const handlePriceToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    onLocalFiltersChange({
-      ...localFilters,
-      priceTo: value === "" ? undefined : Number(value),
-    });
-  };
+  const toggleCountPlace = (value: CountPlace) =>
+    update({ countPlace: filters.countPlace === value ? undefined : value });
 
   return (
     <div className={styles.container}>
       <Accordion title="Категории" type="grid">
         <Tab
           variant="accent"
-          onClick={() => handleCategorySelect("Все")}
-          isActive={isCategorySelected("Все")}
+          onClick={() => update({ category: ALL_CATEGORIES })}
+          isActive={filters.category === ALL_CATEGORIES}
         >
-          Все
+          {ALL_CATEGORIES}
         </Tab>
 
         {categories.map((category) => (
           <Tab
             variant="accent"
             key={category.categoryId}
-            onClick={() => handleCategorySelect(category.categoryId)}
-            isActive={isCategorySelected(category.categoryId)}
+            onClick={() => update({ category: category.categoryId })}
+            isActive={filters.category === category.categoryId}
           >
             {category.name}
           </Tab>
@@ -98,24 +56,22 @@ export const FiltersList: React.FC<FiltersListProps> = ({
         <Input
           placeholder="От"
           type="number"
-          value={localFilters.priceFrom?.toString() || ""}
-          onChange={handlePriceFromChange}
+          value={filters.priceFrom?.toString() ?? ""}
+          onChange={(e) => update({ priceFrom: parsePrice(e.target.value) })}
         />
         <Input
           placeholder="До"
           type="number"
-          value={localFilters.priceTo?.toString() || ""}
-          onChange={handlePriceToChange}
+          value={filters.priceTo?.toString() ?? ""}
+          onChange={(e) => update({ priceTo: parsePrice(e.target.value) })}
         />
       </Accordion>
 
       <Accordion title="Количество мест" type="grid">
         <Tab
           variant="accent"
-          onClick={() =>
-            onLocalFiltersChange({ ...localFilters, countPlace: undefined })
-          }
-          isActive={localFilters.countPlace === undefined}
+          onClick={() => update({ countPlace: undefined })}
+          isActive={filters.countPlace === undefined}
         >
           Все
         </Tab>
@@ -124,8 +80,8 @@ export const FiltersList: React.FC<FiltersListProps> = ({
           <Tab
             variant="accent"
             key={option.value}
-            onClick={() => handleCountPlaceSelect(option.value)}
-            isActive={localFilters.countPlace === option.value}
+            onClick={() => toggleCountPlace(option.value)}
+            isActive={filters.countPlace === option.value}
           >
             {option.label}
           </Tab>

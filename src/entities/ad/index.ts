@@ -1,18 +1,12 @@
-import type { Ad, AdState } from "./model/types";
-
-export { adSlice, default } from "./model/adSlice";
+export { adReducer, adSlice, clearAds, clearCurrentAd, removeAd } from "./model/adSlice";
 export { fetchAdByIdThunk, fetchAllAdsThunk } from "./model/adThunks";
+export {
+  selectAdsError,
+  selectAdsLoading,
+  selectAllAds,
+  selectCurrentAd,
+} from "./model/selectors";
 export type { Ad, AdState } from "./model/types";
-
-export { adMocks } from "./model/adMocks";
-
-export const selectAllAds = (state: { ad: AdState }) => state.ad.ads;
-export const selectCurrentAd = (state: { ad: AdState }) => state.ad.currentAd;
-export const selectAdsLoading = (state: { ad: AdState }) => state.ad.loading;
-export const selectAdsError = (state: { ad: AdState }) => state.ad.error;
-
-export const isExternalAd = (ad: Ad): boolean => !!ad.url;
-export const isInternalAd = (ad: Ad): boolean => !ad.url;
 
 export { AdCard } from "./ui/AdCard";
 export { AdCardSkeleton } from "./ui/AdCardSkeleton";

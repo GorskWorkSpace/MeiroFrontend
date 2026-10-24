@@ -1,10 +1,8 @@
 import { baseApi } from "../../../shared/api/baseApi";
+import { USE_MOCKS } from "../../../shared/config/mocks";
+import { delay } from "../../../shared/lib/delay";
 import { adMocks } from "../model/adMocks";
 import type { Ad, AdsResponse } from "../model/types";
-
-const USE_MOCKS = false;
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const fetchAllAds = async (): Promise<Ad[]> => {
   if (USE_MOCKS) {
@@ -19,8 +17,7 @@ export const fetchAllAds = async (): Promise<Ad[]> => {
 export const fetchAdById = async (id: string): Promise<Ad | null> => {
   if (USE_MOCKS) {
     await delay(300);
-    const ad = adMocks.find((ad) => ad.id === id);
-    return ad || null;
+    return adMocks.find((ad) => ad.id === id) ?? null;
   }
 
   const { data } = await baseApi.get<{ ad: Ad }>(`/ad/${id}`);

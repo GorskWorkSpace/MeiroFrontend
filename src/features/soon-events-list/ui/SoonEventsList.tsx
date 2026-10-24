@@ -1,22 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/store/hooks";
-import { SoonEventCardSkeleton } from "../../../entities/event";
 import {
-  selectEventsLoading,
+  fetchSoonEventsThunk,
   selectSoonEvents,
   selectSoonEventsCount,
-} from "../../../entities/event/model/eventSlice";
-import { fetchSoonEventsThunk } from "../../../entities/event/model/eventThunks";
-import { SoonEventCard } from "../../../entities/event/ui/SoonEventCard/SoonEventCard";
+  selectSoonEventsLoading,
+  SOON_EVENTS_LIMIT,
+  SoonEventCard,
+  SoonEventCardSkeleton,
+} from "../../../entities/event";
 import { ArrowDownRightIcon } from "../../../shared/assets";
+import { ROUTES } from "../../../shared/config/routes";
+import { cn } from "../../../shared/lib/classNames";
+import { useHorizontalScroll } from "../../../shared/lib/hooks/useHorizontalScroll";
+import { useIsDesktop } from "../../../shared/lib/hooks/useIsDesktop";
 import { Title } from "../../../shared/ui/title";
 import styles from "./SoonEventsList.module.css";
-import { useNavigate } from "react-router-dom";
-import { useMediaQuery } from "../../../shared/lib/hooks/useMediaQuery";
-import { useHorizontalScroll } from "../../../shared/lib/hooks/useHorizontSckroll";
 
-const EmptyCard: React.FC<{ onClick: () => void }> = ({ onClick }) => {
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
+const AllEventsCard = ({ onClick }: { onClick: () => void }) => {
+  const isDesktop = useIsDesktop();
+
   return (
     <div className={styles.emptyCard} onClick={onClick}>
       <div className={styles.emptyTitle}>
@@ -31,13 +35,14 @@ const EmptyCard: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   );
 };
 
-export const SoonEventsList: React.FC = () => {
+export const SoonEventsList = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const isDesktop = useIsDesktop();
+
   const events = useAppSelector(selectSoonEvents);
   const count = useAppSelector(selectSoonEventsCount);
-  const loading = useAppSelector(selectEventsLoading);
-  const navigate = useNavigate();
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const loading = useAppSelector(selectSoonEventsLoading);
 
   const { containerRef, handlers, isDragging } = useHorizontalScroll({
     speed: 20,
@@ -51,18 +56,13 @@ export const SoonEventsList: React.FC = () => {
     return <SoonEventCardSkeleton />;
   }
 
-  const firstFiveEvents = events.slice(0, 5);
+  const visibleEvents = events.slice(0, SOON_EVENTS_LIMIT);
 
-  if (!firstFiveEvents.length) {
+  if (!visibleEvents.length) {
     return null;
   }
 
-  const soonItems = [
-    ...firstFiveEvents.map((event) => (
-      <SoonEventCard key={event.id} event={event} />
-    )),
-    <EmptyCard key="empty-card" onClick={() => navigate("/event/my-events")} />,
-  ];
+  const openMyEvents = () => navigate(ROUTES.myEvents);
 
   return (
     <section className={styles.section}>
@@ -70,10 +70,7 @@ export const SoonEventsList: React.FC = () => {
         <Title size={isDesktop ? 20 : 18} weight={500}>
           Избранные
         </Title>
-        <span
-          onClick={() => navigate("/event/my-events")}
-          style={{ cursor: "pointer" }}
-        >
+        <span onClick={openMyEvents} style={{ cursor: "pointer" }}>
           <Title className={styles.all} variant="accent">
             Все ({count})
           </Title>
@@ -82,14 +79,17 @@ export const SoonEventsList: React.FC = () => {
 
       <article
         ref={containerRef}
-        className={`${styles.soonEvents} ${isDragging ? styles.dragging : ""}`}
+        className={cn(styles.soonEvents, isDragging && styles.dragging)}
         {...handlers}
       >
-        {soonItems.map((item, idx) => (
-          <div key={idx} className={styles.soonEventsElem}>
-            {item}
+        {visibleEvents.map((event) => (
+          <div key={event.id} className={styles.soonEventsElem}>
+            <SoonEventCard event={event} />
           </div>
         ))}
+        <div className={styles.soonEventsElem}>
+          <AllEventsCard onClick={openMyEvents} />
+        </div>
       </article>
     </section>
   );

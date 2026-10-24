@@ -1,15 +1,12 @@
-import React from "react";
+import { motion } from "framer-motion";
 import { EventCardSkeleton } from "../../../../entities/event";
 import styles from "./EventsListSkeleton.module.css";
-import { motion } from "framer-motion";
 
-interface EventsGridSkeletonProps {
+interface EventsListSkeletonProps {
   count?: number;
 }
 
-export const EventsListSkeleton: React.FC<EventsGridSkeletonProps> = ({
-  count = 6,
-}) => {
+export const EventsListSkeleton = ({ count = 6 }: EventsListSkeletonProps) => {
   return (
     <motion.div
       className={styles.container}
@@ -19,8 +16,8 @@ export const EventsListSkeleton: React.FC<EventsGridSkeletonProps> = ({
       transition={{ duration: 0.3 }}
     >
       <div className={styles.title} />
-      <div className={`${styles.grid}`}>
-        {[...Array(count)].map((_, index) => (
+      <div className={styles.grid}>
+        {Array.from({ length: count }, (_, index) => (
           <EventCardSkeleton key={`skeleton-${index}`} />
         ))}
       </div>

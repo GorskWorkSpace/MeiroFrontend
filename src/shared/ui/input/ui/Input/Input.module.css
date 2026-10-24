@@ -1,5 +1,4 @@
 .wrapper {
-  --border-color: #ced6e3;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,6 +16,7 @@
 .search {
   display: flex;
   gap: 8px;
+  width: 100%;
 }
 
 .search svg {
@@ -37,7 +37,7 @@
   color: var(--text-main);
 }
 
-input::placeholder {
+.input::placeholder {
   color: var(--icon-color);
   opacity: 1;
 }

@@ -1,36 +1,48 @@
 import { useState } from "react";
-import { HeartIcon, MenuIcon, SettingsIcon } from "../../../shared/assets";
-import { Avatar } from "../../../shared/assets/icons/Avatar";
 import { NavLink } from "react-router-dom";
+import {
+  Avatar,
+  HeartIcon,
+  MenuIcon,
+  SettingsIcon,
+} from "../../../shared/assets";
+import { ROUTES } from "../../../shared/config/routes";
 import { Modal } from "../../../shared/ui/modal";
 import styles from "./Menu.module.css";
 
+const SUPPORT_URL = "https://t.me/dayr1man";
+const ICON_COLOR = "var(--text-main)";
+const ICON_SIZE = "18";
+
 export const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const onClose = () => {
-    setIsOpen(false);
-  };
+  const onClose = () => setIsOpen(false);
 
   return (
     <>
-      <button className={styles.iconWrapper} onClick={() => setIsOpen(true)}>
+      <button
+        type="button"
+        className={styles.iconWrapper}
+        onClick={() => setIsOpen(true)}
+        aria-label="Открыть меню"
+      >
         <MenuIcon />
       </button>
-      <Modal isOpen={isOpen} onClose={onClose} title="Mеню">
+      <Modal isOpen={isOpen} onClose={onClose} title="Меню">
         <div className={styles.content}>
           <Avatar />
           <nav className={styles.list}>
-            <NavLink to="/event/my-events" className={styles.link}>
+            <NavLink to={ROUTES.myEvents} className={styles.link}>
               <HeartIcon
                 isFavourite={false}
-                size="18"
-                color="var(--text-main)"
+                size={ICON_SIZE}
+                color={ICON_COLOR}
               />
               <p>Избранное</p>
             </NavLink>
 
-            <NavLink to="/settings" className={styles.link}>
-              <SettingsIcon color="var(--text-main)" size="18" />
+            <NavLink to={ROUTES.settings} className={styles.link}>
+              <SettingsIcon color={ICON_COLOR} size={ICON_SIZE} />
               <p>Настройки</p>
             </NavLink>
           </nav>
@@ -41,7 +53,7 @@ export const Menu = () => {
             <a href="#" className={styles.link}>
               Пользовательское соглашение
             </a>
-            <a href="https://t.me/dayr1man" className={styles.link}>
+            <a href={SUPPORT_URL} className={styles.link}>
               Поддержка
             </a>
             <p className={styles.anyText}> &copy; 2026</p>

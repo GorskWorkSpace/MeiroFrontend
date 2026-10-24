@@ -1,3 +1,4 @@
+import { cn } from "../../../lib/classNames";
 import styles from "./Title.module.css";
 
 interface TitleProps {
@@ -6,7 +7,7 @@ interface TitleProps {
   size?: number;
   weight?: 400 | 500 | 600 | 700 | 800 | 900;
   variant?: "" | "accent";
-  style?: React.CSSProperties; // ← добавляем
+  style?: React.CSSProperties;
   onClick?: () => void;
 }
 
@@ -16,11 +17,14 @@ export const Title = ({
   size,
   weight,
   variant = "",
+  style,
+  onClick,
 }: TitleProps) => {
   return (
     <h1
-      style={{ fontSize: size, fontWeight: weight }}
-      className={`${styles.font} ${styles[variant] || ""} ${className}`.trim()}
+      style={{ fontSize: size, fontWeight: weight, ...style }}
+      className={cn(styles.font, variant && styles[variant], className)}
+      onClick={onClick}
     >
       {children}
     </h1>
