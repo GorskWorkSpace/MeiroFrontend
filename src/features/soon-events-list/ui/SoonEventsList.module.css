@@ -4,7 +4,7 @@
   flex-direction: column;
   gap: 16px;
   margin: 0 calc(-1 * var(--page-padding));
-  overflow: hidden;
+  overflow: visible;
 }
 
 .title {
@@ -24,7 +24,9 @@
   opacity: 0.8;
 }
 
+/* Вертикальный отступ оставляет место под увеличение карточки при наведении */
 .soonEvents {
+  position: relative;
   display: flex;
   flex-direction: row;
   gap: 8px;
@@ -34,7 +36,7 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 4px var(--page-padding) 8px;
+  padding: 8px var(--page-padding);
   user-select: none;
   -webkit-user-select: none;
   cursor: grab;
@@ -97,16 +99,6 @@
 }
 
 @media (min-width: 1020px) {
-  .section {
-    margin: 0;
-  }
-
-  .title,
-  .soonEvents {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
   .soonEvents {
     gap: 16px;
   }
